@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Triach Rold's Blog</title>
+  <style>
+   a:hover {
+      color: #FFDC5E;
+      background-color: transparent;
+      text-decoration: none;
+    }
+    :root {
+      --width: 720px;
+      --font-main: Futura, sans-serif;
+      --font-secondary: Verdana, sans-serif;
+      --font-scale: 1em;
+      --background-color: #fff;
+      --heading-color: #222;
+      --text-color: #444;
+      --link-color: #3273dc;
+      --visited-color: #8b6fcb;
+      --code-background-color: #f2f2f2;
+      --code-color: #222;
+      --blockquote-color: #222;
+      --comparisons-color: #91E5F6; /* New color for comparisons */
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background-color: #001A23;
+        --heading-color: #eee;
+        --text-color: #ddd;
+        --link-color: #B3EFB2;
+        --visited-color: #91E5F6;
+        --code-background-color: #000;
+        --code-color: #ddd;
+        --blockquote-color: #ccc;
+      }
+    }
+
+    body {
+      font-family: var(--font-secondary);
+      font-size: var(--font-scale);
+      margin: auto;
+      padding: 20px;
+      max-width: var(--width);
+      text-align: left;
+      background-color: var(--background-color);
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      line-height: 1.5;
+      color: var(--text-color);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-main);
+      color: var(--heading-color);
+    }
+
+    a {
+      color: var(--link-color);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: none; 
+    }
+
+    nav a {
+      margin-right: 8px;
+    }
+
+    strong, b {
+      color: var(--heading-color);
+    }
+
+    button {
+      margin: 0;
+      cursor: pointer;
+    }
+
+    time {
+      font-family: monospace;
+      font-style: normal;
+      font-size: 15px;
+    }
+
+    main {
+      line-height: 1.6;
+    }
+
+    table {
+      width: 100%;
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px dashed;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    code {
+      font-family: monospace;
+      padding: 2px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+    }
+
+    blockquote {
+      border-left: 1px solid #999;
+      color: var(--code-color);
+      padding-left: 20px;
+      font-style: italic;
+    }
+
+    footer {
+      padding: 25px 0;
+      text-align: center;
+      background-color: #001A23;
+      color: var(--text-color);
+      font-family: Verdana, sans-serif;
+      margin-top: 40px;
+    }
+
+    .title:hover {
+      text-decoration: none;
+    }
+
+    .title h1 {
+      font-size: 1.5em;
+    }
+
+    .inline {
+      width: auto !important;
+    }
+
+    .highlight, .code {
+      padding: 1px 15px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+      margin-block-start: 1em;
+      margin-block-end: 1em;
+      overflow-x: auto;
+    }
+
+    /* blog post list */
+    ul.blog-posts {
+      list-style-type: none;
+      padding: unset;
+    }
+
+    ul.blog-posts li {
+      display: flex;
+    }
+
+    ul.blog-posts li span {
+      flex: 0 0 130px;
+    }
+
+    ul.blog-posts li a:visited {
+      color: var(--visited-color);
+    }
+
+    #canvas { 
+      border: 2px solid white;
+      border-color: white;  
+    }
+    
+    #canvas:hover {
+      cursor: crosshair;
+    }
+
+    /* Style for comparisons */
+    #comparisons {
+      font-family: Futura, sans-serif;
+      color: var(--comparisons-color);
+      font-size: 1.2em;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body class="home">
+  <header>
+    <a class="title" href="/"><h1>Triach Rold.</h1></a>
+    <nav>
+      <p><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="bloghome.html">Blog</a></p>
+    </nav>
+  </header>
+  <main>
+    <h1>The Bubble Sort.</h1>
+    <p align="center">
+        <canvas id="canvas"></canvas>
+        <div id="comparisons" align="center"></div>
+    </p>
+    <p>
+      <h1>Instructions on how to use the simulation.</h1>
+      <ul>
+        <li>Press Enter to start the Bubble Sort simulation.</li>
+        <li>Press F to speed up the process of sorting.</li>
+      </ul>
+    </p>
+    <!-- Added element for comparisons -->
+  </main>
+  <footer>
+    <H3>Find a bug?</H3>
+    <span><p>Mail me <a href="mailto:roldtriach@gmail.com">here</a>.</p></span>
+  </footer>
+
+  <!-- Aids -->
+  <script>
+    const defaultSpeed = 250;
+    const fasterSpeed = 10;
+    let toggle = 0;
+    let speed = defaultSpeed;
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const boxSize = 50;
+    const numRows = 9;
+    const numCols = 9;
+    const numbers = [];
+    let comparisons = 0;
+
+    // Calculate canvas size based on grid size
+    canvas.width = boxSize * numCols;
+    canvas.height = boxSize * numRows;
+
+    // Color generation strings
+    let cellBorderColor_unHighlighted = '#003f88';
+    let cellFillColor = '#00509d';
+    let cellBorderColor_Highlighted = '#fdc500';
+    let textColor = '';     
+
+    // Generate random numbers and draw boxes
+    function generateNumbersAndDrawBoxes() {
+      for (let i = 0; i < numRows * numCols; i++) {
+        numbers.push(Math.floor(Math.random() * 100) + 1);
+      }
+      drawBoxes();
+    }
+
+    // Draw boxes with random numbers
+    function drawBoxes() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < numRows; i++) {
+        for (let j = 0; j < numCols; j++) {
+          const index = i * numCols + j;
+          const x = j * boxSize;
+          const y = i * boxSize;
+          ctx.fillStyle = cellFillColor; // Cell fill color
+          ctx.fillRect(x, y, boxSize, boxSize);
+          ctx.strokeStyle = cellBorderColor_unHighlighted; // Default border color
+          ctx.strokeRect(x, y, boxSize, boxSize);
+          ctx.fillStyle = '#ffd500'; // Text color
+          ctx.font = '12px Syndicat, sans-serif'; // Set font for numbers
+          const numberX = x + (boxSize - ctx.measureText(numbers[index]).width) / 2; // Center number horizontally
+          const numberY = y + boxSize / 2 + 8; // Center number vertically
+          ctx.fillText(numbers[index], numberX, numberY);
+        }
+      }
+    }
+
+    // Perform bubble sort
+    async function bubbleSort() {
+      comparisons = 0;
+      let n = numbers.length;
+      let sorted = false;
+      while (!sorted) {
+        sorted = true;
+        for (let i = 0; i < n - 1; i++) {
+          comparisons++;
+          updateComparisons();
+          if (numbers[i] > numbers[i + 1]) {
+            await swap(i, i + 1);
+            sorted = false;
+          }
+        }
+      }
+    }
+
+    // Swap two elements
+    async function swap(i, j) {
+      let temp = numbers[i];
+      numbers[i] = numbers[j];
+      numbers[j] = temp;
+      // Highlight the swapped cell border in fdc500
+      drawBoxes();
+      ctx.strokeStyle = cellBorderColor_Highlighted; // Highlighted border color
+      const x = (j % numCols) * boxSize + 1;
+      const y = Math.floor(j / numCols) * boxSize + 1;
+      ctx.strokeRect(x, y, boxSize - 2, boxSize - 2);
+
+      const x2 = (i % numCols) * boxSize + 1;
+      const y2 = Math.floor(i / numCols) * boxSize + 1;
+      ctx.strokeRect(x2, y2, boxSize - 2, boxSize - 2);
+      await sleep(speed); // Highlight delay
+      ctx.strokeStyle = cellBorderColor_unHighlighted; // Reset to default border color
+      drawBoxes();
+    }
+
+    // Update comparisons display
+    function updateComparisons() {
+      document.getElementById('comparisons').textContent = `Comparisons: ${comparisons}`;
+    }
+
+    // Event listener for Enter key
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') {
+        bubbleSort();
+      }
+    });
+
+    // Event listener for the speed toggle key
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'f') {
+        if(toggle===1){
+          speed = defaultSpeed;
+          toggle = 0;
+        } else {
+          speed = fasterSpeed;
+          toggle = 1;
+        }
+      }
+    });
+
+    // Sleep function for animation delay
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    generateNumbersAndDrawBoxes();
+  </script>
+</body>
+</html>
