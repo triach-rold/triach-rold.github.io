@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Triach Rold's Blog</title>
+  <style>
+    a:hover {
+      color: #FFDC5E;
+      background-color: transparent;
+      text-decoration: none;
+    }
+    :root {
+      --width: 720px;
+      --font-main: Futura, sans-serif;
+      --font-secondary: Verdana, sans-serif;
+      --font-scale: 1em;
+      --background-color: #fff;
+      --heading-color: #222;
+      --text-color: #444;
+      --link-color: #3273dc;
+      --visited-color: #8b6fcb;
+      --code-background-color: #f2f2f2;
+      --code-color: #222;
+      --blockquote-color: #222;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background-color: #001A23;
+        --heading-color: #eee;
+        --text-color: #ddd;
+        --link-color: #B3EFB2;
+        --visited-color: #91E5F6;
+        --code-background-color: #000;
+        --code-color: #ddd;
+        --blockquote-color: #ccc;
+      }
+    }
+
+    body {
+      font-family: var(--font-secondary);
+      font-size: var(--font-scale);
+      margin: auto;
+      padding: 20px;
+      max-width: var(--width);
+      text-align: left;
+      background-color: var(--background-color);
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      line-height: 1.5;
+      color: var(--text-color);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-main);
+      color: var(--heading-color);
+    }
+
+    a {
+      color: var(--link-color);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: none; 
+    }
+
+    nav a {
+      margin-right: 8px;
+    }
+
+    strong, b {
+      color: var(--heading-color);
+    }
+
+    button {
+      margin: 0;
+      cursor: pointer;
+    }
+
+    time {
+      font-family: monospace;
+      font-style: normal;
+      font-size: 15px;
+    }
+
+    main {
+      line-height: 1.6;
+    }
+
+    table {
+      width: 100%;
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px dashed;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    code {
+      font-family: monospace;
+      padding: 2px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+    }
+
+    blockquote {
+      border-left: 1px solid #999;
+      color: var(--code-color);
+      padding-left: 20px;
+      font-style: italic;
+    }
+
+    footer {
+      padding: 25px 0;
+      text-align: center;
+      background-color: #001A23;
+      color: var(--text-color);
+      font-family: Verdana, sans-serif;
+      margin-top: 40px;
+    }
+
+    .title:hover {
+      text-decoration: none;
+    }
+
+    .title h1 {
+      font-size: 1.5em;
+    }
+
+    .inline {
+      width: auto !important;
+    }
+
+    .highlight, .code {
+      padding: 1px 15px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+      margin-block-start: 1em;
+      margin-block-end: 1em;
+      overflow-x: auto;
+    }
+
+    /* blog post list */
+    ul.blog-posts {
+      list-style-type: none;
+      padding: unset;
+    }
+
+    ul.blog-posts li {
+      display: flex;
+    }
+
+    ul.blog-posts li span {
+      flex: 0 0 130px;
+    }
+
+    ul.blog-posts li a:visited {
+      color: var(--visited-color);
+    }
+
+    #canvas {
+      border: 2px solid white;
+      border-color: #0D3B66;  
+    }
+
+    #comparisons {
+        text-align: center;
+      font-size: 25px;  
+      font-family: 'Futura', sans-serif;
+      margin-top: 5px; /* Reduced top margin */
+      color: #00A1E4; /* Text color */
+    }
+    
+
+    #canvas:hover {
+      cursor: crosshair;
+    }
+  </style>
+</head>
+<body class="home">
+  <header>
+    <a class="title" href="/"><h1>Triach Rold.</h1></a>
+    <nav>
+      <p><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="bloghome.html">Blog</a></p>
+    </nav>
+  </header>
+  <main>
+    <h1>The Ruthless Efficiency of Binary Search.</h1>
+    <canvas id="canvas" width="780" height="600"></canvas>
+    <p id="comparisons">Comparisons: 0</p>
+    <p>
+      <h1>Instructions on how to use the simulation.</h1>
+      <ul>
+        <li>Before we begin, we must select the search method. By default, the code runs a "linear" search simulation. You can toggle this by pressing 'B' on your keyboard <b>before</b> selecting any square.</li>
+        <li>Once the desired mode has been selected by the user, click on any one of the randomly generated ordered boxes to select a "search" target.</li>
+        <li>Once the search has completed, you can re-toggle the 'B' key and click on the same box to re-run the search by an alternate search method.</li>
+        <li>For lengthier linear searches, you can also toggle the speed the animation plays at with the "f" key (which makes it ~4 times faster), however this is not recommended for the binary search animation because of the speed it plays at. </li>
+    </ul>
+    </p>
+  </main>
+  <footer>
+    <H3>Find a bug?</H3>
+    <span><p>Mail me <a href="mailto:roldtriach@gmail.com">here</a>.</p></span>
+  </footer>
+
+  <!-- Aids -->
+  <script>
+     const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const boxSize = 30; // Increased box size
+    const rows = Math.floor(canvas.height / boxSize);
+    const cols = Math.floor(canvas.width / boxSize);
+    const defaultSpeed = 20;
+    const fasterSpeed = 5;
+    let speedToggle = true;
+    let numbers = generateSortedRandomNumbers(rows * cols); // Generate sorted random numbers
+    let comparisons = 0;
+    let selectedCell = null;
+    let searchType = 'linear';
+    let speed = defaultSpeed;
+
+    function generateSortedRandomNumbers(count) {
+      let nums = Array.from({ length: count }, () => Math.floor(Math.random() * 1000));
+      nums.sort((a, b) => a - b); // Sort the numbers in ascending order
+      return nums;
+    }
+
+    function drawBox(x, y, number, color = 'white') {
+      ctx.fillStyle = color;
+      ctx.fillRect(x * boxSize, y * boxSize, boxSize, boxSize);
+      ctx.strokeStyle = '#0D3B66'; // Cell border color
+      ctx.strokeRect(x * boxSize, y * boxSize, boxSize, boxSize);
+      ctx.font = '10px Futura';
+      ctx.fillStyle = '#FF4365';
+      ctx.fillText(number, x * boxSize + 5, y * boxSize + 20); // Adjusted text position for larger box
+    }
+
+    function drawBoxes() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+          const index = i * cols + j;
+          drawBox(j, i, numbers[index], selectedCell === index ? '#04E762' : '#F4D35E');
+        }
+      }
+    }
+
+    function animateSearchLinear(targetIndex) {
+      let currentBox = 0;
+      const interval = setInterval(() => {
+        if (currentBox > targetIndex) {
+          clearInterval(interval);
+          drawBoxes();
+          return;
+        }
+        drawBoxes();
+        drawBox(currentBox % cols, Math.floor(currentBox / cols), numbers[currentBox], '#00A1E4');
+        currentBox++;
+      }, speed); // Decreased interval duration for faster animation
+    }
+
+    function animateSearchBinary(targetIndex) {
+      let left = 0;
+      let right = numbers.length - 1;
+      let mid = Math.floor((left + right) / 2);
+      const targetNumber = numbers[targetIndex];
+
+      const interval = setInterval(() => {
+        if (left > right) {
+          clearInterval(interval);
+          drawBoxes();
+          return;
+        }
+        drawBoxes();
+        drawBox(mid % cols, Math.floor(mid / cols), numbers[mid], '#A491D3');
+        if (numbers[mid] === targetNumber) {
+          clearInterval(interval);
+          selectedCell = mid;
+          drawBoxes();
+          return;
+        } else if (numbers[mid] < targetNumber) {
+          left = mid + 1;
+        } else {
+          right = mid - 1;
+        }
+        mid = Math.floor((left + right) / 2);
+      }, speed*10);
+    }
+
+    function linearSearch(target) {
+      comparisons = 0;
+      for (let i = 0; i < numbers.length; i++) {
+        comparisons++;
+        if (numbers[i] === target) {
+          animateSearchLinear(i);
+          selectedCell = i;
+          return;
+        }
+      }
+      selectedCell = null;
+      drawBoxes();
+    }
+
+    function binarySearch(target) {
+      comparisons = 0;
+      let left = 0;
+      let right = numbers.length - 1;
+      while (left <= right) {
+        comparisons++;
+
+        const mid = Math.floor((left + right) / 2);
+        if (numbers[mid] === target) {
+          animateSearchBinary(mid);
+          selectedCell = mid;
+          return;
+        } else if (numbers[mid] < target) {
+          left = mid + 1;
+        } else {
+          right = mid - 1;
+        }
+      }
+      selectedCell = null;
+      drawBoxes();
+    }
+
+    canvas.addEventListener('click', (event) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = Math.floor((event.clientX - rect.left) / boxSize);
+      const y = Math.floor((event.clientY - rect.top) / boxSize);
+      const index = y * cols + x;
+      if (searchType === 'linear') {
+        linearSearch(numbers[index]);
+      } else {
+        binarySearch(numbers[index]);
+      }
+      document.getElementById('comparisons').textContent = `Comparisons: ${comparisons}`;
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'b' || event.key === 'B') {
+        searchType = searchType === 'linear' ? 'binary' : 'linear';
+        document.getElementById('comparisons').textContent = 'Comparisons: 0';
+      }
+      if (event.key === 'f' || event.key === 'F') {
+        if(speedToggle){
+            speed = fasterSpeed;
+            speedToggle = !speedToggle;
+        }else{
+            speed = defaultSpeed;
+            speedToggle = !speedToggle;
+        }
+      }
+    });
+
+    drawBoxes();
+  </script>
+</body>
+</html>
+

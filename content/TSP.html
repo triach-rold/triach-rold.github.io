@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Triach Rold's Blog</title>
+  <style>
+    a:hover {
+      color: #FFDC5E;
+      background-color: transparent;
+      text-decoration: none;
+    }
+    :root {
+      --width: 720px;
+      --font-main: Futura, sans-serif;
+      --font-secondary: Verdana, sans-serif;
+      --font-scale: 1em;
+      --background-color: #fff;
+      --heading-color: #222;
+      --text-color: #444;
+      --link-color: #3273dc;
+      --visited-color: #8b6fcb;
+      --code-background-color: #f2f2f2;
+      --code-color: #222;
+      --blockquote-color: #222;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background-color: #001A23;
+        --heading-color: #eee;
+        --text-color: #ddd;
+        --link-color: #B3EFB2;
+        --visited-color: #91E5F6;
+        --code-background-color: #000;
+        --code-color: #ddd;
+        --blockquote-color: #ccc;
+      }
+    }
+
+    body {
+      font-family: var(--font-secondary);
+      font-size: var(--font-scale);
+      margin: auto;
+      padding: 20px;
+      max-width: var(--width);
+      text-align: left;
+      background-color: var(--background-color);
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      line-height: 1.5;
+      color: var(--text-color);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-main);
+      color: var(--heading-color);
+    }
+
+    a {
+      color: var(--link-color);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: none; 
+    }
+
+    nav a {
+      margin-right: 8px;
+    }
+
+    strong, b {
+      color: var(--heading-color);
+    }
+
+    button {
+      margin: 0;
+      cursor: pointer;
+    }
+
+    time {
+      font-family: monospace;
+      font-style: normal;
+      font-size: 15px;
+    }
+
+    main {
+      line-height: 1.6;
+    }
+
+    table {
+      width: 100%;
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px dashed;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    code {
+      font-family: monospace;
+      padding: 2px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+    }
+
+    blockquote {
+      border-left: 1px solid #999;
+      color: var(--code-color);
+      padding-left: 20px;
+      font-style: italic;
+    }
+
+    footer {
+      padding: 25px 0;
+      text-align: center;
+      background-color: #001A23;
+      color: var(--text-color);
+      font-family: Verdana, sans-serif;
+      margin-top: 40px;
+    }
+
+    .title:hover {
+      text-decoration: none;
+    }
+
+    .title h1 {
+      font-size: 1.5em;
+    }
+
+    .inline {
+      width: auto !important;
+    }
+
+    .highlight, .code {
+      padding: 1px 15px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+      margin-block-start: 1em;
+      margin-block-end: 1em;
+      overflow-x: auto;
+    }
+
+    /* blog post list */
+    ul.blog-posts {
+      list-style-type: none;
+      padding: unset;
+    }
+
+    ul.blog-posts li {
+      display: flex;
+    }
+
+    ul.blog-posts li span {
+      flex: 0 0 130px;
+    }
+
+    ul.blog-posts li a:visited {
+      color: var(--visited-color);
+    }
+
+    #canvas {
+      border: 2px solid white;
+      border-color: white;  
+    }
+    
+
+    #canvas:hover {
+      cursor: crosshair;
+    }
+  </style>
+</head>
+<body class="home">
+  <header>
+    <a class="title" href="/"><h1>Triach Rold.</h1></a>
+    <nav>
+      <p><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="bloghome.html">Blog</a></p>
+    </nav>
+  </header>
+  <main>
+    <h1>The Travelling Salesman Problem.</h1>
+    <canvas id="canvas" width="800" height="600"></canvas>
+    <p>
+      <h1>Instructions on how to use the simulation.</h1>
+      <ul>
+        <li>First, click the left mouse button anywhere on the canvas to create a node. Create many such nodes spread across the canvas for best results.</li>
+        <li>Once you're done with node generation, click the enter key on your keyboard to generate the <i>optimal</i> or the most efficient solution to the nodes provided.</li>
+        <li>To view the sequential solution, press 'F' and enter on your keyboard. The info-box at the bottom left should show you the distances traversed by both the paths.</li>
+        <li>You can press F and enter again to toggle viewing the sequential solution.</li>
+      </ul>
+    </p>
+    <h1>The problem.</h1>
+    <p>
+      <a href="https://en.wikipedia.org/wiki/Travelling_salesman_problem">TSP</a> is a very famous <a href="https://en.wikipedia.org/wiki/Combinatorial_optimization">combinatorial optimization</a> problem wherein the goal of the problem is to get most efficient (i.e. shortest) pathway visiting multiple "cities" or nodes exactly once and returns back to the original node.
+    </p>
+    <h2>Example:</h2>
+    <p>
+      Consider you're a salesman and that you reside in town A. You need to find a path to towns B, C, D, and back home. But, you also remember that traveling between these cities is very expensive, since you need to fill up your car with fuel. This is why, in order for you to make as much profit as possible, you try thinking about the shortest path possible between these cities so you can save as much as possible on fuel.
+    </p>
+    <h2>Approaching the problem.</h2>
+    <p>
+      There are several ways to solve TSP problems effectively, but there are only a few algorithms that work efficiently enough to be useful. There are, of course, brute force methods that essentially use trial-and-error methods to find and try out every single permutation of nodes to get the answer - a simple enough solution for small cities, but mind-bogglingly slow for larger node-sets, since the complexity of the algorithm would scale exponentially with an increase in the number of nodes.
+    </p>
+    <p>
+      We could always end up using more "dynamic" approaches, such as the <a href="https://w.wiki/7Ww2">Held Karp</a> algorithm that essentially uses a polished subdivision to solve the problems, but unfortunately, even these methods don't end up scaling well with size due to an O(2^n * n^2) time complexity which won't work out well for larger simulations.
+    </p>
+    <p>
+      The most effective ways, however, are the Heuristic algorithms, which are essentially algorithms that provide approximate but not optimal answers in a practical timeframe. These algorithms include algorithms like the <a href="https://en.wikipedia.org/wiki/Nearest_neighbour_algorithm">nearest neighbor algorithm</a> and <a href="https://en.wikipedia.org/wiki/Simulated_annealing">simulated annealing</a> algorithms, that can be used to generate fairly good solutions in a relatively fast manner.
+    </p>
+    <p>
+     <i>Note - I used the "nearest neighbor" algorithm for the simulation given above.</i>
+    </p>
+    <h2>The Nearest Neighbour Algorithm.</h2>
+    <p>
+        The nearest neighbour algorithm is a heurestic algorithm, which means that it won't be the exact solution to the TSP problem, but rather one that is "good enough" as mentioned before. The tradeoff is simple, and it makes sense, since finding a perfect solution for a large number of nodes is pretty difficult and would require a lot of computing power compared to this approach.
+    </p>
+    <p>
+        The algorithm is rather simple and elegant. We start of at a starting node (if this is not specified in other versions of the TSP problem, we choose a random node to be the starting node) and we move to the <i>closest unvisited node</i>. An unvisited node is simply a node that hasn't been traversed yet. This whole process of jumping to the nearest unvisited node is repeated until there are no more nodes yet to visit. Once that has been done- we will jump from the final node all the way back to the starting node, thus completing the round-trip.
+    </p>
+    <h2>Applications.</h2>
+    <p>
+      Unsurprisingly, the TSP problem is incredibly vital to several fields, not just restrained to computer science - since it answers fundamental questions about the shortest distance between multiple locations. It is, for this reason, that TSP algorithms are regularly utilized in logistical applications for shipping and transport companies, as well as <a href="https://www.researchgate.net/publication/3425015_Optimizing_the_operation_sequence_of_a_chip_placement_machine_using_TSP_model">chip manufacturing industries</a> where it's used to optimize chip placement.
+    </p>
+  </main>
+  <footer>
+    <H3>Find a bug?</H3>
+    <span><p>Mail me <a href="mailto:roldtriach@gmail.com">here</a>.</p></span>
+  </footer>
+
+  <!-- Aids -->
+  <script>
+    let debugMenuToggle = false;
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let nodes = [];
+    let isDrawing = false;
+    let showYellowPath = false;
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mousemove', draw);
+
+    function startDrawing(event) {
+      isDrawing = true;
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      nodes.push({ x, y });
+      drawNodes();
+    }
+
+    function stopDrawing() {
+      isDrawing = false;
+    }
+
+    function draw(event) {
+      if (!isDrawing) return;
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      nodes.push({ x, y });
+      drawNodes();
+    }
+
+    function drawNodes() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      nodes.forEach((node, index) => {
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, 5, 0, Math.PI * 2);
+        ctx.fillStyle = '#FCCA46';
+        ctx.fill();
+        ctx.font = '16px Futura';
+        ctx.fillStyle = '#FCCA46';
+        ctx.fillText(index + 1, node.x - 3, node.y - 10);
+      });
+    }
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') {
+        optimizeAndDrawLines();
+      } else if (event.key === 'f') {
+        toggleShowYellowPath();
+      } else if (event.key === 'g') {
+        debugMenuToggle = !debugMenuToggle;
+      }
+    });
+
+    function toggleShowYellowPath() {
+      showYellowPath = !showYellowPath;
+      drawNodes();
+    }
+
+    function optimizeAndDrawLines() {
+      // Nearest Neighbor Algorithm for TSP
+      let unvisitedNodes = [...nodes];
+      let path = [unvisitedNodes.shift()];
+      let blueDistance = 0;
+
+      while (unvisitedNodes.length > 0) {
+        let nearestIndex = 0;
+        let nearestDistance = Number.MAX_VALUE;
+        const current = path[path.length - 1];
+
+        unvisitedNodes.forEach((node, index) => {
+          const distance = Math.sqrt(Math.pow(current.x - node.x, 2) + Math.pow(current.y - node.y, 2));
+          if (distance < nearestDistance) {
+            nearestIndex = index;
+            nearestDistance = distance;
+          }
+        });
+
+        blueDistance += nearestDistance; // Accumulate distance for blue path
+        path.push(unvisitedNodes.splice(nearestIndex, 1)[0]);
+      }
+
+      // Compute distance for the yellow path
+      let yellowDistance = 0;
+      for (let i = 1; i < nodes.length; i++) {
+        yellowDistance += Math.sqrt(Math.pow(nodes[i].x - nodes[i - 1].x, 2) + Math.pow(nodes[i].y - nodes[i - 1].y, 2));
+      }
+
+      // Draw the first path by default
+      ctx.beginPath();
+      ctx.moveTo(path[0].x, path[0].y);
+      for (let i = 1; i < path.length; i++) {
+        ctx.lineTo(path[i].x, path[i].y);
+      }
+      ctx.strokeStyle = '#ffd100';
+      ctx.stroke();
+
+      // Draw the fucking second path if enabled
+      if (showYellowPath) {
+        ctx.beginPath();
+        ctx.moveTo(nodes[0].x, nodes[0].y);
+        for (let i = 1; i < nodes.length; i++) {
+          ctx.lineTo(nodes[i].x, nodes[i].y);
+        }
+        ctx.strokeStyle = '#00FF87';
+        ctx.stroke();
+      }
+      ctx.fillStyle = '#FCCA46';
+      ctx.font = '16px futura';
+      ctx.fillText(`Path Distance (optimized): ${blueDistance.toFixed(2)}`, 10, canvas.height - 20);
+      if (showYellowPath) {
+        ctx.fillStyle = '#00FF87';
+        ctx.fillText(`Path Distance (sequential): ${yellowDistance.toFixed(2)}`, 10, canvas.height - 40);
+      }
+    }
+  </script>
+</body>
+</html>
