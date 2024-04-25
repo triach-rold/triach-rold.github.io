@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Triach Rold's Blog</title>
+  <style>
+    a:hover {
+      color: #FFDC5E;
+      background-color: transparent;
+      text-decoration: none;
+    }
+    :root {
+      --width: 720px;
+      --font-main: Futura, sans-serif;
+      --font-secondary: Verdana, sans-serif;
+      --font-scale: 1em;
+      --background-color: #fff;
+      --heading-color: #222;
+      --text-color: #444;
+      --link-color: #3273dc;
+      --visited-color: #8b6fcb;
+      --code-background-color: #f2f2f2;
+      --code-color: #222;
+      --blockquote-color: #222;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background-color: #001A23;
+        --heading-color: #eee;
+        --text-color: #ddd;
+        --link-color: #B3EFB2;
+        --visited-color: #91E5F6;
+        --code-background-color: #000;
+        --code-color: #ddd;
+        --blockquote-color: #ccc;
+      }
+    }
+
+    body {
+      font-family: var(--font-secondary);
+      font-size: var(--font-scale);
+      margin: auto;
+      padding: 20px;
+      max-width: var(--width);
+      text-align: left;
+      background-color: var(--background-color);
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      line-height: 1.5;
+      color: var(--text-color);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-main);
+      color: var(--heading-color);
+    }
+
+    a {
+      color: var(--link-color);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: none; 
+    }
+
+    nav a {
+      margin-right: 8px;
+    }
+
+    strong, b {
+      color: var(--heading-color);
+    }
+
+    button {
+      margin: 0;
+      cursor: pointer;
+    }
+
+    time {
+      font-family: monospace;
+      font-style: normal;
+      font-size: 15px;
+    }
+
+    main {
+      line-height: 1.6;
+    }
+
+    table {
+      width: 100%;
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px dashed;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    code {
+      font-family: monospace;
+      padding: 2px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+    }
+
+    blockquote {
+      border-left: 1px solid #999;
+      color: var(--code-color);
+      padding-left: 20px;
+      font-style: italic;
+    }
+
+    footer {
+      padding: 25px 0;
+      text-align: center;
+      background-color: #001A23;
+      color: var(--text-color);
+      font-family: Verdana, sans-serif;
+      margin-top: 40px;
+    }
+
+    .title:hover {
+      text-decoration: none;
+    }
+
+    .title h1 {
+      font-size: 1.5em;
+    }
+
+    .inline {
+      width: auto !important;
+    }
+
+    .highlight, .code {
+      padding: 1px 15px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+      margin-block-start: 1em;
+      margin-block-end: 1em;
+      overflow-x: auto;
+    }
+
+    /* blog post list */
+    ul.blog-posts {
+      list-style-type: none;
+      padding: unset;
+    }
+
+    ul.blog-posts li {
+      display: flex;
+    }
+
+    ul.blog-posts li span {
+      flex: 0 0 130px;
+    }
+
+    ul.blog-posts li a:visited {
+      color: var(--visited-color);
+    }
+
+    #canvas {
+      border: 2px solid white;
+      border-color: white;  
+    }
+    
+
+    #canvas:hover {
+      cursor: crosshair;
+    }
+
+    #sudokuCanvas {
+    background-color: #465362; /* Sudoku fill color */
+    color: #F9DC5C; /* Sudoku text color */
+    text-align: center;
+    }
+
+    canvas {
+        border: 2px solid #011936;
+    }
+    #triesCount {
+        margin-top: 20px;
+    }
+  </style>
+</head>
+<body class="home">
+  <header>
+    <a class="title" href="/"><h1>Triach Rold.</h1></a>
+    <nav>
+      <p><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="bloghome.html">Blog</a></p>
+    </nav>
+  </header>
+  <main>
+    <h1>Sudoku by backtracking.</h1>
+    <p style="text-align: center;">
+        <canvas id="sudokuCanvas" width="450" height="450"></canvas>
+        <p id="triesCount" style="color: #FFDC5E; text-align: center; font-family: Futura; font-size: 1.5em;" ></p>
+    </p>
+    <p>
+      <h1>Instructions.</h1>
+      <ul>
+        <li>You can start the simulation by pressing the enter key. You can re-randomize the board after the simulation finishes solving itself with the "r" key.</li>
+      </ul>
+    </p>
+    
+  </main>
+  <footer>
+    <H3>Find a bug?</H3>
+    <span><p>Mail me <a href="mailto:roldtriach@gmail.com">here</a>.</p></span>
+  </footer>
+
+  <!-- Aids -->
+  <script>
+    let sudokuBoard = []; // Sudoku board array
+    let tries = 0; // Variable to count the number of tries
+
+    // Function to generate a random Sudoku board
+    // Function to generate a random Sudoku board
+function generateSudoku() {
+    // Clear the previous Sudoku board
+    sudokuBoard = [];
+
+    // Start with a solved Sudoku grid
+    let solvedGrid = [
+        [5, 3, 4, 6, 7, 8, 9, 1, 2],
+        [6, 7, 2, 1, 9, 5, 3, 4, 8],
+        [1, 9, 8, 3, 4, 2, 5, 6, 7],
+        [8, 5, 9, 7, 6, 1, 4, 2, 3],
+        [4, 2, 6, 8, 5, 3, 7, 9, 1],
+        [7, 1, 3, 9, 2, 4, 8, 5, 6],
+        [9, 6, 1, 5, 3, 7, 2, 8, 4],
+        [2, 8, 7, 4, 1, 9, 6, 3, 5],
+        [3, 4, 5, 2, 8, 6, 1, 7, 9]
+    ];
+
+    // Apply random transformations
+    shuffleRows(solvedGrid);
+    shuffleColumns(solvedGrid);
+    swapNumbers(solvedGrid);
+
+    // Copy the transformed grid to the Sudoku board
+    for (let i = 0; i < 9; i++) {
+        sudokuBoard.push([...solvedGrid[i]]);
+    }
+
+    // Remove numbers randomly to create the puzzle
+    let emptyCount = Math.floor(Math.random() * 50) + 30; // Randomly choose 30 to 50 cells to empty
+    for (let count = 0; count < emptyCount; count++) {
+        let row = Math.floor(Math.random() * 9);
+        let col = Math.floor(Math.random() * 9);
+        sudokuBoard[row][col] = 0; // Set the cell to empty
+    }
+
+    // Draw the Sudoku board on the canvas
+    drawSudoku();
+}
+
+// Function to shuffle rows randomly
+function shuffleRows(grid) {
+    for (let i = 0; i < 3; i++) {
+        let group = i * 3;
+        let indices = [0, 1, 2];
+        shuffleArray(indices);
+        for (let j = 0; j < 3; j++) {
+            let temp = [...grid[group + j]];
+            grid[group + j] = [...grid[group + indices[j]]];
+            grid[group + indices[j]] = [...temp];
+        }
+    }
+}
+
+// Function to shuffle columns randomly
+function shuffleColumns(grid) {
+    for (let i = 0; i < 3; i++) {
+        let group = i * 3;
+        let indices = [0, 1, 2];
+        shuffleArray(indices);
+        for (let j = 0; j < 3; j++) {
+            for (let k = 0; k < 9; k++) {
+                let temp = grid[k][group + j];
+                grid[k][group + j] = grid[k][group + indices[j]];
+                grid[k][group + indices[j]] = temp;
+            }
+        }
+    }
+}
+
+// Function to swap numbers randomly
+function swapNumbers(grid) {
+    let map = {};
+    for (let i = 1; i <= 9; i++) {
+        map[i] = i;
+    }
+    shuffleArray(Object.keys(map));
+    for (let i = 1; i <= 9; i++) {
+        for (let j = 0; j < 9; j++) {
+            for (let k = 0; k < 9; k++) {
+                if (grid[j][k] === parseInt(map[i])) {
+                    grid[j][k] = i;
+                }
+            }
+        }
+    }
+}
+
+// Function to shuffle an array randomly
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+    // Function to draw the Sudoku board on the canvas
+    function drawSudoku() {
+        let canvas = document.getElementById("sudokuCanvas");
+        let ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw Sudoku grid lines
+        ctx.strokeStyle = "#333";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        for (let i = 0; i <= 9; i++) {
+            ctx.moveTo(50 * i, 0);
+            ctx.lineTo(50 * i, 450);
+            ctx.moveTo(0, 50 * i);
+            ctx.lineTo(450, 50 * i);
+        }
+        ctx.stroke();
+
+        // Draw Sudoku numbers
+        ctx.font = "30px Futura";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = '#F9DC5C';
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 9; j++) {
+                if (sudokuBoard[i][j] !== 0) {
+                    ctx.fillText(sudokuBoard[i][j], j * 50 + 25, i * 50 + 25);
+                }
+            }
+        }
+    }
+
+    // Function to solve the Sudoku puzzle using backtracking
+    async function solveSudoku() {
+        tries = 0; // Reset tries count
+        if (await solve()) {
+            drawSudoku();
+            document.getElementById("triesCount").innerText = `Tries: ${tries}`;
+        } else {
+            alert("No solution exists!");
+        }
+    }
+
+    // Recursive function to solve Sudoku using backtracking
+    async function solve() {
+        tries++;
+        document.getElementById("triesCount").innerText = `Tries: ${tries}`;
+        await new Promise(resolve => setTimeout(resolve, 50)); // Add a delay for visualization
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                if (sudokuBoard[row][col] === 0) {
+                    for (let num = 1; num <= 9; num++) {
+                        if (isValid(row, col, num)) {
+                            sudokuBoard[row][col] = num;
+                            drawSudoku(); // Redraw Sudoku board after each modification
+                            if (await solve()) {
+                                return true;
+                            }
+                            sudokuBoard[row][col] = 0;
+                            drawSudoku(); // Redraw Sudoku board after each backtracking
+                        }
+                    }
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    // Function to check if a number is valid to place in a cell
+    function isValid(row, col, num) {
+        // Check row
+        for (let i = 0; i < 9; i++) {
+            if (sudokuBoard[row][i] === num) {
+                return false;
+            }
+        }
+        // Check column
+        for (let i = 0; i < 9; i++) {
+            if (sudokuBoard[i][col] === num) {
+                return false;
+            }
+        }
+
+        // Check 3x3 box
+        let startRow = Math.floor(row / 3) * 3;
+        let startCol = Math.floor(col / 3) * 3;
+        for (let i = startRow; i < startRow + 3; i++) {
+            for (let j = startCol; j < startCol + 3; j++) {
+                if (sudokuBoard[i][j] === num) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    // Generate a Sudoku board when the page loads
+    window.onload = function() {
+        generateSudoku();
+    };
+
+    // Event listener for Enter key to solve the Sudoku
+    window.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            solveSudoku();
+        }
+        if (event.key === "r" || event.key === "R") {
+            generateSudoku();
+        }
+    });
+    
+  </script>
+</body>
+</html>
