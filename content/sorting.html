@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Triach Rold's Blog</title>
+  <style>
+    a:hover {
+      color: #FFDC5E;
+      background-color: transparent;
+      text-decoration: none;
+    }
+    :root {
+      --width: 720px;
+      --font-main: Futura, sans-serif;
+      --font-secondary: Verdana, sans-serif;
+      --font-scale: 1em;
+      --background-color: #fff;
+      --heading-color: #222;
+      --text-color: #444;
+      --link-color: #3273dc;
+      --visited-color: #8b6fcb;
+      --code-background-color: #f2f2f2;
+      --code-color: #222;
+      --blockquote-color: #222;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background-color: #001A23;
+        --heading-color: #eee;
+        --text-color: #ddd;
+        --link-color: #B3EFB2;
+        --visited-color: #91E5F6;
+        --code-background-color: #000;
+        --code-color: #ddd;
+        --blockquote-color: #ccc;
+      }
+    }
+    canvas {
+      display: block;
+      margin: auto;
+      border: 1px solid #ccc;
+      margin-top: 50px;
+    }
+    #info {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    body {
+      font-family: var(--font-secondary);
+      font-size: var(--font-scale);
+      margin: auto;
+      padding: 20px;
+      max-width: var(--width);
+      text-align: left;
+      background-color: var(--background-color);
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      line-height: 1.5;
+      color: var(--text-color);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-main);
+      color: var(--heading-color);
+    }
+
+    a {
+      color: var(--link-color);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: none; 
+    }
+
+    nav a {
+      margin-right: 8px;
+    }
+
+    strong, b {
+      color: var(--heading-color);
+    }
+
+    button {
+      margin: 0;
+      cursor: pointer;
+    }
+
+    time {
+      font-family: monospace;
+      font-style: normal;
+      font-size: 15px;
+    }
+
+    main {
+      line-height: 1.6;
+    }
+
+    table {
+      width: 100%;
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px dashed;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    code {
+      font-family: monospace;
+      padding: 2px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+    }
+
+    blockquote {
+      border-left: 1px solid #999;
+      color: var(--code-color);
+      padding-left: 20px;
+      font-style: italic;
+    }
+
+    footer {
+      padding: 25px 0;
+      text-align: center;
+      background-color: #001A23;
+      color: var(--text-color);
+      font-family: Verdana, sans-serif;
+      margin-top: 40px;
+    }
+
+    .title:hover {
+      text-decoration: none;
+    }
+
+    .title h1 {
+      font-size: 1.5em;
+    }
+
+    .inline {
+      width: auto !important;
+    }
+
+    .highlight, .code {
+      padding: 1px 15px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+      margin-block-start: 1em;
+      margin-block-end: 1em;
+      overflow-x: auto;
+    }
+
+    /* blog post list */
+    ul.blog-posts {
+      list-style-type: none;
+      padding: unset;
+    }
+
+    ul.blog-posts li {
+      display: flex;
+    }
+
+    ul.blog-posts li span {
+      flex: 0 0 130px;
+    }
+
+    ul.instructions{
+        text-align: left;
+    }
+
+    ul.blog-posts li a:visited {
+      color: var(--visited-color);
+    }
+
+    #canvas {
+      border: 2px solid white;
+      border-color: white;  
+    }
+    
+
+    #canvas:hover {
+      cursor: crosshair;
+    }
+
+    table {
+    width: 100%;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    font-family: Futura, sans-serif;
+    font-size: 1em;
+    background-color: #21295C; /* Table header background color */
+    color: #9BF3F0; /* Table header text color */
+}
+
+tr:nth-child(even) {
+    font-family: futura;
+    background-color: #1B3B6F; /* Even row background color */
+    color: #DAFFED;
+}
+
+tr:nth-child(odd) {
+    font-family: futura;
+    background-color: #065A82; /* Odd row background color */
+    color: #DAFFED;
+}
+
+
+    
+
+  </style>
+</head>
+<body class="home">
+  <header>
+    <a class="title" href="/"><h1>Triach Rold.</h1></a>
+    <nav>
+      <p><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="bloghome.html">Blog</a></p>
+    </nav>
+  </header>
+  <main>
+    <h1>Sorting algorithms.</h1>
+    <canvas id="canvas" width="800" height="400"></canvas>
+    <div id="info" style="font-family: futura;">
+    <div id="comparisonCount" style="color:#6CD4FF">Comparisons: 0</div>
+    <div id="sortingMode" style="color:#06D6A0">Sorting Mode: Merge Sort</div>
+    <div id="speedToggle" style="color:#FFD166">Press f to toggle speed: Normal</div>
+    <div id="simulationState" style="color:#EF476F;">Simulation State: Dormant</div>
+    </div>
+    <p>
+      <h1>Instructions on how to use the simulation.</h1>
+      <ul id ="instructions">
+        <li>The canvas is supposed to be <i>empty</i> on startup. This is done to make sure that you have the time you need to select the mode, speed, etc before the list starts sorting.</li> 
+        <li>The canvas has two states - dormant, and primed. You can <i>only</i> switch the sorting mode when the state is dormant (or when the list is not currently sorting). You can only adjust the speed of the simulation when it is primed (when it is running).</li>
+        <li>There are many sorting methods we can simulate here. We can start by using the "r" key to <i>generate</i> a random array of elements. Once this has been generated, you can select the modeby which we can sort the array.</li>
+        <li>Supported array modes are given below - 
+            
+            <ol>
+                <li><a href="https://en.wikipedia.org/wiki/Merge_sort">Merge sort (Default)</a> - Activate by pressing the "m" key.</li>
+                <li><a href="https://en.wikipedia.org/wiki/Insertion_sort">Insertion sort</a>-  Activate by pressing the "i" key.</li>
+                <li><a href="https://en.wikipedia.org/wiki/Bubble_sort">Bubble Sort</a> - Activate by pressing the "b" key.</li>
+                <LI><a href="https://en.wikipedia.org/wiki/Quicksort">Quick Sort</a> - Activate by pressing the "q" key.</LI>
+                <li><a href="https://en.wikipedia.org/wiki/Heapsort">Heap Sort (Beta)</a> - Activate by pressing the "h" key.</li>
+                <li><a href="https://github.com/gustavo-depaula/stalin-sort">Stalin Sort (Beta)</a> - Activate by pressing the "s" key.</li>
+            </ol>
+        </li>
+        <li>Once you've randomized the array and selected the mode, press the enter key to begin the simulation.</li>
+        <li>You can adjust the speed of the solution in the primed state by toggling it with the "f" key.</li>
+        <li>Recommendation - Simulate the bubble sort array at the <i>end</i> because it takes <i>significantly</i> more time to simulate completely than the other sorting algorithms.</li>
+      </ul>
+    </p>
+    <h1>Sorting Algorithm Comparison</h1>
+    <table>
+        <thead>
+            <tr>
+                <th><i>Sorting Algorithm</i></th>
+                <th><i>Time Complexity - Best</i></th>
+                <th><i>Time Complexity - Worst</i></th>
+                <th><i>Time Complexity - Average</i></th>
+                <th><i>Space Complexity</i></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Bubble Sort</td>
+                <td>n</td>
+                <td>n²</td>
+                <td>n²</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Selection Sort</td>
+                <td>n²</td>
+                <td>n²</td>
+                <td>n²</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Insertion Sort</td>
+                <td>n</td>
+                <td>n²</td>
+                <td>n²</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Merge Sort</td>
+                <td>n log n</td>
+                <td>n log n</td>
+                <td>n log n</td>
+                <td>n</td>
+            </tr>
+            <tr>
+                <td>Quicksort</td>
+                <td>n log n</td>
+                <td>n²</td>
+                <td>n log n</td>
+                <td>log n</td>
+            </tr>
+            <tr>
+                <td>Heapsort</td>
+                <td>n log n</td>
+                <td>n log n</td>
+                <td>n log n</td>
+                <td>1</td>
+            </tr>
+            
+        </tbody>
+    </table>
+
+  </main>
+  <footer>
+    <H3>Find a bug?</H3>
+    <span><p>Mail me <a href="mailto:roldtriach@gmail.com">here</a>.</p></span>
+  </footer>
+
+  <!-- Aids -->
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const infoDiv = document.getElementById('info');
+    const simulationStateDiv = document.getElementById('simulationState');
+    let speed = 0; // Delay for the fucking visualization (milliseconds)
+    let sortingAlgorithm = 'm';
+    let comparisonCount = 0;
+    let isSpeedToggled = false;
+    let isSorted = false; // Flag to check if array is sorted
+    let isPrimed = false; // Flag to check if visualization is "primed"
+    let sortingProcess; // Variable to store the current sorting process
+    let removalCount = 0;
+    let stalinBool = false;
+
+    // Colors for the Soviet Union theme
+    const sovietColors = ['#FF0000', '#FFD700', '#FFFFFF'];
+
+    // Function to generate a random array
+    function generateRandomArray(length) {
+      const array = [];
+      for (let i = 0; i < length; i++) {
+        array.push(Math.floor(Math.random() * 100) + 1);
+      }
+      return array;
+    }
+
+    async function visualizeSort(array) {
+      comparisonCount = 0;
+      updateComparisonCount();
+      updateSortingMode();
+      updateSimulationState('Primed');
+      clearInterval(sortingProcess); // Terminate the previous sorting process
+      sortingProcess = await sort(array, sortingAlgorithm);
+      isPrimed = false; // Reset primed state after sorting
+      updateSimulationState('Dormant');
+    }
+
+    // I know switch is faster, but you didn't write this code- i did.
+    async function sort(array, algorithm) {
+      if (algorithm === 'm') {
+        return mergeSort(array, 0, array.length - 1);
+      } else if (algorithm === 'i') {
+        return insertionSort(array);
+      } else if (algorithm === 'b') {
+        return bubbleSort(array);
+      } else if (algorithm === 'q') {
+        return quickSort(array, 0, array.length - 1);
+      } else if (algorithm === 'h') {
+        return heapSort(array);
+      } else if (algorithm === 's') {
+        return stalinSort(array);
+      } else {
+        alert('Invalid input!');
+        return null;
+      }
+    }
+
+    // Merge sort algorithm
+    async function mergeSort(array, left, right) {
+      if (left < right) {
+        const middle = Math.floor((left + right) / 2);
+        await mergeSort(array, left, middle);
+        await mergeSort(array, middle + 1, right);
+        await merge(array, left, middle, right);
+      }
+    }
+
+    // AIDS premium
+    async function merge(array, left, middle, right) {
+      const leftArray = array.slice(left, middle + 1);
+      const rightArray = array.slice(middle + 1, right + 1);
+      let i = 0, j = 0, k = left;
+
+      while (i < leftArray.length && j < rightArray.length) {
+        comparisonCount++;
+        updateComparisonCount();
+        if (leftArray[i] <= rightArray[j]) {
+          array[k] = leftArray[i];
+          i++;
+        } else {
+          array[k] = rightArray[j];
+          j++;
+        }
+        k++;
+        drawArray(array, k - 1, left, right);
+        await sleep(speed); // Delay for visualization
+      }
+
+      while (i < leftArray.length) {
+        array[k] = leftArray[i];
+        i++;
+        k++;
+        drawArray(array, k - 1, left, right);
+        await sleep(speed); // Delay for visualization
+      }
+
+      while (j < rightArray.length) {
+        array[k] = rightArray[j];
+        j++;
+        k++;
+        drawArray(array, k - 1, left, right);
+        await sleep(speed); // Delay for visualization
+      }
+
+      checkSorted(array); // Check if array is fully sorted
+    }
+
+    // Insertion sort algorithm
+    async function insertionSort(array) {
+      for (let i = 1; i < array.length; i++) {
+        let key = array[i];
+        let j = i - 1;
+        while (j >= 0 && array[j] > key) {
+          comparisonCount++;
+          updateComparisonCount();
+          array[j + 1] = array[j];
+          j--;
+        }
+        array[j + 1] = key;
+        drawArray(array, j + 1);
+        await sleep(speed); // Delay for visualization
+      }
+      checkSorted(array); // Check if array is fully sorted
+    }
+
+    // Bubble sort algorithm
+    async function bubbleSort(array) {
+      let n = array.length;
+      let swapped;
+      do {
+        swapped = false;
+        for (let i = 0; i < n - 1; i++) {
+          if (array[i] > array[i + 1]) {
+            let temp = array[i];
+            array[i] = array[i + 1];
+            array[i + 1] = temp;
+            swapped = true;
+          }
+          comparisonCount++;
+          updateComparisonCount(); // Increment comparison count
+          drawArray(array, i, 0, array.length - 1);
+          await sleep(speed); // Delay for visualization
+        }
+        n--;
+      } while (swapped);
+      checkSorted(array); // Check if array is fully sorted
+    }
+
+    // Quick sort algorithm
+    async function quickSort(array, low, high) {
+      if (low < high) {
+        let pi = await partition(array, low, high);
+        await quickSort(array, low, pi - 1);
+        await quickSort(array, pi + 1, high);
+      }
+    }
+
+    // AAAAAAAAAAAAAAAA
+    async function partition(array, low, high) {
+      let pivot = array[high];
+      let i = low - 1;
+      for (let j = low; j < high; j++) {
+        comparisonCount++;
+        updateComparisonCount();
+        if (array[j] < pivot) {
+          i++;
+          let temp = array[i];
+          array[i] = array[j];
+          array[j] = temp;
+          drawArray(array, j, low, high);
+          await sleep(speed); // Delay for visualization
+        }
+      }
+      let temp = array[i + 1];
+      array[i + 1] = array[high];
+      array[high] = temp;
+      drawArray(array, i + 1, low, high);
+      await sleep(speed); // Delay for visualization
+      return i + 1;
+    }
+
+    // Heap sort algorithm
+    async function heapSort(array) {
+      let n = array.length;
+
+      // Build heap (rearrange array)
+      for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+        await heapify(array, n, i);
+      }
+
+      // One by one extract an element from heap
+      for (let i = n - 1; i > 0; i--) {
+        // WHY WONT THIS WORK PLEASE GOD
+        let temp = array[0];
+        array[0] = array[i];
+        array[i] = temp;
+
+        // call max heapify on the reduced heap
+        await heapify(array, i, 0);
+        drawArray(array, i); // Draw array after each iteration
+        await sleep(speed); // Delay for visualization
+      }
+      checkSorted(array); // Check if array is fully sorted
+    }
+
+    // Stalin sort algorithm
+    async function stalinSort(array) {
+      stalinBool = true;
+      let max = array[0];
+      let index = 1;
+      while (index < array.length) {
+        if (array[index] >= max) {
+          max = array[index];
+          index++;
+        } else {
+          array.splice(index, 1);
+          removalCount++;
+          updateComparisonCount();
+          drawArray(array, index); // Draw array after each element is removed
+          await sleep(speed); // Delay for visualization
+        }
+      }
+      checkSorted(array); // Check if array is fully sorted
+      removalCount = 0;
+      stalinBool = false;
+    }
+
+    // To heapify a subtree rooted with node i which is an index in array[]
+    async function heapify(array, n, i) {
+      let largest = i; // Initialize largest as the fucking root
+      let left = 2 * i + 1; // left = 2*i + 1
+      let right = 2 * i + 2; // right = 2*i + 2
+
+      // If left child is larger than root
+      if (left < n && array[left] > array[largest]) {
+        largest = left;
+      }
+
+      // If right child is larger than largest (genius, I know)
+      if (right < n && array[right] > array[largest]) {
+        largest = right;
+      }
+
+      // If largest is not root
+      if (largest !== i) {
+        let swap = array[i];
+        array[i] = array[largest];
+        array[largest] = swap;
+
+        // Recursively heapify the affected sub-tree
+        await heapify(array, n, largest);
+      }
+    }
+
+    // Function to draw the array on canvas
+    function drawArray(array, lastIndex, left, right) {
+      const canvasWidth = canvas.width;
+      const canvasHeight = canvas.height;
+      const barWidth = canvasWidth / array.length;
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight); // Clear the canvas
+
+      array.forEach((num, index) => {
+        const barHeight = num * (canvasHeight / 100);
+        let color = '#808080'; // Fill color
+        if (sortingAlgorithm === 's') {
+          color = sovietColors[Math.floor(Math.random() * sovietColors.length)]; // Soviet Union color theme for Stalin Sort
+        }
+        ctx.fillStyle = color;
+        ctx.fillRect(index * barWidth, canvasHeight - barHeight, barWidth, barHeight);
+        ctx.strokeStyle = '#000000'; // Black border color
+        ctx.strokeRect(index * barWidth, canvasHeight - barHeight, barWidth, barHeight);
+
+        if (index === lastIndex) {
+          ctx.fillStyle = '#FF0000'; // Red color for selected element
+          ctx.fillRect(index * barWidth, canvasHeight - barHeight, barWidth, barHeight);
+        }
+      });
+
+      // Highlight the range being sorted
+      if (typeof left !== 'undefined' && typeof right !== 'undefined') {
+        const leftX = left * barWidth;
+        const rightX = (right + 1) * barWidth;
+        ctx.fillStyle = 'rgba(255, 0, 0, 0.1)'; // Red highlight color with transparency
+        ctx.fillRect(leftX, 0, rightX - leftX, canvasHeight);
+      }
+    }
+
+    // Function for delay
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // Update the comparison count display
+    function updateComparisonCount() {
+      if(stalinBool){
+        infoDiv.querySelector('#comparisonCount').textContent = `Removals: ${removalCount}`;
+      }else{
+        infoDiv.querySelector('#comparisonCount').textContent = `Comparisons: ${comparisonCount}`;
+      }  
+    }
+
+    // Update the sorting mode display
+    function updateSortingMode() {
+      let modeText;
+      switch (sortingAlgorithm) {
+        case 'm':
+          modeText = 'Merge Sort';
+          break;
+        case 'i':
+          modeText = 'Insertion Sort';
+          break;
+        case 'b':
+          modeText = 'Bubble Sort';
+          break;
+        case 'q':
+          modeText = 'Quick Sort';
+          break;
+        case 'h':
+          modeText = 'Heap Sort';
+          break;
+        case 's':
+          modeText = 'Stalin Sort';
+          break;
+        default:
+          modeText = 'Unknown';
+          break;
+      }
+      infoDiv.querySelector('#sortingMode').textContent = `Sorting Mode: ${modeText}`;
+    }
+
+    // Update the speed toggle display
+    function updateSpeedToggle() {
+      const speedToggleDiv = infoDiv.querySelector('#speedToggle');
+      speedToggleDiv.textContent = `Press 'f' to toggle speed: ${isSpeedToggled ? 'Fast' : 'Normal'}`;
+    }
+
+    // Update the simulation state display
+    function updateSimulationState(state) {
+      simulationStateDiv.textContent = `Simulation State: ${state}`;
+    }
+
+    // Function to check if array is fully sorted
+    function checkSorted(array) {
+      for (let i = 0; i < array.length - 1; i++) {
+        if (array[i] > array[i + 1]) {
+          isSorted = false;
+          return;
+        }
+      }
+      isSorted = true;
+    }
+
+    // Event listener for key presses
+document.addEventListener('keydown', (event) => {
+  if (!isPrimed && (event.key === 'm' || event.key === 'i' || event.key === 'b' || event.key === 'q' || event.key === 'h' || event.key === 's')) {
+    // Switch sorting mode only in dormant state
+    sortingAlgorithm = event.key;
+    updateSortingMode();
+  } else if (!isPrimed && event.key === 'Enter') {
+    // Prime visualization and start sorting only in dormant state
+    isPrimed = true;
+    const arrSize = 200; // Change the length of the array as needed
+    const randomArray = generateRandomArray(arrSize);
+    visualizeSort(randomArray);
+  } else if (isPrimed && event.key === 'f') {
+    // Toggle speed only in primed state
+    isSpeedToggled = !isSpeedToggled;
+    speed = isSpeedToggled ? 10 : 100;
+    updateSpeedToggle();
+  } else if (!isPrimed && event.key === 'r') {
+    // Randomize and unsort array only in dormant state
+    const arrSize = 200; // Change the length of the array as needed
+    const randomArray = generateRandomArray(arrSize);
+    drawArray(randomArray);
+  }
+});
+
+
+    // Initial state setup
+    updateSortingMode();
+    updateSimulationState('Dormant');
+  </script>
+</body>
+</html>
