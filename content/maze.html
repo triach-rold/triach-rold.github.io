@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Triach Rold's Blog</title>
+  <style>
+    a:hover {
+      color: #FFDC5E;
+      background-color: transparent;
+      text-decoration: none;
+    }
+    :root {
+      --width: 720px;
+      --font-main: Futura, sans-serif;
+      --font-secondary: Verdana, sans-serif;
+      --font-scale: 1em;
+      --background-color: #fff;
+      --heading-color: #222;
+      --text-color: #444;
+      --link-color: #3273dc;
+      --visited-color: #8b6fcb;
+      --code-background-color: #f2f2f2;
+      --code-color: #222;
+      --blockquote-color: #222;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background-color: #001A23;
+        --heading-color: #eee;
+        --text-color: #ddd;
+        --link-color: #B3EFB2;
+        --visited-color: #91E5F6;
+        --code-background-color: #000;
+        --code-color: #ddd;
+        --blockquote-color: #ccc;
+      }
+    }
+
+    body {
+      font-family: var(--font-secondary);
+      font-size: var(--font-scale);
+      margin: auto;
+      padding: 20px;
+      max-width: var(--width);
+      text-align: left;
+      background-color: var(--background-color);
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      line-height: 1.5;
+      color: var(--text-color);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-main);
+      color: var(--heading-color);
+    }
+
+    a {
+      color: var(--link-color);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: none; 
+    }
+
+    nav a {
+      margin-right: 8px;
+    }
+
+    strong, b {
+      color: var(--heading-color);
+    }
+
+    button {
+      margin: 0;
+      cursor: pointer;
+    }
+
+    time {
+      font-family: monospace;
+      font-style: normal;
+      font-size: 15px;
+    }
+
+    main {
+      line-height: 1.6;
+    }
+
+    table {
+      width: 100%;
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px dashed;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    code {
+      font-family: monospace;
+      padding: 2px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+    }
+
+    blockquote {
+      border-left: 1px solid #999;
+      color: var(--code-color);
+      padding-left: 20px;
+      font-style: italic;
+    }
+
+    footer {
+      padding: 25px 0;
+      text-align: center;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      font-family: Verdana, sans-serif;
+      margin-top: 40px;
+    }
+
+    .title:hover {
+      text-decoration: none;
+    }
+
+    .title h1 {
+      font-size: 1.5em;
+    }
+
+    .inline {
+      width: auto !important;
+    }
+
+    .highlight, .code {
+      padding: 1px 15px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+      margin-block-start: 1em;
+      margin-block-end: 1em;
+      overflow-x: auto;
+    }
+
+    /* blog post list */
+    ul.blog-posts {
+      list-style-type: none;
+      padding: unset;
+    }
+
+    ul.blog-posts li {
+      display: flex;
+    }
+
+    ul.blog-posts li span {
+      flex: 0 0 130px;
+    }
+
+    ul.blog-posts li a:visited {
+      color: var(--visited-color);
+    }
+
+    #canvas {
+      border: 2px solid white;
+      border-color: white;  
+      
+    }
+    canvas{
+        border: 30px solid #119DA4;
+    }
+    #canvas:hover {
+      cursor: crosshair;
+    }
+  </style>
+</head>
+<body class="home">
+  <header>
+    <a class="title" href="/"><h1>Triach Rold.</h1></a>
+    <nav>
+        <p><a href="../index.html">Home</a><a href="../projects.html">Projects</a><a href="../bloghome.html">Blog</a></p>
+      </nav> 
+  </header>
+  <main>
+    <h1>Mazes by Backtracking.</h1>
+    <p style="text-align: center;"><canvas id="mazeCanvas" width="600" height="600"></canvas></p>
+
+    <p>
+      <h1>Instructions -</h1>
+      <ul>
+       <li> This is very much a <i>unstable</i> simulation and is still in <i>beta</i>. Things will break, and the whole map is not nessecarily polished. Use the link in the footer to report bugs.</li>
+       <li>Usage is simple. Press enter to start the simulation if you see a lime colored dot and a dark green colored dot generate. These are the start and end points respectively. If the dark green dot <i>does not generate</i>, simply re-roll the map by pressing the "r" key.</li>
+       <li>If you still want to use a simulation that does not have a dark green dot, you can generate it by clicking your mouse at the position you need it to be. (This feature has been known to break.)</li>
+      </ul>
+    </p>
+    
+  </main>
+  <footer>
+    <H3>Find a bug?</H3>
+    <span><p>Mail me <a href="mailto:roldtriach@gmail.com">here</a>.</p></span>
+  </footer>
+
+  <!-- Aids -->
+  <script>
+   const canvas = document.getElementById('mazeCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const mazeWidth = canvas.width;
+        const mazeHeight = canvas.height;
+        const cellSize = 30; 
+
+        let maze, entryRow, entryCol, exitRow, exitCol;
+
+        function drawMaze(maze) {
+            ctx.clearRect(0, 0, mazeWidth, mazeHeight);
+            ctx.fillStyle = '#3A506B';
+            ctx.fillRect(0, 0, mazeWidth, mazeHeight);
+
+            const rows = maze.length;
+            const cols = maze[0].length;
+            const totalWidth = cols * cellSize;
+            const totalHeight = rows * cellSize;
+
+            // AAAAAAAAAA
+            const startX = (mazeWidth - totalWidth) / 2;
+            const startY = (mazeHeight - totalHeight) / 2;
+
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < cols; j++) {
+                    const x = startX + j * cellSize;
+                    const y = startY + i * cellSize;
+                    if (maze[i][j] === 1) {
+                        ctx.fillStyle = '#FDCA40';
+                        ctx.fillRect(x, y, cellSize, cellSize);
+                    } else if (maze[i][j] === 'entry') {
+                        ctx.fillStyle = '#CEFF1A';
+                        ctx.fillRect(x, y, cellSize, cellSize);
+                    } else if (maze[i][j] === 'exit') {
+                        ctx.fillStyle = '#52B788';
+                        ctx.fillRect(x, y, cellSize, cellSize);
+                    } else if (maze[i][j] === 2) {
+                        ctx.fillStyle = '#D63230';
+                        ctx.fillRect(x, y, cellSize, cellSize);
+                    }
+                }
+            }
+        }
+
+        function generateMaze(rows, cols) {
+            const newMaze = [];
+            const unfilledSquares = []; // Store coordinates of unfilled squares
+            const exitCandidates = []; // Store coordinates of squares that can be exit
+
+            for (let i = 0; i < rows; i++) {
+                newMaze.push(Array(cols).fill(1));
+                for (let j = 0; j < cols; j++) {
+                    unfilledSquares.push([i, j]); // unfilled thingy
+                    if ((i === 0 || i === rows - 1 || j === 0 || j === cols - 1) && i % 2 === 1 && j % 2 === 1) {
+                        exitCandidates.push([i, j]); // Add square to exitCandidates if it's on the border and connected onto the maze
+                    }
+                }
+            }
+
+            const startRow = Math.floor(Math.random() * rows);
+            const startCol = 0;
+            // shit starts from the left
+
+            newMaze[startRow][startCol] = 'entry'; 
+            recursiveBacktracking(startRow, startCol);
+
+            async function recursiveBacktracking(row, col) {
+                const directions = [
+                    [0, -1], // Up
+                    [1, 0],  // Right
+                    [0, 1],  // Down
+                    [-1, 0]  // Left
+                ];
+
+                shuffle(directions); // Randomize the order of directions
+
+                for (let [dx, dy] of directions) {
+                    const newRow = row + dx * 2;
+                    const newCol = col + dy * 2;
+
+                    if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols && newMaze[newRow][newCol] === 1) {
+                        // Carve passage
+                        newMaze[row + dx][col + dy] = 0;
+                        newMaze[newRow][newCol] = 0;
+
+                        drawMaze(newMaze);
+
+                        await recursiveBacktracking(newRow, newCol);
+                    }
+                }
+            }
+
+            shuffle(unfilledSquares);
+
+            // AAAAAAAAAAAAA
+            // TODO - MAKE MORE CONSISTENT
+            if (exitCandidates.length > 0) {
+                const [exitRow, exitCol] = exitCandidates[Math.floor(Math.random() * exitCandidates.length)]; // Randomly select exit from exitCandidates
+                newMaze[exitRow][exitCol] = 'exit';
+            } else {
+                console.error('No exit candidates found.');
+            }
+
+            return newMaze;
+        }
+
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        async function solveMaze(maze, row, col) {
+            drawMaze(maze);
+            await sleep(10);
+            if (row < 0 || row >= maze.length || col < 0 || col >= maze[0].length || maze[row][col] === 1 || maze[row][col] === 2) {
+                return false; // Stop if out of bounds, wall thingy, or already visited
+            }
+
+            if (maze[row][col] === 'exit') {
+                return true;
+            }
+
+            maze[row][col] = 2; // mark the current cell as visited
+
+            // Explore in all directions (up, right, down, left)
+            if (await solveMaze(maze, row - 1, col) || await solveMaze(maze, row, col + 1) || await solveMaze(maze, row + 1, col) || await solveMaze(maze, row, col - 1)) {
+                return true; // if any direction "leads" to the exit, return true
+            }
+
+            // If none of the directions lead to the exit, backtrack
+            maze[row][col] = 0; 
+            return false;
+        }
+
+        // Function to introduce delay
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            maze = generateMaze(20, 20); // Generate a 20x20 maze
+            // remember to change the generation code above too if you decide to fuck with this bit 
+            drawMaze(maze); 
+
+            entryRow = maze.findIndex(row => row.includes('entry'));
+            entryCol = maze[entryRow].indexOf('entry');
+            exitRow = maze.findIndex(row => row.includes('exit'));
+            exitCol = maze[exitRow].indexOf('exit');
+
+            if (entryRow !== -1 && entryCol !== -1 && exitRow !== -1 && exitCol !== -1) {
+                document.addEventListener('keydown', async function(event) {
+                    if (event.key === 'Enter') {
+                        await solveMaze(maze, entryRow, entryCol);
+                    } else if (event.key === 'r' || event.key === 'R') {
+                        maze[exitRow][exitCol] = 0; 
+                        maze[entryRow][entryCol] = 0; 
+                        maze = generateMaze(20, 20); 
+                        drawMaze(maze); 
+                        entryRow = maze.findIndex(row => row.includes('entry'));
+                        entryCol = maze[entryRow].indexOf('entry');
+                        exitRow = maze.findIndex(row => row.includes('exit'));
+                        exitCol = maze[exitRow].indexOf('exit');
+                    }
+                });
+                
+                canvas.addEventListener('click', async function(event) {
+                    const rect = canvas.getBoundingClientRect();
+                    const mouseX = event.clientX - rect.left;
+                    const mouseY = event.clientY - rect.top;
+                    const clickedRow = Math.floor((mouseY - (mazeHeight - maze.length * cellSize) / 2) / cellSize);
+                    const clickedCol = Math.floor((mouseX - (mazeWidth - maze[0].length * cellSize) / 2) / cellSize);
+                    
+                    if (maze[clickedRow][clickedCol] === 0 && hasPathToGreen(maze, clickedRow, clickedCol)) {
+                        
+                        maze[clickedRow][clickedCol] = 'exit';
+                        drawMaze(maze);
+                    }
+                });
+            } else {
+                console.error('Entry or exit point not found.');
+            }
+        });
+        
+        function hasPathToGreen(maze, row, col) {
+            const visited = Array.from({ length: maze.length }, () => Array(maze[0].length).fill(false));
+            return dfs(maze, row, col, visited);
+        }
+        // MORE AIDS DONT FUCK WITH THE LAST TWO LINES
+        function dfs(maze, row, col, visited) {
+            if (row < 0 || row >= maze.length || col < 0 || col >= maze[0].length || maze[row][col] === 1 || visited[row][col]) {
+                return false;
+            }
+            if (maze[row][col] === 'entry') {
+                return true;
+            }
+            visited[row][col] = true;
+            return dfs(maze, row - 1, col, visited) || dfs(maze, row, col + 1, visited) ||
+                dfs(maze, row + 1, col, visited) || dfs(maze, row, col - 1, visited);
+        }
+  </script>
+</body>
+</html>
