@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Triach Rold's Blog</title>
+  <style>
+    a:hover {
+      color: #FFDC5E;
+      background-color: transparent;
+      text-decoration: none;
+    }
+    :root {
+      --width: 720px;
+      --font-main: Futura, sans-serif;
+      --font-secondary: Verdana, sans-serif;
+      --font-scale: 1em;
+      --background-color: #fff;
+      --heading-color: #222;
+      --text-color: #444;
+      --link-color: #3273dc;
+      --visited-color: #8b6fcb;
+      --code-background-color: #f2f2f2;
+      --code-color: #222;
+      --blockquote-color: #222;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background-color: #001A23;
+        --heading-color: #eee;
+        --text-color: #ddd;
+        --link-color: #B3EFB2;
+        --visited-color: #91E5F6;
+        --code-background-color: #000;
+        --code-color: #ddd;
+        --blockquote-color: #ccc;
+      }
+    }
+
+    body {
+      font-family: var(--font-secondary);
+      font-size: var(--font-scale);
+      margin: auto;
+      padding: 20px;
+      max-width: var(--width);
+      text-align: left;
+      background-color: var(--background-color);
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      line-height: 1.5;
+      color: var(--text-color);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-main);
+      color: var(--heading-color);
+    }
+
+    a {
+      color: var(--link-color);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: none; 
+    }
+
+    nav a {
+      margin-right: 8px;
+    }
+
+    strong, b {
+      color: var(--heading-color);
+    }
+
+    button {
+      margin: 0;
+      cursor: pointer;
+    }
+
+    time {
+      font-family: monospace;
+      font-style: normal;
+      font-size: 15px;
+    }
+
+    main {
+      line-height: 1.6;
+    }
+
+    table {
+      width: 100%;
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px dashed;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    code {
+      font-family: monospace;
+      padding: 2px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+    }
+
+    blockquote {
+      border-left: 1px solid #999;
+      color: var(--code-color);
+      padding-left: 20px;
+      font-style: italic;
+    }
+
+    footer {
+      padding: 25px 0;
+      text-align: center;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      font-family: Verdana, sans-serif;
+      margin-top: 40px;
+    }
+
+    .title:hover {
+      text-decoration: none;
+    }
+
+    .title h1 {
+      font-size: 1.5em;
+    }
+
+    .inline {
+      width: auto !important;
+    }
+
+    .highlight, .code {
+      padding: 1px 15px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+      margin-block-start: 1em;
+      margin-block-end: 1em;
+      overflow-x: auto;
+    }
+
+    /* blog post list */
+    ul.blog-posts {
+      list-style-type: none;
+      padding: unset;
+    }
+
+    ul.blog-posts li {
+      display: flex;
+    }
+
+    ul.blog-posts li span {
+      flex: 0 0 130px;
+    }
+
+    ul.blog-posts li a:visited {
+      color: var(--visited-color);
+    }
+
+    #canvas {
+      border: 2px solid white;
+      border-color: white;  
+    }
+    
+
+    #canvas:hover {
+      cursor: crosshair;
+    }
+
+    #sudokuCanvas {
+    background-color: #465362; /* Sudoku fill color */
+    color: #F9DC5C; /* Sudoku text color */
+    text-align: center;
+    }
+
+    canvas {
+        border: 2px solid #011936;
+    }
+    #triesCount {
+        margin-top: 20px;
+    }
+  </style>
+</head>
+<body class="home">
+  <header>
+    <a class="title" href="/"><h1>Triach Rold.</h1></a>
+    <nav>
+        <p><a href="../index.html">Home</a><a href="../projects.html">Projects</a><a href="../bloghome.html">Blog</a></p>
+      </nav> 
+  </header>
+  <main>
+    <h1>Optimizing Snake.</h1>
+    <p style="text-align: center;">
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+        <div id="score" style=" text-align: center; font-family: Futura;">Score: 0</div>
+    </p>
+    <p>
+      <h1>Instructions.</h1>
+      <ul>
+        <li><b>Warning</b> -  Do not play if you're sensitive to <b>flashing lights</b>.</li>
+        <li>Start the game by pressing any of the movement keys. You can move with WASD. Basic snake rules. Theme changes upon death or eating a fruit.</li>
+        <li>Toggle the AI mode by pressing the "h" key and watch it obliterate your high score. (It's not perfect, but it's a good enough implementation of the A* algorithm). Toggling midgame is not recommended because you can only take back control from the AI after it has died.</li>
+        <li>Regarding mobile support- this is still <i>beta</i> and I'm not really an expert when it comes to mobile stuff, so I would ask you to report issues with swipe control if they occur.</li>
+      </ul>
+    </p>
+    
+  </main>
+  <footer>
+    <H3>Find a bug?</H3>
+    <span><p>Mail me <a href="mailto:roldtriach@gmail.com">here</a>.</p></span>
+  </footer>
+
+  <!-- Aids -->
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    const gridSize = 20;
+    const gridSizeInPixels = canvas.width / gridSize;
+    const snake = [{ x: 10, y: 10 }];
+    let dx = 0;
+    let dy = 0;
+    let food = { x: 15, y: 15 };
+    let score = 0;
+    let techniColor = ['#2A2B2E', '#D75F00', '#86CA98'];  
+    let snakeColor = techniColor[2];
+    let appleColor = techniColor[1];
+    let backgroundColor = techniColor[0];
+    changeCanvasBackground(backgroundColor);
+    let isAIplay = false;
+
+    function drawSnake() {
+      ctx.fillStyle = snakeColor;
+      snake.forEach((segment) => {
+        ctx.fillRect(
+          segment.x * gridSizeInPixels,
+          segment.y * gridSizeInPixels,
+          gridSizeInPixels,
+          gridSizeInPixels
+        );
+      });
+    }
+
+    function drawFood() {
+      ctx.fillStyle = appleColor;
+      ctx.fillRect(
+        food.x * gridSizeInPixels,
+        food.y * gridSizeInPixels,
+        gridSizeInPixels,
+        gridSizeInPixels
+      );
+    }
+
+    function moveSnake() {
+      const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+      snake.unshift(head);
+      if (head.x === food.x && head.y === food.y) {
+        score++;
+        document.getElementById("score").innerText = `Score: ${score}`;
+        generateFood();
+        const newTheme = getRandomColorTheme();
+        applyColorTheme(newTheme);
+      } else {
+        snake.pop();
+      }
+    }
+
+    function generateFood() {
+      food = {
+        x: Math.floor(Math.random() * gridSize),
+        y: Math.floor(Math.random() * gridSize),
+      };
+    }
+
+    function collisionDetection() {
+      const head = snake[0];
+      return (
+        head.x < 0 ||
+        head.x >= gridSize ||
+        head.y < 0 ||
+        head.y >= gridSize ||
+        snake.some(
+          (segment, index) =>
+            index !== 0 && segment.x === head.x && segment.y === head.y
+        )
+      );
+    }
+
+    function clearCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function draw() {
+      clearCanvas();
+      drawSnake();
+      drawFood();
+    }
+
+    function update() {
+      moveSnake();
+      if (collisionDetection()) {
+        alert(`Game Over! Score: ${score}`);
+        restartGame();
+      }
+    }
+
+    function gameLoop() {
+      if(isAIplay){
+        aiPlay();
+      }  
+      update();
+      draw();
+      setTimeout(gameLoop, 100);
+    }
+
+    function aiPlay() {
+    const head = snake[0];
+    const target = food;
+    const openList = [];
+    const closedList = [];
+    const directions = ['up', 'down', 'left', 'right'];
+
+    // Helper function to calculate Manhattan distance
+    const manhattanDistance = (pos1, pos2) => Math.abs(pos1.x - pos2.x) + Math.abs(pos1.y - pos2.y);
+
+    // Initialize the starting node
+    const startNode = {
+        position: { x: head.x, y: head.y },
+        g: 0,
+        h: manhattanDistance(head, target),
+        parent: null,
+        direction: null
+    };
+
+    // Add the starting node to the open list
+    openList.push(startNode);
+
+    // A* algorithm
+    while (openList.length > 0) {
+        // Find the node with the lowest f value in the open list
+        const currentNode = openList.reduce((minNode, node) => node.g + node.h < minNode.g + minNode.h ? node : minNode);
+
+        // Remove the current node from the open list
+        openList.splice(openList.indexOf(currentNode), 1);
+
+        // Add the current node to the closed list
+        closedList.push(currentNode);
+
+        // Check if the current node is the target
+        if (currentNode.position.x === target.x && currentNode.position.y === target.y) {
+            // Construct the path
+            const path = [];
+            let current = currentNode;
+            while (current.parent) {
+                path.push(current.direction);
+                current = current.parent; 
+            }
+            // Move the snake according to the first direction in the path
+            switch (path.pop()) {
+                case 'up':
+                    dx = 0;
+                    dy = -1;
+                    break;
+                case 'down':
+                    dx = 0;
+                    dy = 1;
+                    break;
+                case 'left':
+                    dx = -1;
+                    dy = 0;
+                    break;
+                case 'right':
+                    dx = 1;
+                    dy = 0;
+                    break;
+            }
+            return;
+        }
+
+        // Generate child nodes
+        directions.forEach(direction => {
+            const newPosition = { x: currentNode.position.x, y: currentNode.position.y };
+            switch (direction) {
+                case 'up':
+                    newPosition.y--;
+                    break;
+                case 'down':
+                    newPosition.y++;
+                    break;
+                case 'left':
+                    newPosition.x--;
+                    break;
+                case 'right':
+                    newPosition.x++;
+                    break;
+            }
+            // Check if the new position is valid
+            if (
+                newPosition.x >= 0 && newPosition.x < gridSize &&
+                newPosition.y >= 0 && newPosition.y < gridSize &&
+                !snake.some(segment => segment.x === newPosition.x && segment.y === newPosition.y)
+            ) {
+                // Calculate the cost of reaching this position
+                const g = currentNode.g + 1;
+                const h = manhattanDistance(newPosition, target);
+                // Check if the position is already in the closed list with a lower cost
+                if (!closedList.some(node => node.position.x === newPosition.x && node.position.y === newPosition.y && node.g + node.h < g + h)) {
+                    // Check if the position is not in the open list or has a lower cost
+                    const existingNode = openList.find(node => node.position.x === newPosition.x && node.position.y === newPosition.y);
+                    if (!existingNode || g + h < existingNode.g + existingNode.h) {
+                        // Add or update the node in the open list
+                        const newNode = {
+                            position: newPosition,
+                            g,
+                            h,
+                            parent: currentNode,
+                            direction
+                        };
+                        if (!existingNode) {
+                            openList.push(newNode);
+                        } else {
+                            Object.assign(existingNode, newNode);
+                        }
+                    }
+                }
+            }
+        });
+    }
+}
+
+    
+
+    function handleKeyDown(e) {
+      switch (e.key) {
+        case "w":
+          if (dy !== 1) {
+            dx = 0;
+            dy = -1;
+          }
+          break;
+        case "s":
+          if (dy !== -1) {
+            dx = 0;
+            dy = 1;
+          }
+          break;
+        case "a":
+          if (dx !== 1) {
+            dx = -1;
+            dy = 0;
+          }
+          break;
+        case "d":
+          if (dx !== -1) {
+            dx = 1;
+            dy = 0;
+          }
+          break;
+        case "h":
+        case "H":
+          isAIplay = !isAIplay;  
+          break;
+      }
+    }
+    
+    function restartGame() {
+      snake.length = 1;
+      snake[0] = { x: 10, y: 10 };
+      dx = 0;
+      dy = 0;
+      score = 0;
+      document.getElementById("score").innerText = `Score: ${score}`;
+      const newTheme = getRandomColorTheme();
+      applyColorTheme(newTheme);
+    }
+
+    function changeCanvasBackground(color) {
+      canvas.style.backgroundColor = color;
+    }
+
+    const colorThemes = [['#2A2B2E', '#FDCA40', '#59FFA0']
+,
+['#004E64', '#7AE582', '#9FFFCB']
+,
+['#333745', '#E63462', '#EEF5DB']
+,
+['#00072D', '#0E6BA8', '#A6E1FA']
+,
+['#AB87FF', '#B4E1FF', '#F5FFC6']
+,
+['#2E3440', '#88C0D0', '#D8DEE9']
+,
+['#282A36', '#FF79C6', '#50FA7B']
+,
+['#282828', '#FB4934', '#83A598']
+,
+['#263238', '#FF7043', '#4DB6AC']
+,
+['#272822', '#AE81FF', '#66D9EF']
+,
+['#002B36', '#B58900', '#859900']
+,
+['#FDF6E3', '#268BD2', '#859900']
+,
+['#0F1419', '#FFCC66', '#99CC99']
+,
+['#1E282E', '#FFD57F', '#A6D3A0']
+,
+['#FAFAFA', '#FFA657', '#99CC99']
+,
+['#1A1B27', '#61AFEF', '#C678DD']
+,
+['#1F2335', '#46D9FF', '#E95678']
+,
+['#FAFAFA', '#6699CC', '#C678DD']
+,
+['#282828', '#FB4934', '#83A598']
+,
+['#FBF1C7', '#076678', '#B16286']
+,
+['#282C34', '#E06C75', '#98C379']
+,
+['#14161A', '#F92672', '#A6E22E']
+,
+['#1C1C1C', '#83AFE5', '#D7D7D7']
+,
+['#F3F3F3', '#83AFE5', '#D7D7D7']
+,
+['#3F3F3F', '#8CD0D3', '#DFAF8F']
+,
+['#151515', '#DC657D', '#7DAAEA']
+,
+['#F5F5F5', '#DC657D', '#7DAAEA']
+,
+['#1B1F23', '#28A745', '#6A737D']
+,
+['#FFFFFF', '#28A745', '#6A737D']
+,
+['#282828', '#FF5E00', '#8EC07C']
+,
+['#1B2B34', '#EC5f67', '#C3E88D']
+,
+['#C7FF00', '#00AFAD', '#D7005F']
+,
+['#00C5C7', '#FFA724', '#8959A8']
+,
+['#CBC0D3', '#99C794', '#EC5F67']
+,
+['#82Aaff', '#FF9F1C', '#19F9D8']
+,
+['#ECEFF4', '#5E81AC', '#88C0D0']
+,
+['#282A36', '#FF79C6', '#50FA7B']
+,
+['#1D252C', '#00A3CC', '#ABB2BF']
+,
+['#0A0C0E', '#A41A4B', '#0E787E']
+,
+['#202125', '#F56B6B', '#9EFFA2']
+,
+['#08577A', '#EE6352', '#FFB997']
+,
+['#2A1B3D', '#EF3E36', '#FFFFFF']
+,
+['#2A2139', '#F0788C', '#45E6B0']
+,
+['#4B3F72', '#EE6352', '#20BF55']
+,
+['#0B0E11', '#FF5A5F', '#00C9A7']
+,
+['#2B2B2B', '#00A4EF', '#E81123']
+,
+['#000000', '#009BFF', '#FF0000']
+,
+['#34495E', '#3498DB', '#E74C3C']
+,
+['#2C3E50', '#3498DB', '#E74C3C']
+,
+['#2A2734', '#FF6B82', '#FF9E64']
+,
+['#FF5977', '#FFD15C', '#59FFA5']
+,
+['#2E3440', '#88C0D0', '#ECEFF4']
+,
+['#282A36', '#FF6E67', '#50FA7B']
+,
+['#2F343F', '#FF5C57', '#5AF78E']
+,
+['#2A1B3D', '#FF869A', '#FFFFFF']
+,
+['#24252B', '#FF715B', '#4CB2FF']
+,
+['#2C3E50', '#ECF0F1', '#3498DB']
+,
+['#2C2E37', '#FF465B', '#3AFFDB']
+,
+['#FFFFFF', '#FF465B', '#3AFFDB']
+,
+['#282C34', '#4CAF50', '#FF4081']
+,
+['#292A2B', '#FF6B6B', '#FFCC66']
+,
+['#1A1C23', '#7DC5E6', '#C574DD']
+,
+['#F0F6FC', '#7DC5E6', '#C574DD']
+,
+['#1D2021', '#FE8019', '#458588']
+,
+['#181818', '#B7AA9B', '#6D9D75']
+,
+['#292D3E', '#FFCC66', '#89DDFF']
+,
+['#202124', '#FFD666', '#76E094']
+,
+['#FAFAFA', '#FF7043', '#4DB6AC']
+,
+['#121212', '#FF6D67', '#C8FF00']
+,
+['#0A0814', '#70A4B2', '#ECEFF4']
+,
+['#D5E5EB', '#3D8EB9', '#6FB4CE']
+,
+['#1E2029', '#738FFE', '#A4B3C1']
+,
+['#F3F4F6', '#00A3CC', '#ABB2BF']
+,
+['#011627', '#D6DEEB', '#82AAFF']
+,
+['#12141D', '#E9DAAC', '#61AFEF']
+,
+['#0E0E0E', '#FF7272', '#4FC1FF']
+,
+['#1A1B27', '#61AFEF', '#C678DD']
+,
+['#263238', '#26C6DA', '#FBC02D']
+,
+['#0F1419', '#F29718', '#B3E283']
+,
+['#FAFAFA', '#F29718', '#8CDE97']
+,
+['#FAFAFA', '#E6B673', '#86B300']
+,
+['#2A2734', '#FF6B82', '#FF9E64']
+,
+['#FAF8F9', '#FF7582', '#FF9E64']
+,
+['#1F1D2B', '#726E8A', '#9A99B8']
+,
+['#2C2C2C', '#76BEE4', '#FF9A9E']
+,
+['#333344', '#E06C75', '#98C379']
+,
+['#2D2D2D', '#FF5A5F', '#5ADAD5']
+,
+['#292A44', '#A8A7FF', '#7CA9E6']
+,
+['#282A36', '#FF79C6', '#50FA7B']
+,
+['#0A0F14', '#00A2FF', '#1ABC9C']
+,
+['#2C2541', '#8A79B8', '#6A4F7D']
+,
+['#2B213A', '#5D3F6A', '#7FE0F2']
+,
+['#1A1F26', '#72CCDD', '#FFA06A']
+,
+['#292D3E', '#FFCC66', '#89DDFF']
+,
+['#FDF0ED', '#F5A962', '#5D737E']
+,
+['#FAFAFA', '#4078F2', '#56B6C2']
+,
+['#FDF4DB', '#FF7619', '#80D16D']
+,
+['#363838', '#FF7619', '#80D16D']
+,
+['#1C1C1C', '#FF0DFF', '#00FFFF']
+,
+['#1E2029', '#61AFEF', '#C678DD']
+,
+['#272A34', '#61AFEF', '#C678DD']
+,
+['#F0F6FC', '#D6DEEB', '#82AAFF']
+,
+['#FAFAFA', '#61AFEF', '#C678DD']
+,
+['#0E0E0E', '#FF7272', '#4FC1FF']
+,
+['#E4E4E4', '#FF7272', '#4FC1FF']
+,
+['#383838', '#D75F00', '#86CA98']
+,
+['#1B2B34', '#EC5f67', '#C3E88D']
+,
+['#D8DEE9', '#EC5f67', '#C3E88D']
+,
+['#21243D', '#6CB6FF', '#A4B2C3']
+,
+['#282A36', '#FF79C6', '#50FA7B']
+,
+['#1F2022', '#51AFEF', '#D7DAE0']
+,
+['#FFFFFF', '#51AFEF', '#D7DAE0']
+,
+['#18222D', '#005F87', '#2A7FD9']
+,
+['#1B1F23', '#28A745', '#6A737D']
+,
+['#1B1F23', '#28A745', '#6A737D']
+,
+['#FFFFFF', '#28A745', '#6A737D']
+,
+['#FFFFFF', '#28A745', '#6A737D']
+,
+['#161B22', '#28A745', '#6A737D']
+,
+['#161B22', '#28A745', '#6A737D']
+,
+['#2C2E37', '#FF465B', '#3AFFDB']
+,
+['#FFFFFF', '#FF465B', '#3AFFDB']
+,
+['#1D252C', '#00A3CC', '#ABB2BF']
+,
+['#F3F4F6', '#00A3CC', '#ABB2BF']
+,
+['#292D3E', '#FFCC66', '#89DDFF']
+,
+['#292D3E', '#FF6B82', '#7CB2FF']
+,
+['#12141D', '#E9DAAC', '#61AFEF']
+,
+['#1D1F21', '#D33682', '#B58900']
+,
+['#1E1E1E', '#569CD6', '#C586C0']];
+
+    function getRandomColorTheme() {
+      // Randomly select a color theme
+      const randomIndex = Math.floor(Math.random() * colorThemes.length);
+      return colorThemes[randomIndex];
+    }
+
+    function applyColorTheme(theme) {
+      snakeColor = theme[2];
+      appleColor = theme[1];
+      backgroundColor = theme[0];
+      changeCanvasBackground(backgroundColor);
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+    generateFood();
+    gameLoop();
+
+// roots of a mobile support 
+
+let touchStartX = 0;
+  let touchStartY = 0;
+
+  function handleTouchStart(event) {
+    const touch = event.touches[0];
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+  }
+
+  function handleTouchMove(event) {
+    if (!touchStartX || !touchStartY) {
+      return;
+    }
+
+    const touch = event.touches[0];
+    const deltaX = touch.clientX - touchStartX;
+    const deltaY = touch.clientY - touchStartY;
+
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      // Horizontal swipe
+      if (deltaX > 0) {
+        // Swipe right
+        handleKeyDown({ key: 'd' });
+      } else {
+        // Swipe left
+        handleKeyDown({ key: 'a' });
+      }
+    } else {
+      // Vertical swipe
+      if (deltaY > 0) {
+        // Swipe down
+        handleKeyDown({ key: 's' });
+      } else {
+        // Swipe up
+        handleKeyDown({ key: 'w' });
+      }
+    }
+
+    touchStartX = 0;
+    touchStartY = 0;
+  }
+
+  canvas.addEventListener('touchstart', handleTouchStart, false);
+  canvas.addEventListener('touchmove', handleTouchMove, false);
+
+
+
+  </script>
+</body>
+</html>
