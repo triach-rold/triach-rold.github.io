@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Triach Rold's Blog</title>
+  <style>
+    a:hover {
+      color: #FFDC5E;
+      background-color: transparent;
+      text-decoration: none;
+    }
+    :root {
+      --width: 720px;
+      --font-main: Futura, sans-serif;
+      --font-secondary: Verdana, sans-serif;
+      --font-scale: 1em;
+      --background-color: #fff;
+      --heading-color: #222;
+      --text-color: #444;
+      --link-color: #3273dc;
+      --visited-color: #8b6fcb;
+      --code-background-color: #f2f2f2;
+      --code-color: #222;
+      --blockquote-color: #222;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background-color: #001A23;
+        --heading-color: #eee;
+        --text-color: #ddd;
+        --link-color: #B3EFB2;
+        --visited-color: #91E5F6;
+        --code-background-color: #000;
+        --code-color: #ddd;
+        --blockquote-color: #ccc;
+      }
+    }
+
+    body {
+      font-family: var(--font-secondary);
+      font-size: var(--font-scale);
+      margin: auto;
+      padding: 20px;
+      max-width: var(--width);
+      text-align: left;
+      background-color: var(--background-color);
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      line-height: 1.5;
+      color: var(--text-color);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-main);
+      color: var(--heading-color);
+    }
+
+    a {
+      color: var(--link-color);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: none; 
+    }
+
+    nav a {
+      margin-right: 8px;
+    }
+
+    strong, b {
+      color: var(--heading-color);
+    }
+
+    button {
+      margin: 0;
+      cursor: pointer;
+    }
+
+    time {
+      font-family: monospace;
+      font-style: normal;
+      font-size: 15px;
+    }
+
+    main {
+      line-height: 1.6;
+    }
+
+    table {
+      width: 100%;
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px dashed;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    code {
+      font-family: monospace;
+      padding: 2px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+    }
+
+    blockquote {
+      border-left: 1px solid #999;
+      color: var(--code-color);
+      padding-left: 20px;
+      font-style: italic;
+    }
+
+    footer {
+      padding: 25px 0;
+      text-align: center;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      font-family: Verdana, sans-serif;
+      margin-top: 40px;
+    }
+
+    .title:hover {
+      text-decoration: none;
+    }
+
+    .title h1 {
+      font-size: 1.5em;
+    }
+
+    .inline {
+      width: auto !important;
+    }
+
+    .highlight, .code {
+      padding: 1px 15px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+      margin-block-start: 1em;
+      margin-block-end: 1em;
+      overflow-x: auto;
+    }
+
+    /* blog post list */
+    ul.blog-posts {
+      list-style-type: none;
+      padding: unset;
+    }
+
+    ul.blog-posts li {
+      display: flex;
+    }
+
+    ul.blog-posts li span {
+      flex: 0 0 130px;
+    }
+
+    ul.blog-posts li a:visited {
+      color: var(--visited-color);
+    }
+
+    #canvas {
+      border: 2px solid white;
+      border-color: white;  
+      background-color: #50514F;
+    }
+    
+
+    #canvas:hover {
+      cursor: crosshair;
+    }
+  </style>
+</head>
+<body class="home">
+  <header>
+    <a class="title" href="/"><h1>Triach Rold.</h1></a>
+    <nav>
+        <p><a href="../index.html">Home</a><a href="../projects.html">Projects</a><a href="../bloghome.html">Blog</a></p>
+      </nav> 
+  </header>
+  <main>
+    <h1>Chaotic Double Pendulum Simulation.</h1>
+    <p style="text-align: center;">
+        
+            <canvas
+              id="screen"
+              width="600"
+              height="600"
+              style="border: 1px solid #c3c3c3"  
+            >
+            </canvas>
+    </p>
+    <p>
+      <h1>Instructions.</h1>
+      <ul>
+        <li>The simulation will always start on its own upon loading the website. It's initial values are random (within practical ranges), and can't be changed. </li>
+        <li>You can press the enter key to toggle pause/play in the simulation. You can also toggle the trace of the simulation with the "t" key.</li>
+        <li>You can clear the trails with the "c" key. You can increase (double) the speed of the simulation with the "f" key. </li>
+        <li>You can change the colortheme of the simulation with the g key. You can use your mouse to drag the pendulum to a desired position, but this will be pretty restricting.</li>
+        <li><b>Epilipsy Warning (contains flashing images)-</b> you can switch to the disco/strobe mode by toggling the "g" key. You can also toggle the "discotrails" mode by toggling the "x" key.</li>
+
+      </ul>
+    </p>   
+  </main>
+  <footer>
+    <H3>Find a bug?</H3>
+    <span><p>Mail me <a href="mailto:roldtriach@gmail.com">here</a>.</p></span>
+  </footer>
+
+  <!-- Aids -->
+  <script>
+
+// color aids
+
+const colorThemes = [
+  ["classic", "#2A2B2E", "#FDFFF7", "#FDCA40", "#59FFA0"],
+  ["midnight", "#004E64", "#25A18E", "#7AE582", "#9FFFCB"],
+  ["cerise", "#333745", "#FE5F55", "#E63462", "#EEF5DB"],
+  ["perfectblue", "#00072D", "#0A2472", "#0E6BA8", "#A6E1FA"],
+  ["neonpastel", "#AB87FF", "#C1FF9B", "#B4E1FF", "#F5FFC6"],
+  ["nord", "#2E3440", "#ECEFF4", "#88C0D0", "#D8DEE9"],
+  ["dracula", "#282A36", "#F8F8F2", "#FF79C6", "#50FA7B"],
+  ["gruvbox", "#282828", "#EBDBB2", "#FB4934", "#83A598"],
+  ["material", "#263238", "#ECEFF1", "#FF7043", "#4DB6AC"],
+  ["monokai", "#272822", "#F8F8F2", "#AE81FF", "#66D9EF"],
+  ["solarized-dark", "#002B36", "#FDF6E3", "#B58900", "#859900"],
+  ["solarized-light", "#FDF6E3", "#002B36", "#268BD2", "#859900"],
+  ["ayu-dark", "#0F1419", "#F0F6FC", "#FFCC66", "#99CC99"],
+  ["ayu-mirage", "#1E282E", "#F5F7FA", "#FFD57F", "#A6D3A0"],
+  ["ayu-light", "#FAFAFA", "#0C0D0E", "#FFA657", "#99CC99"],
+  ["tokyonight-dark", "#1A1B27", "#ABB2BF", "#61AFEF", "#C678DD"],
+  ["tokyonight-storm", "#1F2335", "#A6ACCD", "#46D9FF", "#E95678"],
+  ["tokyonight-light", "#FAFAFA", "#3B4252", "#6699CC", "#C678DD"],
+  ["gruvbox-dark", "#282828", "#EBDBB2", "#FB4934", "#83A598"],
+  ["gruvbox-light", "#FBF1C7", "#3C3836", "#076678", "#B16286"],
+  ["onedark", "#282C34", "#ABB2BF", "#E06C75", "#98C379"],
+  ["twilight", "#14161A", "#C5C8C6", "#F92672", "#A6E22E"],
+  ["papercolor-dark", "#1C1C1C", "#F3F3F3", "#83AFE5", "#D7D7D7"],
+  ["papercolor-light", "#F3F3F3", "#1C1C1C", "#83AFE5", "#D7D7D7"],
+  ["zenburn", "#3F3F3F", "#DCDCCC", "#8CD0D3", "#DFAF8F"],
+  ["base16-dark", "#151515", "#D0D0D0", "#DC657D", "#7DAAEA"],
+  ["base16-light", "#F5F5F5", "#151515", "#DC657D", "#7DAAEA"],
+  ["github-dark", "#1B1F23", "#FFFFFF", "#28A745", "#6A737D"],
+  ["github-light", "#FFFFFF", "#1B1F23", "#28A745", "#6A737D"],
+  ["gruvbox-material", "#282828", "#EFEFEF", "#FF5E00", "#8EC07C"],
+  ["oceanic-next", "#1B2B34", "#D8DEE9", "#EC5f67", "#C3E88D"],
+  ["base2Tone-morning", "#C7FF00", "#1E2111", "#00AFAD", "#D7005F"],
+  ["base2Tone-evening", "#00C5C7", "#1E2132", "#FFA724", "#8959A8"],
+  ["base2Tone-space", "#CBC0D3", "#2D2D2D", "#99C794", "#EC5F67"],
+  ["base2Tone-ocean", "#82Aaff", "#011627", "#FF9F1C", "#19F9D8"],
+  ["nord-light", "#ECEFF4", "#2E3440", "#5E81AC", "#88C0D0"],
+  ["dracula-soft", "#282A36", "#F8F8F2", "#FF79C6", "#50FA7B"],
+  ["city-lights", "#1D252C", "#D9E9FC", "#00A3CC", "#ABB2BF"],
+  ["sakura-matz", "#0A0C0E", "#F7F1FF", "#A41A4B", "#0E787E"],
+  ["spacegray", "#202125", "#E2E2E3", "#F56B6B", "#9EFFA2"],
+  ["aqua", "#08577A", "#F7F3E3", "#EE6352", "#FFB997"],
+  ["outrun", "#2A1B3D", "#F6F0F3", "#EF3E36", "#FFFFFF"],
+  ["synthwave", "#2A2139", "#FCEEB5", "#F0788C", "#45E6B0"],
+  ["retro", "#4B3F72", "#F5F0E1", "#EE6352", "#20BF55"],
+  ["cyberpunk", "#0B0E11", "#F0E7DB", "#FF5A5F", "#00C9A7"],
+  ["metro", "#2B2B2B", "#FFFFFF", "#00A4EF", "#E81123"],
+  ["highcontrast", "#000000", "#FFFFFF", "#009BFF", "#FF0000"],
+  ["flat", "#34495E", "#FFFFFF", "#3498DB", "#E74C3C"],
+  ["flatui", "#2C3E50", "#ECF0F1", "#3498DB", "#E74C3C"],
+  ["duotone", "#2A2734", "#F7F5F8", "#FF6B82", "#FF9E64"],
+  ["summerfruit", "#FF5977", "#FFFFFF", "#FFD15C", "#59FFA5"],
+  ["nord-polar", "#2E3440", "#E5E9F0", "#88C0D0", "#ECEFF4"],
+  ["dracula-pro", "#282A36", "#F8F8F2", "#FF6E67", "#50FA7B"],
+  ["atom", "#2F343F", "#FFFFFF", "#FF5C57", "#5AF78E"],
+  ["outrun-dark", "#2A1B3D", "#F6F0F3", "#FF869A", "#FFFFFF"],
+  ["firewatch", "#24252B", "#F5F7FA", "#FF715B", "#4CB2FF"],
+  ["flatland", "#2C3E50", "#E74C3C", "#ECF0F1", "#3498DB"],
+  ["nova", "#2C2E37", "#FFFFFF", "#FF465B", "#3AFFDB"],
+  ["nova-light", "#FFFFFF", "#2C2E37", "#FF465B", "#3AFFDB"],
+  ["windows10", "#282C34", "#FFFFFF", "#4CAF50", "#FF4081"],
+  ["panda", "#292A2B", "#E6E6E6", "#FF6B6B", "#FFCC66"],
+  ["horizon-dark", "#1A1C23", "#F0F6FC", "#7DC5E6", "#C574DD"],
+  ["horizon-light", "#F0F6FC", "#1A1C23", "#7DC5E6", "#C574DD"],
+  ["retro-orange", "#1D2021", "#FDF4C1", "#FE8019", "#458588"],
+  ["soft-era", "#181818", "#E6E6E6", "#B7AA9B", "#6D9D75"],
+  ["github-dark-dimmed", "#1B1F23", "#3E4247", "#28A745", "#6A737D"],
+  ["github-dark-transparent", "#1B1F23", "#24292E", "#28A745", "#6A737D"],
+  ["github-light-dimmed", "#FFFFFF", "#F3F4F6", "#28A745", "#6A737D"],
+  ["github-light-transparent", "#FFFFFF", "#F3F4F6", "#28A745", "#6A737D"],
+  ["material-palenight", "#292D3E", "#F3F3F3", "#FFCC66", "#89DDFF"],
+  ["material-dark", "#202124", "#F8F9FA", "#FFD666", "#76E094"],
+  ["material-lighter", "#FAFAFA", "#333333", "#FF7043", "#4DB6AC"],
+  ["gloom", "#121212", "#F2F2F2", "#FF6D67", "#C8FF00"],
+  ["c64", "#0A0814", "#656D78", "#70A4B2", "#ECEFF4"],
+  ["icelake", "#D5E5EB", "#11324D", "#3D8EB9", "#6FB4CE"],
+  ["abyss", "#1E2029", "#F7F7F7", "#738FFE", "#A4B3C1"],
+  ["city-light", "#F3F4F6", "#1D252C", "#00A3CC", "#ABB2BF"],
+  ["night-owl", "#011627", "#FFFFFF", "#D6DEEB", "#82AAFF"],
+  ["moonlight", "#12141D", "#F6F8FA", "#E9DAAC", "#61AFEF"],
+  ["calamity", "#0E0E0E", "#E4E4E4", "#FF7272", "#4FC1FF"],
+  ["tokyo-night", "#1A1B27", "#A6ACCD", "#61AFEF", "#C678DD"],
+  ["material-ocean", "#263238", "#C7FFEC", "#26C6DA", "#FBC02D"],
+  ["ayu-dark-mirage", "#0F1419", "#F9F7F3", "#F29718", "#B3E283"],
+  ["ayu-mirage-bright", "#FAFAFA", "#1E1F29", "#F29718", "#8CDE97"],
+  ["ayu-light-mirage", "#FAFAFA", "#1E1F29", "#E6B673", "#86B300"],
+  ["duotone-dark", "#2A2734", "#F7F5F8", "#FF6B82", "#FF9E64"],
+  ["duotone-light", "#FAF8F9", "#2A2734", "#FF7582", "#FF9E64"],
+  ["purple-haze", "#1F1D2B", "#B5B4CC", "#726E8A", "#9A99B8"],
+  ["lush", "#2C2C2C", "#E6E6E6", "#76BEE4", "#FF9A9E"],
+  ["fairyfloss", "#333344", "#FFFFFF", "#E06C75", "#98C379"],
+  ["doki", "#2D2D2D", "#FFFFFF", "#FF5A5F", "#5ADAD5"],
+  ["rebecca", "#292A44", "#F1E9FF", "#A8A7FF", "#7CA9E6"],
+  ["doomone", "#282A36", "#F8F8F2", "#FF79C6", "#50FA7B"],
+  ["gotham", "#0A0F14", "#FFFFFF", "#00A2FF", "#1ABC9C"],
+  ["purple-rain", "#2C2541", "#D7D0E0", "#8A79B8", "#6A4F7D"],
+  ["synthwave-84", "#2B213A", "#E8E1F1", "#5D3F6A", "#7FE0F2"],
+  ["outrun-vapor", "#1A1F26", "#BAA0FF", "#72CCDD", "#FFA06A"],
+  ["palenight", "#292D3E", "#F4F7FA", "#FFCC66", "#89DDFF"],
+  ["sagelight", "#FDF0ED", "#4B3B58", "#F5A962", "#5D737E"],
+  ["one-light", "#FAFAFA", "#000000", "#4078F2", "#56B6C2"],
+  ["solar-flare-light", "#FDF4DB", "#454545", "#FF7619", "#80D16D"],
+  ["solar-flare-dark", "#363838", "#EDEDED", "#FF7619", "#80D16D"],
+  ["cyberpunk-neon", "#1C1C1C", "#F3F3F3", "#FF0DFF", "#00FFFF"],
+  ["challenger-deep", "#1E2029", "#ABB2BF", "#61AFEF", "#C678DD"],
+  ["gloombound", "#272A34", "#ABB2BF", "#61AFEF", "#C678DD"],
+  ["night-owl-light", "#F0F6FC", "#011627", "#D6DEEB", "#82AAFF"],
+  ["tokyo-night-light", "#FAFAFA", "#1A1B27", "#61AFEF", "#C678DD"],
+  ["calamity-dark", "#0E0E0E", "#E4E4E4", "#FF7272", "#4FC1FF"],
+  ["calamity-light", "#E4E4E4", "#0E0E0E", "#FF7272", "#4FC1FF"],
+  ["zenburn-bright", "#383838", "#EAEAEA", "#D75F00", "#86CA98"],
+  ["ocean-dark", "#1B2B34", "#D8DEE9", "#EC5f67", "#C3E88D"],
+  ["ocean-light", "#D8DEE9", "#1B2B34", "#EC5f67", "#C3E88D"],
+  ["deep-ocean", "#21243D", "#D8DEE9", "#6CB6FF", "#A4B2C3"],
+  ["dracula-pro-legacy", "#282A36", "#F8F8F2", "#FF79C6", "#50FA7B"],
+  ["spacemacs-dark", "#1F2022", "#ABB2BF", "#51AFEF", "#D7DAE0"],
+  ["spacemacs-light", "#FFFFFF", "#282B33", "#51AFEF", "#D7DAE0"],
+  ["blue-mood", "#18222D", "#F0F6FC", "#005F87", "#2A7FD9"],
+  ["github-dark-dimmed", "#1B1F23", "#2D3135", "#28A745", "#6A737D"],
+  ["github-dark-transparent", "#1B1F23", "#24292E", "#28A745", "#6A737D"],
+  ["github-light-dimmed", "#FFFFFF", "#F3F4F6", "#28A745", "#6A737D"],
+  ["github-light-transparent", "#FFFFFF", "#F3F4F6", "#28A745", "#6A737D"],
+  ["github-light-dark-dimmed", "#161B22", "#FFFFFF", "#28A745", "#6A737D"],
+  ["github-light-dark-transparent", "#161B22", "#1E2228", "#28A745", "#6A737D"],
+  ["nova-dark", "#2C2E37", "#FFFFFF", "#FF465B", "#3AFFDB"],
+  ["nova-light", "#FFFFFF", "#2C2E37", "#FF465B", "#3AFFDB"],
+  ["city-lights-dark", "#1D252C", "#D9E9FC", "#00A3CC", "#ABB2BF"],
+  ["city-lights-light", "#D9E9FC", "#1D252C", "#00A3CC", "#ABB2BF"],
+  ["palenight-soft", "#292D3E", "#F4F7FA", "#FFCC66", "#89DDFF"],
+  ["palenight-contrast", "#292D3E", "#F4F7FA", "#FF6B82", "#7CB2FF"],
+  ["moonlight-alternative", "#12141D", "#F6F8FA", "#E9DAAC", "#61AFEF"],
+  ["halloween", "#1D1F21", "#FFFFFF", "#D33682", "#B58900"],
+  ["dark-plus", "#1E1E1E", "#CCCCCC", "#569CD6", "#C586C0"]
+  ];
+
+
+
+let rodColor = "#FDFFF7";
+let trailColor = "#59FFA0";
+let canvasBackgroundColor = "#2A2B2E";
+let ballColor = "#FDCA40";
+
+function applyRandomColorTheme() {
+  const randomIndex = Math.floor(Math.random() * colorThemes.length);
+  const randomTheme = colorThemes[randomIndex];
+  canvasBackgroundColor = randomTheme[1];
+  rodColor = randomTheme[2];
+  ballColor = randomTheme[3];
+  trailColor = randomTheme[4];
+  ctx.strokeStyle = rodColor;
+  traceCtx.strokeStyle = trailColor;
+}
+function applyRandomTrailTheme() {
+  const randomIndex = Math.floor(Math.random() * colorThemes.length);
+  const randomTheme = colorThemes[randomIndex];
+  trailColor = randomTheme[4];
+  traceCtx.strokeStyle = trailColor;
+}
+
+
+var canvasElem = document.getElementById("screen");
+var ctx = canvasElem.getContext("2d");
+ctx.strokeStyle = rodColor;
+
+var traceCanvas = document.createElement("canvas");
+traceCanvas.width = canvasElem.width;
+traceCanvas.height = canvasElem.height;
+var traceCtx = traceCanvas.getContext("2d");
+traceCtx.strokeStyle = trailColor;
+
+var theta1Disp = Math.random() * Math.PI + Math.PI / 2; 
+var theta2Disp = Math.random() * Math.PI + Math.PI / 2; 
+var dtDisp = 0.3;
+var L1Disp = Math.random() * 75 + 75; 
+var L2Disp = Math.random() * 75 + 75; 
+var radius = 5;
+var anchorX = canvasElem.width / 2;
+var anchorY = canvasElem.height / 2;
+var L1 = Math.random() * 75 + 75; 
+var L2 = Math.random() * 75 + 75; 
+var m1 = Math.random() * 17 + 8; 
+var m2 = Math.random() * 17 + 8; 
+var g = Math.random() * 3 + 1; 
+var dt = 0.3;
+// thanks to https://www.myphysicslab.com/explain/runge-kutta-en.html for explaining this
+// main website - https://www.myphysicslab.com/pendulum/double-pendulum-en.html
+      var initialTheta1 = Math.PI / 2;
+      var initialTheta2 = (5 * Math.PI) / 8;
+      var theta1 = initialTheta1;
+      var theta2 = initialTheta2;
+      var omega1 = 0;
+      var omega2 = 0;
+
+      var isRunning = true;
+      var isTracing = true;
+      var isDragging = false;
+      var startX = 0;
+      var startY = 0;
+
+      var prevX =
+        anchorX + L1 * Math.sin(initialTheta1) + L2 * Math.sin(initialTheta2);
+      var prevY =
+        anchorY + L1 * Math.cos(initialTheta1) + L2 * Math.cos(initialTheta2);
+
+      dtDisp.value = +dt.toFixed(2);
+      L1Disp.value = L1;
+      L2Disp.value = L2;
+
+      function epsilon1dt(theta1, theta2, omega1, omega2) {
+        return (
+          (dt *
+            (-g * (2 * m1 + m2) * Math.sin(theta1) -
+              m2 * g * Math.sin(theta1 - 2 * theta2) -
+              2 *
+                Math.sin(theta1 - theta2) *
+                m2 *
+                (omega2 * omega2 * L2 +
+                  omega1 * omega1 * L1 * Math.cos(theta1 - theta2)))) /
+          (L1 * (2 * m1 + m2 - m2 * Math.cos(2 * theta1 - 2 * theta2)))
+        );
+      }
+
+      function epsilon2dt(theta1, theta2, omega1, omega2) {
+        return (
+          (dt *
+            (2 *
+              Math.sin(theta1 - theta2) *
+              (omega1 * omega1 * L1 * (m1 + m2) +
+                g * (m1 + m2) * Math.cos(theta1) +
+                omega2 * omega2 * L2 * m2 * Math.cos(theta1 - theta2)))) /
+          (L2 * (2 * m1 + m2 - m2 * Math.cos(2 * theta1 - 2 * theta2)))
+        );
+      }
+
+      function omegadt(omega) {
+        return omega * dt;
+      }
+
+      function drawStr(x1, y1, x2, y2) {
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.closePath();
+        ctx.stroke();
+      }
+
+      function drawBall(x, y, color) {
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, 2 * Math.PI);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      function drawPendulum() {
+        let x1 = anchorX + L1 * Math.sin(theta1);
+        let y1 = anchorY + L1 * Math.cos(theta1);
+
+        let x2 = x1 + L2 * Math.sin(theta2);
+        let y2 = y1 + L2 * Math.cos(theta2);
+
+        ctx.fillStyle = canvasBackgroundColor;
+        ctx.fillRect(0, 0, canvasElem.width, canvasElem.height);
+
+        if (isTracing && isRunning) {
+          traceCtx.beginPath();
+          traceCtx.moveTo(prevX, prevY);
+          traceCtx.lineTo(x2, y2);
+          traceCtx.closePath();
+          traceCtx.stroke();
+        }
+        ctx.drawImage(traceCanvas, 0, 0);
+
+        drawStr(anchorX, anchorY, x1, y1);
+        drawStr(x1, y1, x2, y2);
+
+        drawBall(x1, y1, ballColor);
+        drawBall(x2, y2, ballColor);
+
+        prevX = x2;
+        prevY = y2;
+      }
+
+      function update() {
+        let A1 = omegadt(omega1);
+        let A2 = omegadt(omega2);
+        let A3 = epsilon1dt(theta1, theta2, omega1, omega2);
+        let A4 = epsilon2dt(theta1, theta2, omega1, omega2);
+
+        let B1 = omegadt(omega1 + A3 / 2);
+        let B2 = omegadt(omega2 + A4 / 2);
+        let B3 = epsilon1dt(
+          theta1 + A1 / 2,
+          theta2 + A2 / 2,
+          omega1 + A3 / 2,
+          omega2 + A4 / 2
+        );
+        let B4 = epsilon2dt(
+          theta1 + A1 / 2,
+          theta2 + A2 / 2,
+          omega1 + A3 / 2,
+          omega2 + A4 / 2
+        );
+
+        let C1 = omegadt(omega1 + B3 / 2);
+        let C2 = omegadt(omega2 + B4 / 2);
+        let C3 = epsilon1dt(
+          theta1 + B1 / 2,
+          theta2 + B2 / 2,
+          omega1 + B3 / 2,
+          omega2 + B4 / 2
+        );
+        let C4 = epsilon2dt(
+          theta1 + B1 / 2,
+          theta2 + B2 / 2,
+          omega1 + B3 / 2,
+          omega2 + B4 / 2
+        );
+
+        let D1 = omegadt(omega1 + C3);
+        let D2 = omegadt(omega2 + C4);
+        let D3 = epsilon1dt(theta1 + C1, theta2 + C2, omega1 + C3, omega2 + C4);
+        let D4 = epsilon2dt(theta1 + C1, theta2 + C2, omega1 + C3, omega2 + C4);
+
+        omega1 += (A3 + 2 * B3 + 2 * C3 + D3) / 6;
+        omega2 += (A4 + 2 * B4 + 2 * C4 + D4) / 6;
+
+        theta1 += (A1 + 2 * B1 + 2 * C1 + D1) / 6;
+        theta2 += (A2 + 2 * B2 + 2 * C2 + D2) / 6;
+
+        theta1Disp.value = String(+theta1.toFixed(2));
+        theta2Disp.value = String(+theta2.toFixed(2));
+
+        if (theta1 > Math.PI) theta1 -= 2 * Math.PI;
+        if (theta2 > Math.PI) theta2 -= 2 * Math.PI;
+        if (theta1 < -Math.PI) theta1 += 2 * Math.PI;
+        if (theta2 < -Math.PI) theta2 += 2 * Math.PI;
+      }
+
+      var dtSlider = 0.3;
+      dtSlider.oninput = function () {
+        dt = 0.3 * Math.exp(2 * (this.value / 50 - 1));
+        dtDisp.value = +dt.toFixed(2);
+      };
+
+      var L1Slider = 100;
+      L1Slider.oninput = function () {
+        L1 = this.value;
+        L1Disp.value = L1;
+        drawPendulum();
+      };
+
+      var L2Slider = 100;
+      L2Slider.oninput = function () {
+        L2 = this.value;
+        L2Disp.value = L2;
+        drawPendulum();
+      };
+
+      var theta1Slider = 1.57;
+      theta1Slider.oninput = function () {
+        initialTheta1 = theta1 = this.value * 0.01;
+        restart();
+      };
+
+      var theta2Slider = 1.96;
+      theta2Slider.oninput = function () {
+        initialTheta2 = theta2 = this.value * 0.01;
+        restart();
+      };
+
+      dtDisp.onchange = function () {
+        dt = +this.value;
+        dtSlider.value = 25 * Math.log(dt / 0.3) + 50;
+      };
+
+      L1Disp.onchange = function () {
+        L1Slider.value = L1 = +this.value;
+        drawPendulum();
+      };
+
+      L2Disp.onchange = function () {
+        L2Slider.value = L2 = +this.value;
+        drawPendulum();
+      };
+
+      theta1Disp.onchange = function () {
+        initialTheta1 = +this.value;
+        theta1Slider.value = initialTheta1 * 100;
+        restart();
+      };
+
+      theta2Disp.onchange = function () {
+        initialTheta2 = +this.value;
+        theta2Slider.value = initialTheta2 * 100;
+        restart();
+      };
+
+      window.requestAnimationFrame(frame);
+
+      function toggleAnimation() {
+        isRunning = !isRunning;
+      }
+
+      function restart() {
+        traceCtx.clearRect(0, 0, traceCanvas.width, traceCanvas.height);
+
+        theta1 = initialTheta1;
+        theta2 = initialTheta2;
+
+        theta1Disp.value = String(+theta1.toFixed(2));
+        theta2Disp.value = String(+theta2.toFixed(2));
+
+        omega1 = 0;
+        omega2 = 0;
+
+        prevX =
+          anchorX + L1 * Math.sin(initialTheta1) + L2 * Math.sin(initialTheta2);
+        prevY =
+          anchorY + L1 * Math.cos(initialTheta1) + L2 * Math.cos(initialTheta2);
+
+        drawPendulum();
+        isRunning = false;
+      }
+
+      function toggleTrace() {
+        var button = document.getElementById("traceButton");
+        if (isTracing) {
+          isTracing = false;
+          button.innerHTML = "Tracing: off";
+        } else {
+          isTracing = true;
+          button.innerHTML = "Tracing: on";
+        }
+      }
+
+      function frame() {
+        if (isRunning) {
+          update();
+
+          theta1Slider.value = theta1 * 100;
+          theta2Slider.value = theta2 * 100;
+
+          drawPendulum();
+        }
+        window.requestAnimationFrame(frame);
+      }
+
+      canvasElem.addEventListener("mousedown", function (e) {
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+      });
+
+      canvasElem.addEventListener("mouseup", function () {
+        isDragging = false;
+      });
+
+      canvasElem.addEventListener("mousemove", function (e) {
+        if (isDragging) {
+          var dx = e.clientX - startX;
+          var dy = e.clientY - startY;
+          theta1 += dx * 0.01; 
+          theta2 += dy * 0.01;
+          startX = e.clientX;
+          startY = e.clientY;
+          drawPendulum();
+        }
+      });
+
+      function clearScreen() {
+        ctx.clearRect(0, 0, canvasElem.width, canvasElem.height);
+        traceCtx.clearRect(0, 0, traceCanvas.width, traceCanvas.height);
+      }
+      function updater() {
+  setInterval(applyRandomColorTheme, 100);
+}
+function updaterTrail() {
+  setInterval(applyRandomTrailTheme, 100);
+}
+
+
+      var isSpeedDoubled = false; 
+      var dtSpeed = 2;
+
+      document.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    toggleAnimation();
+  }
+  if (e.key === "t" || e.key === "T") {
+    toggleTrace();
+  }
+  if (e.key === "c" || e.key === "C") {
+    clearScreen();
+  }
+  if (e.key === "f" || e.key === "F") {
+    if (isSpeedDoubled) {
+      dt *= 1 / dtSpeed; 
+    } else {
+      dt *= dtSpeed; 
+    }
+    dtDisp.value = +dt.toFixed(2);
+    isSpeedDoubled = !isSpeedDoubled; 
+  }
+  if (e.key === "v" || e.key === "V") {
+    updater();
+  }
+  if (e.key === "x" || e.key === "X") {
+    updaterTrail();
+  }
+  if (e.key === "g" || e.key === "G") {
+    applyRandomColorTheme(); 
+  }
+});
+
+  </script>
+</body>
+</html>
