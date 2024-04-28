@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Triach Rold's Blog</title>
+  <style>
+    a:hover {
+      color: #FFDC5E;
+      background-color: transparent;
+      text-decoration: none;
+    }
+    :root {
+      --width: 720px;
+      --font-main: Futura, sans-serif;
+      --font-secondary: Verdana, sans-serif;
+      --font-scale: 1em;
+      --background-color: #fff;
+      --heading-color: #222;
+      --text-color: #444;
+      --link-color: #3273dc;
+      --visited-color: #8b6fcb;
+      --code-background-color: #f2f2f2;
+      --code-color: #222;
+      --blockquote-color: #222;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background-color: #001A23;
+        --heading-color: #eee;
+        --text-color: #ddd;
+        --link-color: #B3EFB2;
+        --visited-color: #91E5F6;
+        --code-background-color: #000;
+        --code-color: #ddd;
+        --blockquote-color: #ccc;
+      }
+    }
+
+    body {
+      font-family: var(--font-secondary);
+      font-size: var(--font-scale);
+      margin: auto;
+      padding: 20px;
+      max-width: var(--width);
+      text-align: left;
+      background-color: var(--background-color);
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      line-height: 1.5;
+      color: var(--text-color);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-main);
+      color: var(--heading-color);
+    }
+
+    a {
+      color: var(--link-color);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: none; 
+    }
+
+    nav a {
+      margin-right: 8px;
+    }
+
+    strong, b {
+      color: var(--heading-color);
+    }
+
+    button {
+      margin: 0;
+      cursor: pointer;
+    }
+
+    time {
+      font-family: monospace;
+      font-style: normal;
+      font-size: 15px;
+    }
+
+    main {
+      line-height: 1.6;
+    }
+
+    table {
+      width: 100%;
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px dashed;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    code {
+      font-family: monospace;
+      padding: 2px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+    }
+
+    blockquote {
+      border-left: 1px solid #999;
+      color: var(--code-color);
+      padding-left: 20px;
+      font-style: italic;
+    }
+
+    footer {
+      padding: 25px 0;
+      text-align: center;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      font-family: Verdana, sans-serif;
+      margin-top: 40px;
+    }
+
+    .title:hover {
+      text-decoration: none;
+    }
+
+    .title h1 {
+      font-size: 1.5em;
+    }
+
+    .inline {
+      width: auto !important;
+    }
+
+    .highlight, .code {
+      padding: 1px 15px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+      margin-block-start: 1em;
+      margin-block-end: 1em;
+      overflow-x: auto;
+    }
+
+    /* blog post list */
+    ul.blog-posts {
+      list-style-type: none;
+      padding: unset;
+    }
+
+    ul.blog-posts li {
+      display: flex;
+    }
+
+    ul.blog-posts li span {
+      flex: 0 0 130px;
+    }
+
+    ul.blog-posts li a:visited {
+      color: var(--visited-color);
+    }
+
+    #canvas {
+      border: 2px solid white;
+      border-color: white;  
+    }
+    
+
+    #canvas:hover {
+      cursor: crosshair;
+    }
+
+    canvas {
+        border: 2px solid #011936;
+    }
+    #triesCount {
+        margin-top: 20px;
+    }
+
+
+@media (min-width: 600px) {
+
+  #aiToggleBtn {
+    display: none;
+  }
+
+}
+@media (max-width: 600px) {
+
+  #aiToggleBtn{
+    font-family: futura;
+    color: var(--link-color);
+    background-color: var(--background-color);
+  }
+  canvas {
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 1/1; 
+    align-self: center;
+}
+
+}
+
+
+  </style>
+</head>
+<body class="home">
+  <header>
+    <a class="title" href="/"><h1>Triach Rold.</h1></a>
+    <nav>
+        <p><a href="../index.html">Home</a><a href="../projects.html">Projects</a><a href="../bloghome.html">Blog</a></p>
+      </nav> 
+  </header>
+  <main>
+    <h1>Impossible Pong.</h1>
+    <p style="text-align: center;">
+        <canvas id="myCanvas" width="720" height="1024"></canvas>
+    </p>
+    <p>
+        <div id="timer" style="font-family: futura; color:var(--link-color); text-align: center; font-size: 1.5em;">Time: 0m 0s</div>
+      <h1>Instructions.</h1>
+      <ul>
+        <li><b>Warning</b> -  Do not play if you're sensitive to <b>flashing lights</b>.</li>
+        <li>Left and right arrow keys to move. Survive as long as you can.</li>
+        <li>The game is still in beta for mobile users because of the viewport stuff.</li>
+      </ul>
+    </p>
+    
+  </main>
+  <footer>
+    <H3>Find a bug?</H3>
+    <span><p>Mail me <a href="mailto:roldtriach@gmail.com">here</a>.</p></span>
+  </footer>
+
+  <!-- Aids -->
+  <script>
+    var canvas = document.getElementById("myCanvas");
+      var ctx = canvas.getContext("2d");
+      var x = canvas.width / 2;
+      var y = canvas.height - 30;
+      var dx = 4;
+      var dy = -4;
+      var ballRadius = 10;
+
+      // top player paddle
+      var topPaddleWidth = 90;
+      var topPaddleHeight = 15;
+      var topPaddleX = canvas.width / 2 - topPaddleWidth / 2;
+      var topPaddleY = 5;
+
+      // bottom player paddle
+      var bottomPaddleWidth = 90;
+      var bottomPaddleHeight = 15;
+      var bottomPaddleX = canvas.width / 2 - bottomPaddleWidth / 2;
+      var bottomPaddleY = canvas.height - (bottomPaddleHeight + 5);
+
+      // boolean to handle pressed keys
+      var topLeftPressed = false;
+      var topRightPressed = false;
+      var bottomLeftPressed = false;
+      var bottomRightPressed = false;
+
+      // colors
+      var colorThemes = [
+        // Dracula Theme
+        ["#282A36", "#50FA7B", "#FF79C6", "#44475A"],
+
+        // Monokai Theme
+        ["#272822", "#F92672", "#A6E22E", "#272822"],
+
+        // Nord Theme
+        ["#2E3440", "#81A1C1", "#88C0D0", "#2E3440"],
+
+        // One Dark Pro Theme
+        ["#282C34", "#C678DD", "#56B6C2", "#282C34"],
+
+        // Material Theme
+        ["#263238", "#FF7043", "#80CBC4", "#263238"],
+
+        // GitHub Theme
+        ["#1B1F23", "#28A745", "#6A737D", "#FFFFFF"],
+
+        // Solarized Light Theme
+        ["#FDF6E3", "#268BD2", "#859900", "#FDF6E3"],
+
+        // Ayu Dark Theme
+        ["#0F1419", "#FFCC66", "#99CC99", "#0F1419"],
+
+        // SynthWave '84 Theme
+        ["#2A2139", "#F0788C", "#45E6B0", "#2A2139"],
+
+        // Tokyo Night Theme
+        ["#1A1B27", "#61AFEF", "#C678DD", "#1A1B27"],
+
+        // Cobalt2 Theme
+        ["#193549", "#FFCC66", "#B5CEA8", "#193549"],
+
+        // Popping and Locking Theme
+        ["#2A2D3E", "#50FA7B", "#FF79C6", "#2A2D3E"],
+
+        // Noctis Lux Theme
+        ["#1F2335", "#5CCFE6", "#FF6E67", "#1F2335"],
+
+        // Horizon Theme
+        ["#1A1C23", "#7DC5E6", "#C574DD", "#1A1C23"],
+
+        // Night Owl Theme
+        ["#011627", "#D6DEEB", "#82AAFF", "#011627"],
+
+        // Gruvbox Dark Theme
+        ["#282828", "#FB4934", "#83A598", "#282828"],
+
+        // Gruvbox Light Theme
+        ["#FBF1C7", "#076678", "#B16286", "#FBF1C7"],
+
+        // Panda Theme
+        ["#292A2B", "#FF6B6B", "#FFCC66", "#292A2B"],
+
+        // Outrun Theme
+        ["#2A1B3D", "#EF3E36", "#FFFFFF", "#2A1B3D"],
+
+        // Flat Theme
+        ["#34495E", "#3498DB", "#E74C3C", "#34495E"],
+
+        // One Dark Theme
+        ["#282C34", "#E06C75", "#98C379", "#282C34"],
+
+        // Twilight Theme
+        ["#14161A", "#F92672", "#A6E22E", "#14161A"],
+
+        // Nord Polar Night Theme
+        ["#2E3440", "#88C0D0", "#D8DEE9", "#2E3440"],
+      ];
+
+      var currentThemeIndex = 0;
+
+      function generateAnticolor(hexColor) {
+        // Remove the '#' if present
+        hexColor = hexColor.replace("#", "");
+
+        // Convert hex to RGB
+        var r = parseInt(hexColor.substring(0, 2), 16);
+        var g = parseInt(hexColor.substring(2, 4), 16);
+        var b = parseInt(hexColor.substring(4, 6), 16);
+
+        // Invert each component to generate the complementary color
+        var antir = 255 - r;
+        var antig = 255 - g;
+        var antib = 255 - b;
+
+        // Convert the inverted RGB values back to hex
+        var anticolorHex =
+          "#" +
+          componentToHex(antir) +
+          componentToHex(antig) +
+          componentToHex(antib);
+
+        return anticolorHex;
+      }
+
+      function componentToHex(c) {
+        var hex = c.toString(16);
+        return hex.length == 1 ? "0" + hex : hex;
+      }
+
+      function pickRandomTheme() {
+        currentThemeIndex = Math.floor(Math.random() * colorThemes.length);
+        var theme = colorThemes[currentThemeIndex];
+        ballColor = generateAnticolor(theme[3]);
+        topPaddleColor = theme[1];
+        bottomPaddleColor = theme[2];
+        backgroundColor = theme[3];
+      }
+
+
+      pickRandomTheme();
+
+      var leftScore = 0;
+      var rightScore = 0;
+
+      function keyDownHandler(e) {
+        if (e.keyCode == 37) {
+          bottomLeftPressed = true;
+        } else if (e.keyCode == 39) {
+          bottomRightPressed = true;
+        }
+        if (e.keyCode == 65) {
+          topLeftPressed = true;
+        } else if (e.keyCode == 68) {
+          topRightPressed = true;
+        }
+      }
+
+      function keyUpHandler(e) {
+        if (e.keyCode == 37) {
+          bottomLeftPressed = false;
+        } else if (e.keyCode == 39) {
+          bottomRightPressed = false;
+        }
+        if (e.keyCode == 65) {
+          topLeftPressed = false;
+        } else if (e.keyCode == 68) {
+          topRightPressed = false;
+        }
+      }
+
+      function drawBall() {
+        ctx.beginPath();
+        ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+        ctx.fillStyle = ballColor;
+        ctx.fill();
+        ctx.closePath();
+      }
+
+      function collisionsWithTopPaddle() {
+        if (y - ballRadius <= 5 + topPaddleHeight) {
+          if (x > topPaddleX && x < topPaddleX + topPaddleWidth) {
+            dy = -dy;
+            pickRandomTheme();
+          } else if (y - ballRadius <= 0) {
+            resetOrder = true;
+            rightScore++;
+            x = canvas.width / 2;
+            y = canvas.height / 2;
+            dx = -dx;
+            dy = -dy;
+            pickRandomTheme();
+          }
+        }
+      }
+
+      function collisionsWithBottomPaddle() {
+        if (y + ballRadius >= canvas.height - (bottomPaddleHeight + 5)) {
+          if (x > bottomPaddleX && x < bottomPaddleX + bottomPaddleWidth) {
+            dy = -dy;
+            pickRandomTheme();
+          } else if (y + ballRadius >= canvas.height) {
+            resetOrder = true;
+            leftScore++;
+            x = canvas.width / 2;
+            y = canvas.height / 2;
+            dx = -dx;
+            dy = -dy;
+            pickRandomTheme();
+          }
+        }
+      }
+
+      function computeCollisionsWithWallsAndPaddle() {
+        collisionsWithTopPaddle();
+        collisionsWithBottomPaddle();
+        if (x - ballRadius <= 0 || x + ballRadius >= canvas.width) {
+          dx = -dx;
+        }
+      }
+
+      function drawTopPaddle() {
+        ctx.beginPath();
+        ctx.rect(topPaddleX, topPaddleY, topPaddleWidth, topPaddleHeight);
+        ctx.fillStyle = topPaddleColor;
+        ctx.fill();
+        ctx.closePath();
+
+
+        if (topPaddleX < 0) {
+          topPaddleX = 0;
+        }
+        if (topPaddleX + topPaddleWidth > canvas.width) {
+          topPaddleX = canvas.width - topPaddleWidth;
+        }
+
+
+        var targetX = x - topPaddleWidth / 2;
+
+
+        if (targetX < topPaddleX) {
+          topPaddleX -= 7;
+        } else if (targetX > topPaddleX) {
+          topPaddleX += 7;
+        }
+      }
+
+      function drawBottomPaddle() {
+        ctx.beginPath();
+        ctx.rect(
+          bottomPaddleX,
+          bottomPaddleY,
+          bottomPaddleWidth,
+          bottomPaddleHeight
+        );
+        ctx.fillStyle = bottomPaddleColor;
+        ctx.fill();
+        ctx.closePath();
+        if (bottomLeftPressed && bottomPaddleX > 0) {
+          bottomPaddleX -= 7;
+        } else if (
+          bottomRightPressed &&
+          bottomPaddleX < canvas.width - bottomPaddleWidth
+        ) {
+          bottomPaddleX += 7;
+        }
+      }
+
+      function drawScene() {
+        ctx.beginPath();
+        ctx.rect(0, canvas.height / 2 - 1, canvas.width, 3);
+        ctx.fillStyle = "white";
+        ctx.fill();
+        ctx.closePath();
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = backgroundColor;
+        ctx.fillRect(0, 0, canvas.width, canvas.height); 
+        drawScene();
+        drawTopPaddle();
+        drawBottomPaddle();
+        updateTimer();
+        drawBall();
+        computeCollisionsWithWallsAndPaddle();
+        x += dx;
+        y += dy;
+      }
+
+    var startTime;
+    var elapsedTime = 0;
+    var timerInterval;
+    var resetOrder = false;
+
+    // Function to start the timer
+    function startTimer() {
+      startTime = Date.now() - elapsedTime;
+      timerInterval = setInterval(updateTimer, 1000);
+    }
+
+
+    function stopTimer() {
+      clearInterval(timerInterval);
+    }
+
+    
+
+
+
+    function updateTimer() {
+      if(resetOrder){
+        minutes = 0;
+        seconds = 0;
+        startTime = Date.now();
+        resetOrder = !resetOrder;
+      }else{
+      elapsedTime = Date.now() - startTime;
+      var minutes = Math.floor((elapsedTime / 1000) / 60);
+      var seconds = Math.floor((elapsedTime / 1000) % 60);
+      document.getElementById("timer").textContent = "Time: " + minutes + "m " + seconds + "s";
+      }  
+    }
+
+    // Event listener for touch events to detect swipes
+    canvas.addEventListener("touchstart", handleTouchStart, false);
+    canvas.addEventListener("touchmove", handleTouchMove, false);
+
+    var xDown = null;
+    var yDown = null;
+
+
+    function handleTouchStart(evt) {
+      xDown = evt.touches[0].clientX;
+      yDown = evt.touches[0].clientY;
+    }
+
+
+    function handleTouchMove(evt) {
+      if (!xDown || !yDown) {
+        return;
+      }
+
+      var xUp = evt.touches[0].clientX;
+      var yUp = evt.touches[0].clientY;
+
+      var xDiff = xDown - xUp;
+      var yDiff = yDown - yUp;
+
+      if (Math.abs(xDiff) > Math.abs(yDiff)) {
+        if (xDiff > 0) {
+          // Swipe left
+          bottomLeftPressed = true;
+          bottomRightPressed = false;
+        } else {
+          // Swipe right
+          bottomRightPressed = true;
+          bottomLeftPressed = false;
+        }
+      } else {
+        if (yDiff > 0) {
+          /* Swipe up */
+        } else {
+          /* Swipe down */
+        }
+      }
+
+      // Reset touch start coordinates
+      xDown = null;
+      yDown = null;
+
+      evt.preventDefault();
+    }
+
+
+    // Start the timer when the game starts
+    startTimer();
+
+    
+
+      setInterval(draw, 10);
+      document.addEventListener("keydown", keyDownHandler, false);
+      document.addEventListener("keyup", keyUpHandler, false);
+  </script>
+</body>
+</html>
