@@ -177,18 +177,38 @@
       cursor: crosshair;
     }
 
-    #sudokuCanvas {
-    background-color: #465362; /* Sudoku fill color */
-    color: #F9DC5C; /* Sudoku text color */
-    text-align: center;
-    }
-
     canvas {
         border: 2px solid #011936;
     }
     #triesCount {
         margin-top: 20px;
     }
+    /* Add this CSS at the end of your <style> section */
+
+@media (min-width: 600px) {
+  /* Hide game elements when screen size is larger than typical phone */
+  #aiToggleBtn {
+    display: none;
+  }
+
+}
+@media (max-width: 600px) {
+  /* Adjust canvas size for phones */
+  #aiToggleBtn{
+    font-family: futura;
+    color: var(--link-color);
+    background-color: var(--background-color);
+  }
+  canvas {
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 1/1; /* Maintain a square aspect ratio */
+    align-self: center;
+}
+
+}
+
+
   </style>
 </head>
 <body class="home">
@@ -204,6 +224,7 @@
         <canvas id="gameCanvas" width="400" height="400"></canvas>
         <div id="score" style=" text-align: center; font-family: Futura;">Score: 0</div>
     </p>
+    <button id="aiToggleBtn" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 999;">Toggle AI</button>
     <p>
       <h1>Instructions.</h1>
       <ul>
@@ -760,51 +781,82 @@
     gameLoop();
 
 // roots of a mobile support 
+ // Add touch event handlers
+ let touchStartX = 0;
+    let touchStartY = 0;
 
-let touchStartX = 0;
-  let touchStartY = 0;
-
-  function handleTouchStart(event) {
-    const touch = event.touches[0];
-    touchStartX = touch.clientX;
-    touchStartY = touch.clientY;
-  }
-
-  function handleTouchMove(event) {
-    if (!touchStartX || !touchStartY) {
-      return;
+    function handleTouchStart(event) {
+      // Store initial touch position
+      const touch = event.touches[0];
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+      // Prevent default action (e.g., scrolling)
+      event.preventDefault();
     }
 
-    const touch = event.touches[0];
-    const deltaX = touch.clientX - touchStartX;
-    const deltaY = touch.clientY - touchStartY;
+    function handleTouchMove(event) {
+      if (!touchStartX || !touchStartY) {
+        return;
+      }
 
-    if (Math.abs(deltaX) > Math.abs(deltaY)) {
-      // Horizontal swipe
-      if (deltaX > 0) {
-        // Swipe right
-        handleKeyDown({ key: 'd' });
+      const touch = event.touches[0];
+      const deltaX = touch.clientX - touchStartX;
+      const deltaY = touch.clientY - touchStartY;
+
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        // Horizontal swipe
+        if (deltaX > 0) {
+          // Swipe right
+          handleKeyDown({ key: 'd' });
+        } else {
+          // Swipe left
+          handleKeyDown({ key: 'a' });
+        }
       } else {
-        // Swipe left
-        handleKeyDown({ key: 'a' });
+        // Vertical swipe
+        if (deltaY > 0) {
+          // Swipe down
+          handleKeyDown({ key: 's' });
+        } else {
+          // Swipe up
+          handleKeyDown({ key: 'w' });
+        }
       }
-    } else {
-      // Vertical swipe
-      if (deltaY > 0) {
-        // Swipe down
-        handleKeyDown({ key: 's' });
-      } else {
-        // Swipe up
-        handleKeyDown({ key: 'w' });
-      }
+
+      touchStartX = 0;
+      touchStartY = 0;
+      // Prevent default action (e.g., scrolling)
+      event.preventDefault();
     }
 
-    touchStartX = 0;
-    touchStartY = 0;
-  }
+    // Add touch event listeners to the canvas
+    canvas.addEventListener('touchstart', handleTouchStart, false);
+    canvas.addEventListener('touchmove', handleTouchMove, false);
 
-  canvas.addEventListener('touchstart', handleTouchStart, false);
-  canvas.addEventListener('touchmove', handleTouchMove, false);
+    // Function to enable scrolling when tapping outside the canvas
+    function enableScrolling() {
+      document.body.style.overflow = 'auto';
+    }
+
+    // Function to disable scrolling when tapping on the canvas
+    function disableScrolling() {
+      document.body.style.overflow = 'hidden';
+    }
+
+    function toggleAI() {
+      isAIplay = !isAIplay;
+      document.getElementById("aiToggleBtn").innerText = isAIplay ? "Stop AI" : "Start AI";
+    }
+
+    // Add event listener to the button to toggle AI mode
+    document.getElementById("aiToggleBtn").addEventListener("click", toggleAI);
+
+
+
+
+    // Add event listeners to disable and enable scrolling
+    canvas.addEventListener('touchstart', disableScrolling, false);
+    document.addEventListener('touchend', enableScrolling, false);
 
 
 
