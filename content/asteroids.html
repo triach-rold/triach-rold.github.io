@@ -1,0 +1,844 @@
+<html lang="en">
+<head>
+  <title>Triach Rold's Blog</title>
+  <style>
+    a:hover {
+      color: #FFDC5E;
+      background-color: transparent;
+      text-decoration: none;
+    }
+    :root {
+      --width: 720px;
+      --font-main: Futura, sans-serif;
+      --font-secondary: Verdana, sans-serif;
+      --font-scale: 1em;
+      --background-color: #fff;
+      --heading-color: #222;
+      --text-color: #444;
+      --link-color: #3273dc;
+      --visited-color: #8b6fcb;
+      --code-background-color: #f2f2f2;
+      --code-color: #222;
+      --blockquote-color: #222;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background-color: #001A23;
+        --heading-color: #eee;
+        --text-color: #ddd;
+        --link-color: #B3EFB2;
+        --visited-color: #91E5F6;
+        --code-background-color: #000;
+        --code-color: #ddd;
+        --blockquote-color: #ccc;
+      }
+    }
+
+    body {
+      font-family: var(--font-secondary);
+      font-size: var(--font-scale);
+      margin: auto;
+      padding: 20px;
+      max-width: var(--width);
+      text-align: left;
+      background-color: var(--background-color);
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      line-height: 1.5;
+      color: var(--text-color);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-main);
+      color: var(--heading-color);
+    }
+
+    a {
+      color: var(--link-color);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: none; 
+    }
+
+    nav a {
+      margin-right: 8px;
+    }
+
+    strong, b {
+      color: var(--heading-color);
+    }
+
+    button {
+      margin: 0;
+      cursor: pointer;
+    }
+
+    time {
+      font-family: monospace;
+      font-style: normal;
+      font-size: 15px;
+    }
+
+    main {
+      line-height: 1.6;
+    }
+
+    table {
+      width: 100%;
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px dashed;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    code {
+      font-family: monospace;
+      padding: 2px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+    }
+
+    blockquote {
+      border-left: 1px solid #999;
+      color: var(--code-color);
+      padding-left: 20px;
+      font-style: italic;
+    }
+
+    footer {
+      padding: 25px 0;
+      text-align: center;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      font-family: Verdana, sans-serif;
+      margin-top: 40px;
+    }
+
+    .title:hover {
+      text-decoration: none;
+    }
+
+    .title h1 {
+      font-size: 1.5em;
+    }
+
+    .inline {
+      width: auto !important;
+    }
+
+    .highlight, .code {
+      padding: 1px 15px;
+      background-color: var(--code-background-color);
+      color: var(--code-color);
+      border-radius: 3px;
+      margin-block-start: 1em;
+      margin-block-end: 1em;
+      overflow-x: auto;
+    }
+
+    /* blog post list */
+    ul.blog-posts {
+      list-style-type: none;
+      padding: unset;
+    }
+
+    ul.blog-posts li {
+      display: flex;
+    }
+
+    ul.blog-posts li span {
+      flex: 0 0 130px;
+    }
+
+    ul.blog-posts li a:visited {
+      color: var(--visited-color);
+    }
+
+    #canvas {
+      border: 2px solid white;
+      border-color: white;  
+    }
+    
+
+    #canvas:hover {
+      cursor: crosshair;
+    }
+
+    #sudokuCanvas {
+    background-color: #465362;
+    color: #F9DC5C;
+    text-align: center;
+    }
+
+    canvas {
+        border: 2px solid #011936;
+    }
+    #triesCount {
+        margin-top: 20px;
+    }
+  </style>
+</head>
+<body class="home">
+  <header>
+    <a class="title" href="/"><h1>Triach Rold.</h1></a>
+    <nav>
+        <p><a href="../index.html">Home</a><a href="../projects.html">Projects</a><a href="../bloghome.html">Blog</a></p>
+      </nav> 
+  </header>
+  <main>
+    <h1>Asteroids.</h1>
+    <audio id="shoot-sound" src="shoot.wav"></audio>
+    <div class="canvas-container" style="text-align: center;">
+      <canvas id="screen" width="500" height="500"></canvas>
+    </div>
+    <p id="score" style="text-align: center; font-family: futura; color: var(--link-color);">Score: 0</p>
+    <p>
+      <h1>Instructions.</h1>
+      <ul>
+        <li><b>Warning</b> -  Do not play if you're sensitive to <b>flashing lights</b>.</li>
+        <li>Simulation starts automatically. Use WASD/Arrow keys to move, spacebar or q key to shoot. Press R to restart the game if you die.</li>
+      </ul>
+    </p>
+    
+  </main>
+  <footer>
+    <H3>Find a bug?</H3>
+    <span><p>Mail me <a href="mailto:roldtriach@gmail.com">here</a>.</p></span>
+  </footer>
+  <script>
+    (function () {
+      var backgroundColor = "black";
+      var asteroidColor = "white";
+      var shipColor = "green";
+      var bulletColor = "red";
+      var start = true;
+
+      var score = 0;
+      var scoreParagraph = document.getElementById("score");
+
+      var Game = function () {
+    var screen = document.getElementById("screen").getContext("2d");
+
+    this.size = { x: screen.canvas.width, y: screen.canvas.height };
+    this.center = { x: this.size.x / 2, y: this.size.y / 2 };
+
+    this.bodies = [
+        new Player(this),
+    ];
+
+    this.shootSound = document.getElementById("shoot-sound");
+
+    var self = this;
+    var tick = function () {
+        self.update();
+        self.draw(screen);
+        requestAnimationFrame(tick);
+    };
+
+    tick();
+    var addAsteroid = function () {
+    var x, y;
+    var toxicRadius = 20;    
+    do {
+        x = Math.random() * self.size.x;
+        y = Math.random() * self.size.y;
+    } while (Math.sqrt((x - self.bodies[0].center.x) ** 2 + (y - self.bodies[0].center.y) ** 2) < toxicRadius);
+
+    var radius = Math.random() * 30 + 10; 
+    self.addBody(new Asteroid(self, { x: x, y: y }, radius));
+    setTimeout(addAsteroid, Math.random() * 3000 + 1000); 
+};
+
+    addAsteroid();
+};
+
+
+      Game.prototype = {
+        update: function () {
+          reportCollisions(this.bodies);
+
+          for (var i = 0; i < this.bodies.length; i++) {
+            this.bodies[i].update();
+          }
+        },
+
+        draw: function (screen) {
+          screen.clearRect(0, 0, this.size.x, this.size.y);
+          screen.fillStyle = backgroundColor;
+          screen.fillRect(0, 0, this.size.x, this.size.y);
+          for (var i = 0; i < this.bodies.length; i++) {
+            this.bodies[i].draw(screen);
+          }
+        },
+
+        addBody: function (body) {
+          this.bodies.push(body);
+        },
+
+        removeBody: function (body) {
+          var bodyIndex = this.bodies.indexOf(body);
+          if (bodyIndex !== -1) {
+            this.bodies.splice(bodyIndex, 1);
+          }
+        },
+
+        wrapIfOffScreen: function (obj) {
+          var screen = geom.rect(this);
+          if (
+            (obj.points.filter(function (p) {
+              return p.x > screen.l;
+            }).length === 0 &&
+              obj.velocity.x < 0) ||
+            (obj.points.filter(function (p) {
+              return p.x < screen.r;
+            }).length === 0 &&
+              obj.velocity.x > 0)
+          ) {
+            moveBody(obj, { x: this.size.x - obj.center.x, y: obj.center.y });
+          } else if (
+            (obj.points.filter(function (p) {
+              return p.y > screen.t;
+            }).length === 0 &&
+              obj.velocity.y < 0) ||
+            (obj.points.filter(function (p) {
+              return p.y < screen.b;
+            }).length === 0 &&
+              obj.velocity.y > 0)
+          ) {
+            moveBody(obj, { x: obj.center.x, y: this.size.y - obj.center.y });
+          }
+        },
+      };
+
+      var Asteroid = function (game, center, radius) {
+        this.game = game;
+        this.angle = 0;
+        this.center = center;
+        this.radius = radius;
+        this.points = asteroidPoints(center, radius, 10);
+        this.velocity = { x: Math.random() - 0.5, y: Math.random() - 0.5 };
+      };
+
+      Asteroid.prototype = {
+        update: function () {
+          moveBody(this, geom.translate(this.center, this.velocity));
+          this.game.wrapIfOffScreen(this);
+        },
+
+        draw: function (screen) {
+          screen.strokeStyle = asteroidColor;
+          drawLinesFromPoints(screen, this.points);
+        },
+
+        collision: function (otherBody) {
+          if (otherBody instanceof Player || otherBody instanceof Bullet) {
+            this.game.removeBody(this);
+            this.game.removeBody(otherBody);
+            if (this.radius > 10) {
+              var radius = this.radius - 10;
+              this.game.addBody(
+                new Asteroid(
+                  this.game,
+                  { x: this.center.x, y: this.center.y },
+                  radius
+                )
+              );
+              this.game.addBody(
+                new Asteroid(
+                  this.game,
+                  { x: this.center.x, y: this.center.y },
+                  radius
+                )
+              );
+            }
+
+            applyColorTheme();
+            score += 10;
+            updateScore();
+          }
+        },
+      };
+
+      var drawLinesFromPoints = function (screen, points) {
+        var lines = pointsToLines(points);
+        screen.beginPath();
+        screen.moveTo(lines[0][0].x, lines[0][0].y);
+        for (var i = 0; i < lines.length; i++) {
+          screen.lineTo(lines[i][1].x, lines[i][1].y);
+        }
+        screen.closePath();
+        screen.stroke();
+      };
+
+      var moveBody = function (body, center) {
+        var translation = geom.vectorTo(body.center, center);
+        body.center = center;
+        body.points = body.points.map(function (x) {
+          return geom.translate(x, translation);
+        });
+      };
+
+      var Player = function (game) {
+        this.game = game;
+        this.angle = 0;
+        this.center = { x: this.game.center.x, y: this.game.center.y };
+        this.points = [
+          { x: this.center.x - 8, y: this.center.y + 9 },
+          { x: this.center.x, y: this.center.y - 10 },
+          { x: this.center.x + 8, y: this.center.y + 9 },
+        ];
+        this.velocity = { x: 0, y: 0 };
+        this.keyboarder = new Keyboarder();
+        this.lastShotTime = 0;
+      };
+
+      Player.prototype = {
+        update: function () {
+          if (this.keyboarder.isDown(this.keyboarder.KEYS.LEFT)) {
+            this.turn(-0.1);
+          } else if (this.keyboarder.isDown(this.keyboarder.KEYS.RIGHT)) {
+            this.turn(0.1);
+          }
+          if (this.keyboarder.isDown(this.keyboarder.KEYS.A)) {
+            this.turn(-0.1);
+          } else if (this.keyboarder.isDown(this.keyboarder.KEYS.D)) {
+            this.turn(0.1);
+          }
+
+          if (this.keyboarder.isDown(this.keyboarder.KEYS.UP)) {
+            this.velocity = geom.translate(
+              this.velocity,
+              geom.rotate({ x: 0, y: -0.05 }, { x: 0, y: 0 }, this.angle)
+            );
+          }
+          if (this.keyboarder.isDown(this.keyboarder.KEYS.W)) {
+            this.velocity = geom.translate(
+              this.velocity,
+              geom.rotate({ x: 0, y: -0.05 }, { x: 0, y: 0 }, this.angle)
+            );
+          }
+          var level = 0;
+          var justUpdated = false;
+          function updateLevel() {
+    if (score % (Math.pow(2, level) * 100) === 0) {
+        level++;
+        justUpdated = true;
+    }
+}
+
+function updateShotCount() {
+    if (fireCooldownTime <= 0) {
+        fireCooldownTime = 500;
+    }
+    if (justUpdated) {
+        fireCooldownTime = 500 + 100 * (level);
+        justUpdated = !justUpdated;
+    } else {
+        fireCooldownTime = fireCooldownTime - (level * 10);
+    }
+    return fireCooldownTime;
+}
+
+          var start = true;
+          if(start){
+            fireCooldownTime = 500;
+            start = !start;
+          }else{
+            updateShotCount;
+          } 
+          var now = new Date().getTime();
+          if (
+            (this.keyboarder.isDown(this.keyboarder.KEYS.SPACE)||this.keyboarder.isDown(this.keyboarder.KEYS.Q) )&&
+            now - this.lastShotTime > fireCooldownTime
+          ) {
+            this.lastShotTime = now;
+            this.game.shootSound.load();
+            this.game.shootSound.play();
+            this.game.addBody(
+              new Bullet(
+                this.game,
+                { x: this.points[1].x, y: this.points[1].y },
+                this.angle
+              )
+            );
+          }
+
+          moveBody(this, geom.translate(this.center, this.velocity));
+          this.game.wrapIfOffScreen(this);
+        },
+
+        turn: function (angleDelta) {
+          var center = this.center;
+          this.points = this.points.map(function (x) {
+            return geom.rotate(x, center, angleDelta);
+          });
+          this.angle += angleDelta;
+        },
+
+        draw: function (screen) {
+          screen.strokeStyle = shipColor;
+          drawLinesFromPoints(screen, this.points);
+        },
+      };
+
+      var Bullet = function (game, start, angle) {
+        this.game = game;
+        this.velocity = geom.rotate({ x: 0, y: -5 }, { x: 0, y: 0 }, angle);
+        this.angle = 0;
+        this.center = start;
+        this.points = [
+          start,
+          geom.translate(start, { x: this.velocity.x, y: this.velocity.y }),
+        ];
+      };
+
+      Bullet.prototype = {
+        update: function () {
+          moveBody(this, geom.translate(this.center, this.velocity));
+
+          var gameRect = geom.rect(this.game);
+          if (
+            this.center.x < gameRect.l ||
+            this.center.x > gameRect.r ||
+            this.center.y < gameRect.t ||
+            this.center.y > gameRect.b
+          ) {
+            this.game.removeBody(this);
+          }
+        },
+
+        draw: function (screen) {
+          screen.strokeStyle = bulletColor;
+          drawLinesFromPoints(screen, this.points);
+        },
+
+        collision: function (otherBody) {
+          if (otherBody instanceof Asteroid) {
+            this.game.removeBody(this);
+            this.game.removeBody(otherBody);
+          }
+        },
+      };
+
+      var Keyboarder = function () {
+        var keyState = {};
+
+        window.addEventListener("keydown", function (e) {
+          keyState[e.keyCode] = true;
+        });
+
+        window.addEventListener("keyup", function (e) {
+          keyState[e.keyCode] = false;
+        });
+
+        this.isDown = function (keyCode) {
+          return keyState[keyCode] === true;
+        };
+
+        this.KEYS = { LEFT: 37, RIGHT: 39, UP: 38, SPACE: 32, A:65, D:68, S:83, W:87, Q:81 };
+      };
+
+      var pointsToLines = function (points) {
+        var lines = [];
+        var previous = points[0];
+        for (var i = 1; i < points.length; i++) {
+          lines.push([previous, points[i]]);
+          previous = points[i];
+        }
+
+        lines.push([previous, lines[0][0]]);
+        return lines;
+      };
+
+      var drawLine = function (screen, line) {
+        screen.beginPath();
+        screen.moveTo(line[0].x, line[0].y);
+        screen.lineTo(line[1].x, line[1].y);
+        screen.stroke();
+      };
+
+      var asteroidPoints = function (center, radius, pointCount) {
+        var points = [];
+        for (var a = 0; a < 2 * Math.PI; a += (2 * Math.PI) / pointCount) {
+          var random = Math.random();
+          points.push(
+            geom.rotate(
+              {
+                x: center.x + radius * (0.2 + random),
+                y: center.y - radius * (0.2 + random),
+              },
+              center,
+              a
+            )
+          );
+        }
+
+        return points;
+      };
+
+      var pairs = function (a, b) {
+        var pairs = [];
+        for (var i = 0; i < a.length; i++) {
+          for (var j = 0; j < b.length; j++) {
+            pairs.push([a[i], b[j]]);
+          }
+        }
+        return pairs;
+      };
+
+      var isColliding = function (b1, b2) {
+        if (b1 === b2) return false;
+        return (
+          pairs(pointsToLines(b1.points), pointsToLines(b2.points)).filter(
+            function (x) {
+              return geom.linesIntersecting(x[0], x[1]);
+            }
+          ).length > 0
+        );
+      };
+
+      var reportCollisions = function (bodies) {
+        var collisions = [];
+        for (var i = 0; i < bodies.length; i++) {
+          for (var j = i + 1; j < bodies.length; j++) {
+            if (isColliding(bodies[i], bodies[j])) {
+              collisions.push([bodies[i], bodies[j]]);
+            }
+          }
+        }
+
+        for (var i = 0; i < collisions.length; i++) {
+          if (collisions[i][0].collision !== undefined) {
+            collisions[i][0].collision(collisions[i][1]);
+          }
+
+          if (collisions[i][1].collision !== undefined) {
+            collisions[i][1].collision(collisions[i][0]);
+          }
+        }
+      };
+
+      var geom = {
+        translate: function (point, translation) {
+          return { x: point.x + translation.x, y: point.y + translation.y };
+        },
+
+        vectorTo: function (point1, point2) {
+          return { x: point2.x - point1.x, y: point2.y - point1.y };
+        },
+
+        rotate: function (point, pivot, angle) {
+          return {
+            x:
+              (point.x - pivot.x) * Math.cos(angle) -
+              (point.y - pivot.y) * Math.sin(angle) +
+              pivot.x,
+            y:
+              (point.x - pivot.x) * Math.sin(angle) +
+              (point.y - pivot.y) * Math.cos(angle) +
+              pivot.y,
+          };
+        },
+
+        linesIntersecting: function (a, b) {
+          var d =
+            (b[1].y - b[0].y) * (a[1].x - a[0].x) -
+            (b[1].x - b[0].x) * (a[1].y - a[0].y);
+          var n1 =
+            (b[1].x - b[0].x) * (a[0].y - b[0].y) -
+            (b[1].y - b[0].y) * (a[0].x - b[0].x);
+          var n2 =
+            (a[1].x - a[0].x) * (a[0].y - b[0].y) -
+            (a[1].y - a[0].y) * (a[0].x - b[0].x);
+
+          if (d === 0.0) return false;
+          return n1 / d >= 0 && n1 / d <= 1 && n2 / d >= 0 && n2 / d <= 1;
+        },
+
+        rect: function (obj) {
+          return {
+            l: obj.center.x - obj.size.x / 2,
+            r: obj.center.x + obj.size.x / 2,
+            t: obj.center.y - obj.size.y / 2,
+            b: obj.center.y + obj.size.y / 2,
+          };
+        },
+      };
+
+      const colorThemes = [
+        ["#2A2B2E", "#FDCA40", "#59FFA0"],
+        ["#004E64", "#7AE582", "#9FFFCB"],
+        ["#333745", "#E63462", "#EEF5DB"],
+        ["#00072D", "#0E6BA8", "#A6E1FA"],
+        ["#AB87FF", "#B4E1FF", "#F5FFC6"],
+        ["#2E3440", "#88C0D0", "#D8DEE9"],
+        ["#282A36", "#FF79C6", "#50FA7B"],
+        ["#282828", "#FB4934", "#83A598"],
+        ["#263238", "#FF7043", "#4DB6AC"],
+        ["#272822", "#AE81FF", "#66D9EF"],
+        ["#002B36", "#B58900", "#859900"],
+        ["#FDF6E3", "#268BD2", "#859900"],
+        ["#0F1419", "#FFCC66", "#99CC99"],
+        ["#1E282E", "#FFD57F", "#A6D3A0"],
+        ["#FAFAFA", "#FFA657", "#99CC99"],
+        ["#1A1B27", "#61AFEF", "#C678DD"],
+        ["#1F2335", "#46D9FF", "#E95678"],
+        ["#FAFAFA", "#6699CC", "#C678DD"],
+        ["#282828", "#FB4934", "#83A598"],
+        ["#FBF1C7", "#076678", "#B16286"],
+        ["#282C34", "#E06C75", "#98C379"],
+        ["#14161A", "#F92672", "#A6E22E"],
+        ["#1C1C1C", "#83AFE5", "#D7D7D7"],
+        ["#F3F3F3", "#83AFE5", "#D7D7D7"],
+        ["#3F3F3F", "#8CD0D3", "#DFAF8F"],
+        ["#151515", "#DC657D", "#7DAAEA"],
+        ["#F5F5F5", "#DC657D", "#7DAAEA"],
+        ["#1B1F23", "#28A745", "#6A737D"],
+        ["#FFFFFF", "#28A745", "#6A737D"],
+        ["#282828", "#FF5E00", "#8EC07C"],
+        ["#1B2B34", "#EC5f67", "#C3E88D"],
+        ["#C7FF00", "#00AFAD", "#D7005F"],
+        ["#00C5C7", "#FFA724", "#8959A8"],
+        ["#CBC0D3", "#99C794", "#EC5F67"],
+        ["#82Aaff", "#FF9F1C", "#19F9D8"],
+        ["#ECEFF4", "#5E81AC", "#88C0D0"],
+        ["#282A36", "#FF79C6", "#50FA7B"],
+        ["#1D252C", "#00A3CC", "#ABB2BF"],
+        ["#0A0C0E", "#A41A4B", "#0E787E"],
+        ["#202125", "#F56B6B", "#9EFFA2"],
+        ["#08577A", "#EE6352", "#FFB997"],
+        ["#2A1B3D", "#EF3E36", "#FFFFFF"],
+        ["#2A2139", "#F0788C", "#45E6B0"],
+        ["#4B3F72", "#EE6352", "#20BF55"],
+        ["#0B0E11", "#FF5A5F", "#00C9A7"],
+        ["#2B2B2B", "#00A4EF", "#E81123"],
+        ["#000000", "#009BFF", "#FF0000"],
+        ["#34495E", "#3498DB", "#E74C3C"],
+        ["#2C3E50", "#3498DB", "#E74C3C"],
+        ["#2A2734", "#FF6B82", "#FF9E64"],
+        ["#FF5977", "#FFD15C", "#59FFA5"],
+        ["#2E3440", "#88C0D0", "#ECEFF4"],
+        ["#282A36", "#FF6E67", "#50FA7B"],
+        ["#2F343F", "#FF5C57", "#5AF78E"],
+        ["#2A1B3D", "#FF869A", "#FFFFFF"],
+        ["#24252B", "#FF715B", "#4CB2FF"],
+        ["#2C3E50", "#ECF0F1", "#3498DB"],
+        ["#2C2E37", "#FF465B", "#3AFFDB"],
+        ["#FFFFFF", "#FF465B", "#3AFFDB"],
+        ["#282C34", "#4CAF50", "#FF4081"],
+        ["#292A2B", "#FF6B6B", "#FFCC66"],
+        ["#1A1C23", "#7DC5E6", "#C574DD"],
+        ["#F0F6FC", "#7DC5E6", "#C574DD"],
+        ["#1D2021", "#FE8019", "#458588"],
+        ["#181818", "#B7AA9B", "#6D9D75"],
+        ["#292D3E", "#FFCC66", "#89DDFF"],
+        ["#202124", "#FFD666", "#76E094"],
+        ["#FAFAFA", "#FF7043", "#4DB6AC"],
+        ["#121212", "#FF6D67", "#C8FF00"],
+        ["#0A0814", "#70A4B2", "#ECEFF4"],
+        ["#D5E5EB", "#3D8EB9", "#6FB4CE"],
+        ["#1E2029", "#738FFE", "#A4B3C1"],
+        ["#F3F4F6", "#00A3CC", "#ABB2BF"],
+        ["#011627", "#D6DEEB", "#82AAFF"],
+        ["#12141D", "#E9DAAC", "#61AFEF"],
+        ["#0E0E0E", "#FF7272", "#4FC1FF"],
+        ["#1A1B27", "#61AFEF", "#C678DD"],
+        ["#263238", "#26C6DA", "#FBC02D"],
+        ["#0F1419", "#F29718", "#B3E283"],
+        ["#FAFAFA", "#F29718", "#8CDE97"],
+        ["#FAFAFA", "#E6B673", "#86B300"],
+        ["#2A2734", "#FF6B82", "#FF9E64"],
+        ["#FAF8F9", "#FF7582", "#FF9E64"],
+        ["#1F1D2B", "#726E8A", "#9A99B8"],
+        ["#2C2C2C", "#76BEE4", "#FF9A9E"],
+        ["#333344", "#E06C75", "#98C379"],
+        ["#2D2D2D", "#FF5A5F", "#5ADAD5"],
+        ["#292A44", "#A8A7FF", "#7CA9E6"],
+        ["#282A36", "#FF79C6", "#50FA7B"],
+        ["#0A0F14", "#00A2FF", "#1ABC9C"],
+        ["#2C2541", "#8A79B8", "#6A4F7D"],
+        ["#2B213A", "#5D3F6A", "#7FE0F2"],
+        ["#1A1F26", "#72CCDD", "#FFA06A"],
+        ["#292D3E", "#FFCC66", "#89DDFF"],
+        ["#FDF0ED", "#F5A962", "#5D737E"],
+        ["#FAFAFA", "#4078F2", "#56B6C2"],
+        ["#FDF4DB", "#FF7619", "#80D16D"],
+        ["#363838", "#FF7619", "#80D16D"],
+        ["#1C1C1C", "#FF0DFF", "#00FFFF"],
+        ["#1E2029", "#61AFEF", "#C678DD"],
+        ["#272A34", "#61AFEF", "#C678DD"],
+        ["#F0F6FC", "#D6DEEB", "#82AAFF"],
+        ["#FAFAFA", "#61AFEF", "#C678DD"],
+        ["#0E0E0E", "#FF7272", "#4FC1FF"],
+        ["#E4E4E4", "#FF7272", "#4FC1FF"],
+        ["#383838", "#D75F00", "#86CA98"],
+        ["#1B2B34", "#EC5f67", "#C3E88D"],
+        ["#D8DEE9", "#EC5f67", "#C3E88D"],
+        ["#21243D", "#6CB6FF", "#A4B2C3"],
+        ["#282A36", "#FF79C6", "#50FA7B"],
+        ["#1F2022", "#51AFEF", "#D7DAE0"],
+        ["#FFFFFF", "#51AFEF", "#D7DAE0"],
+        ["#18222D", "#005F87", "#2A7FD9"],
+        ["#1B1F23", "#28A745", "#6A737D"],
+        ["#1B1F23", "#28A745", "#6A737D"],
+        ["#FFFFFF", "#28A745", "#6A737D"],
+        ["#FFFFFF", "#28A745", "#6A737D"],
+        ["#161B22", "#28A745", "#6A737D"],
+        ["#161B22", "#28A745", "#6A737D"],
+        ["#2C2E37", "#FF465B", "#3AFFDB"],
+        ["#FFFFFF", "#FF465B", "#3AFFDB"],
+        ["#1D252C", "#00A3CC", "#ABB2BF"],
+        ["#F3F4F6", "#00A3CC", "#ABB2BF"],
+        ["#292D3E", "#FFCC66", "#89DDFF"],
+        ["#292D3E", "#FF6B82", "#7CB2FF"],
+        ["#12141D", "#E9DAAC", "#61AFEF"],
+        ["#1D1F21", "#D33682", "#B58900"],
+        ["#1E1E1E", "#569CD6", "#C586C0"],
+      ];
+
+      function getRandomColorTheme() {
+        const randomIndex = Math.floor(Math.random() * colorThemes.length);
+        return colorThemes[randomIndex];
+      }
+      function applyColorTheme() {
+        let theme = getRandomColorTheme();
+        shipColor = theme[2];
+        asteroidColor = theme[1];
+        backgroundColor = theme[0];
+        bulletColor = theme[2];
+        console.log("Applying color theme...");
+      }
+      function updateScore() {
+        scoreParagraph.textContent = "Score: " + score;
+      }
+      
+
+      window.addEventListener("keydown", function (e) {
+        if (e.keyCode === 82) {
+          score = 0;
+          updateScore();
+          var screen = document.getElementById("screen").getContext("2d");
+          screen.clearRect(0, 0, screen.canvas.width, screen.canvas.height);
+          new Game();
+          fireCooldownTime=500;
+        }
+      });
+
+      window.addEventListener("load", function () {
+        new Game();
+      });
+    })();
+    
+  </script>
+</body>
+</html>
