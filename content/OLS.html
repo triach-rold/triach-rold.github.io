@@ -1,8 +1,5 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Triach Rold's Blog</title>
   <style>
     a:hover {
@@ -211,18 +208,16 @@
     <H3>Find a bug?</H3>
     <span><p>Mail me <a href="mailto:roldtriach@gmail.com">here</a>.</p></span>
   </footer>
-
-  <!-- Aids -->
   <script>
      const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
-    const boxSize = 30; // Increased box size
+    const boxSize = 30;
     const rows = Math.floor(canvas.height / boxSize);
     const cols = Math.floor(canvas.width / boxSize);
     const defaultSpeed = 20;
     const fasterSpeed = 5;
     let speedToggle = true;
-    let numbers = generateSortedRandomNumbers(rows * cols); // Generate sorted random numbers
+    let numbers = generateSortedRandomNumbers(rows * cols); 
     let comparisons = 0;
     let selectedCell = null;
     let searchType = 'linear';
@@ -230,18 +225,18 @@
 
     function generateSortedRandomNumbers(count) {
       let nums = Array.from({ length: count }, () => Math.floor(Math.random() * 1000));
-      nums.sort((a, b) => a - b); // Sort the numbers in ascending order
+      nums.sort((a, b) => a - b); 
       return nums;
     }
 
     function drawBox(x, y, number, color = 'white') {
       ctx.fillStyle = color;
       ctx.fillRect(x * boxSize, y * boxSize, boxSize, boxSize);
-      ctx.strokeStyle = '#0D3B66'; // Cell border color
+      ctx.strokeStyle = '#0D3B66';
       ctx.strokeRect(x * boxSize, y * boxSize, boxSize, boxSize);
       ctx.font = '10px Futura';
       ctx.fillStyle = '#FF4365';
-      ctx.fillText(number, x * boxSize + 5, y * boxSize + 20); // Adjusted text position for larger box
+      ctx.fillText(number, x * boxSize + 5, y * boxSize + 20); 
     }
 
     function drawBoxes() {
@@ -265,7 +260,7 @@
         drawBoxes();
         drawBox(currentBox % cols, Math.floor(currentBox / cols), numbers[currentBox], '#00A1E4');
         currentBox++;
-      }, speed); // Decreased interval duration for faster animation
+      }, speed); 
     }
 
     function animateSearchBinary(targetIndex) {
