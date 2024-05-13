@@ -1,8 +1,5 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Triach Rold's Blog</title>
   <style>
     a:hover {
@@ -234,8 +231,6 @@
     <H3>Find a bug?</H3>
     <span><p>Mail me <a href="mailto:roldtriach@gmail.com">here</a>.</p></span>
   </footer>
-
-  <!-- Aids -->
   <script>
     let debugMenuToggle = false;
     const canvas = document.getElementById('canvas');
@@ -299,7 +294,6 @@
     }
 
     function optimizeAndDrawLines() {
-      // Nearest Neighbor Algorithm for TSP
       let unvisitedNodes = [...nodes];
       let path = [unvisitedNodes.shift()];
       let blueDistance = 0;
@@ -317,17 +311,15 @@
           }
         });
 
-        blueDistance += nearestDistance; // Accumulate distance for blue path
+        blueDistance += nearestDistance; 
         path.push(unvisitedNodes.splice(nearestIndex, 1)[0]);
       }
 
-      // Compute distance for the yellow path
       let yellowDistance = 0;
       for (let i = 1; i < nodes.length; i++) {
         yellowDistance += Math.sqrt(Math.pow(nodes[i].x - nodes[i - 1].x, 2) + Math.pow(nodes[i].y - nodes[i - 1].y, 2));
       }
 
-      // Draw the first path by default
       ctx.beginPath();
       ctx.moveTo(path[0].x, path[0].y);
       for (let i = 1; i < path.length; i++) {
@@ -336,7 +328,6 @@
       ctx.strokeStyle = '#ffd100';
       ctx.stroke();
 
-      // Draw the fucking second path if enabled
       if (showYellowPath) {
         ctx.beginPath();
         ctx.moveTo(nodes[0].x, nodes[0].y);
