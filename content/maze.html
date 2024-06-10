@@ -183,9 +183,7 @@
 <body class="home">
   <header>
     <a class="title" href="/"><h1>Triach Rold.</h1></a>
-    <nav>
-        <p><a href="../index.html">Home</a><a href="../projects.html">Projects</a><a href="../bloghome.html">Blog</a></p>
-      </nav> 
+    <div id="navbar-container"></div>
   </header>
   <main>
     <h1>Mazes by Backtracking.</h1>
@@ -214,6 +212,13 @@
         const mazeWidth = canvas.width;
         const mazeHeight = canvas.height;
         const cellSize = 30; 
+
+        fetch('navbar.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('navbar-container').innerHTML = data;
+      })
+      .catch(error => console.error('Error loading navbar:', error));
 
         let maze, entryRow, entryCol, exitRow, exitCol;
 
