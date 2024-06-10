@@ -178,9 +178,7 @@
 <body class="home">
   <header>
     <a class="title" href="/"><h1>Triach Rold.</h1></a>
-    <nav>
-        <p><a href="../index.html">Home</a><a href="../projects.html">Projects</a><a href="../bloghome.html">Blog</a></p>
-      </nav> 
+    <div id="navbar-container"></div>
   </header>
   <main>
     <h1>The Travelling Salesman Problem.</h1>
@@ -238,6 +236,13 @@
     let nodes = [];
     let isDrawing = false;
     let showYellowPath = false;
+
+    fetch('navbar.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('navbar-container').innerHTML = data;
+      })
+      .catch(error => console.error('Error loading navbar:', error));
 
     canvas.addEventListener('mousedown', startDrawing);
     canvas.addEventListener('mouseup', stopDrawing);
