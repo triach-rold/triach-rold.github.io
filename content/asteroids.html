@@ -191,9 +191,9 @@
 <body class="home">
   <header>
     <a class="title" href="/"><h1>Triach Rold.</h1></a>
-    <nav>
-        <p><a href="../index.html">Home</a><a href="../projects.html">Projects</a><a href="../bloghome.html">Blog</a></p>
-      </nav> 
+    <header>
+      <div id="navbar-container"></div>
+    </header>
   </header>
   <main>
     <h1>Asteroids.</h1>
@@ -216,6 +216,13 @@
     <span><p>Mail me <a href="mailto:roldtriach@gmail.com">here</a>.</p></span>
   </footer>
   <script>
+    fetch('navbar.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('navbar-container').innerHTML = data;
+      })
+      .catch(error => console.error('Error loading navbar:', error));
+      
     (function () {
       var backgroundColor = "black";
       var asteroidColor = "white";
