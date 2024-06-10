@@ -182,14 +182,12 @@ ul.blog-posts li a:visited {
 </style>
 
 </head>
-<body class="blog">
+<body class="blog" onload="loadNavbar()">
     <header>
         <a class="title" href="/">
             <h1>Triach Rold.</h1>
         </a>
-        <nav>
-            <p><a href="../index.html">Home</a><a href="../projects.html">Projects</a><a href="../bloghome.html">Blog</a></p>
-          </nav>
+        <div id="navbar"></div>
     </header>
     <main>
        <h2><p>PART 1 - TENSIONS IS DEFINITELY RISING</p></h2>
@@ -218,5 +216,15 @@ ul.blog-posts li a:visited {
         <H3>Find a bug ?</H3>
         <span><p>Mail me <a href="mailto:roldtriach@gmail.com">here</a>.</p></span>
     </footer>
+    <script>
+        function loadNavbar() {
+            fetch('../navbar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('navbar').innerHTML = data;
+                })
+                .catch(error => console.error('Error loading navbar:', error));
+        }
+    </script>
 </body>
 </html>
