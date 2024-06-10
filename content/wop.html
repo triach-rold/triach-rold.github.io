@@ -218,7 +218,7 @@ ul.blog-posts li a:visited {
     </footer>
     <script>
         function loadNavbar() {
-            fetch('../navbar.html')
+            fetch('navbar.html')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById('navbar').innerHTML = data;
