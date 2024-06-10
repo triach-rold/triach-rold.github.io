@@ -214,9 +214,7 @@
 <body class="home">
   <header>
     <a class="title" href="/"><h1>Triach Rold.</h1></a>
-    <nav>
-        <p><a href="../index.html">Home</a><a href="../projects.html">Projects</a><a href="../bloghome.html">Blog</a></p>
-      </nav> 
+    <div id="navbar-container"></div>
   </header>
   <main>
     <h1>Optimizing Snake.</h1>
@@ -258,6 +256,13 @@
     let backgroundColor = techniColor[0];
     changeCanvasBackground(backgroundColor);
     let isAIplay = false;
+
+    fetch('navbar.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('navbar-container').innerHTML = data;
+      })
+      .catch(error => console.error('Error loading navbar:', error));
 
     function drawSnake() {
       ctx.fillStyle = snakeColor;
