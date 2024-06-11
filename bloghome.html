@@ -162,9 +162,7 @@
       <h1>Triach Rold.</h1>
     </a>
     <nav>
-      <p>
-        <p><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="bloghome.html">Blog</a></p>
-      </p>
+      <div id="navbar-container"></div>
     </nav>
   </header>
   <main>
@@ -226,6 +224,14 @@
       </li>
     </ul>
   </main>
+  <script>
+    fetch('content/navbar.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('navbar-container').innerHTML = data;
+      })
+      .catch(error => console.error('Error loading navbar:', error));
+  </script>
   <hr>
   <footer>
     <H3>Find a bug ?</H3>
