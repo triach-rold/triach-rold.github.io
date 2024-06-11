@@ -183,9 +183,7 @@ ul.blog-posts li a:visited {
         <a class="title" href="/">
             <h1>Triach Rold.</h1>
         </a>
-        <nav>
-            <p><a href="../index.html">Home</a><a href="../projects.html">Projects</a><a href="../bloghome.html">Blog</a></p>
-          </nav> 
+        <div id="navbar-container"></div>
     </header>
     <main>
         <h1>Anagram Generator</h1>
@@ -238,6 +236,14 @@ g++ -o anagram anagram.cpp
 <p>This will generate and print anagrams for <code>word1</code> and <code>word2</code> based on the words found in <code>mydictionary.txt</code>. If you don't specify the --custom-dictionary filename, it will use the dictionary from <code>../resources/dictionary.txt</code>.</p>
 
     </main>
+    <script>
+        fetch('content/navbar.html')
+          .then(response => response.text())
+          .then(data => {
+            document.getElementById('navbar-container').innerHTML = data;
+          })
+          .catch(error => console.error('Error loading navbar:', error));
+      </script>
     <hr>
     <footer>
         <H3>Find a bug ?</H3>
