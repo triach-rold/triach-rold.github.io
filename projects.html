@@ -163,19 +163,21 @@
     <a class="title" href="/">
       <h1>Triach Rold.</h1>
     </a>
-    <nav>
-      <p>
-        <a href="index.html">Home</a>
-        <a href="projects.html">Projects</a>
-        <a href="bloghome.html">Blog</a>
-      </p>
-    </nav>
+    <div id="navbar-container"></div>
   </header>
   <main>
     <h1>Under Construction.</h1>
     <p>I'm (probably) working on it.</p>
     <p>Check back soon!</p>
   </main>
+  <script>
+    fetch('content/navbar.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('navbar-container').innerHTML = data;
+      })
+      .catch(error => console.error('Error loading navbar:', error));
+  </script>
   <hr>
   <footer>
     <H3>Find a bug ?</H3>
