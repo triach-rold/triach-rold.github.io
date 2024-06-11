@@ -2,182 +2,185 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
-    <title>Triach Rold's Blog</title></p>
-<style>
-:root {
-    --width: 720px;
-    --font-main: Futura, sans-serif;
-    --font-secondary: Verdana, sans-serif;
-    --font-scale: 1em;
-    --background-color: #fff;
-    --heading-color: #222;
-    --text-color: #444;
-    --link-color: #3273dc;
-    --visited-color:  #8b6fcb;
-    --code-background-color: #f2f2f2;
-    --code-color: #222;
-    --blockquote-color: #222;
-}
+    <title>Triach Rold's Blog</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js"
+            onload="renderMathInElement(document.body);"></script>
+    <style>
+        :root {
+            --width: 720px;
+            --font-main: Futura, sans-serif;
+            --font-secondary: Verdana, sans-serif;
+            --font-scale: 1em;
+            --background-color: #fff;
+            --heading-color: #222;
+            --text-color: #444;
+            --link-color: #3273dc;
+            --visited-color:  #8b6fcb;
+            --code-background-color: #f2f2f2;
+            --code-color: #222;
+            --blockquote-color: #222;
+        }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --background-color: #001A23;
-        --heading-color: #eee;
-        --text-color: #ddd;
-        --link-color: #B3EFB2;
-        --visited-color:  #91E5F6;
-        --code-background-color: #050101;
-        --code-color: #ddd;
-        --blockquote-color: #ccc;
-    }
-}
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --background-color: #001A23;
+                --heading-color: #eee;
+                --text-color: #ddd;
+                --link-color: #B3EFB2;
+                --visited-color:  #91E5F6;
+                --code-background-color: #050101;
+                --code-color: #ddd;
+                --blockquote-color: #ccc;
+            }
+        }
 
-body {
-    font-family: var(--font-secondary);
-    font-size: var(--font-scale);
-    margin: auto;
-    padding: 20px;
-    max-width: var(--width);
-    text-align: left;
-    background-color: var(--background-color);
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    line-height: 1.5;
-    color: var(--text-color);
-}
+        body {
+            font-family: var(--font-secondary);
+            font-size: var(--font-scale);
+            margin: auto;
+            padding: 20px;
+            max-width: var(--width);
+            text-align: left;
+            background-color: var(--background-color);
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            line-height: 1.5;
+            color: var(--text-color);
+        }
 
-h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-main);
-    color: var(--heading-color);
-}
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-main);
+            color: var(--heading-color);
+        }
 
-a {
-    color: var(--link-color);
-    cursor: pointer;
-    text-decoration: none;
-}
+        a {
+            color: var(--link-color);
+            cursor: pointer;
+            text-decoration: none;
+        }
 
-a:hover {
-    text-decoration: underline; 
-}
+        a:hover {
+            text-decoration: underline; 
+        }
 
-nav a {
-    margin-right: 8px;
-}
+        nav a {
+            margin-right: 8px;
+        }
 
-strong, b {
-    color: var(--heading-color);
-}
+        strong, b {
+            color: var(--heading-color);
+        }
 
-button {
-    margin: 0;
-    cursor: pointer;
-}
+        button {
+            margin: 0;
+            cursor: pointer;
+        }
 
-time {
-    font-family: monospace;
-    font-style: normal;
-    font-size: 15px;
-}
+        time {
+            font-family: monospace;
+            font-style: normal;
+            font-size: 15px;
+        }
 
-main {
-    line-height: 1.6;
-}
+        main {
+            line-height: 1.6;
+        }
 
-table {
-    width: 100%;
-}
+        table {
+            width: 100%;
+        }
 
-hr {
-    border: 0;
-    border-top: 1px dashed;
-}
+        hr {
+            border: 0;
+            border-top: 1px dashed;
+        }
 
-img {
-    max-width: 100%;
-}
+        img {
+            max-width: 100%;
+        }
 
-code {
-    font-family: monospace;
-    padding: 2px;
-    background-color: var(--code-background-color);
-    color: var(--code-color);
-    border-radius: 3px;
-}
+        code {
+            font-family: monospace;
+            padding: 2px;
+            background-color: var(--code-background-color);
+            color: var(--code-color);
+            border-radius: 3px;
+        }
 
-blockquote {
-    border-left: 1px solid #999;
-    color: var(--code-color);
-    padding-left: 20px;
-    font-style: italic;
-}
+        blockquote {
+            border-left: 1px solid #999;
+            color: var(--code-color);
+            padding-left: 20px;
+            font-style: italic;
+        }
 
-footer {
-    padding: 25px 0;
-    text-align: center;
-}
+        footer {
+            padding: 25px 0;
+            text-align: center;
+        }
 
-.title:hover {
-    text-decoration: none;
-}
+        .title:hover {
+            text-decoration: none;
+        }
 
-.title h1 {
-    font-size: 1.5em;
-}
+        .title h1 {
+            font-size: 1.5em;
+        }
 
-.inline {
-    width: auto !important;
-}
+        .inline {
+            width: auto !important;
+        }
 
-.highlight, .code {
-    padding: 1px 15px;
-    background-color: var(--code-background-color);
-    color: var(--code-color);
-    border-radius: 3px;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    overflow-x: auto;
-}
+        .highlight, .code {
+            padding: 1px 15px;
+            background-color: var(--code-background-color);
+            color: var(--code-color);
+            border-radius: 3px;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            overflow-x: auto;
+        }
 
-/* blog post list */
-ul.blog-posts {
-    list-style-type: none;
-    padding: unset;
-}
+        /* blog post list */
+        ul.blog-posts {
+            list-style-type: none;
+            padding: unset;
+        }
 
-ul.blog-posts li {
-    display: flex;
-}
+        ul.blog-posts li {
+            display: flex;
+        }
 
-ul.blog-posts li span {
-    flex: 0 0 130px;
-}
+        ul.blog-posts li span {
+            flex: 0 0 130px;
+        }
 
-ul.blog-posts li a:visited {
-    color: var(--visited-color);
-}
+        ul.blog-posts li a:visited {
+            color: var(--visited-color);
+        }
 
-.upvote-button {
-    padding: 0;
-    margin: 0;
-    border: 0;
-    background-color: inherit;
-    color: inherit;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+        .upvote-button {
+            padding: 0;
+            margin: 0;
+            border: 0;
+            background-color: inherit;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-.upvote-button.upvoted {
-    color: salmon;
-}
+        .upvote-button.upvoted {
+            color: salmon;
+        }
 
-.upvote-count {
-    margin-top: -3px;
-}
-</style>
-
-<p></head>
+        .upvote-count {
+            margin-top: -3px;
+        }
+    </style>
+</head>
 <body class="blog">
     <header>
         <a class="title" href="/">
@@ -185,104 +188,115 @@ ul.blog-posts li a:visited {
         </a>
         <nav>
             <div id="navbar-container"></div>
-          </nav>
+        </nav>
     </header>
     <main>
-        <h1>Numerical Integral Evaluator</h1></p>
+        <h1>Numerical Integral Evaluator</h1>
 
-<p>C++ code to solve integrals via the basic definition of a definite integral.</p>
+        <p>C++ code to solve integrals via the basic definition of a definite integral.</p>
 
-<h2>Mathematical Prerequisites</h2>
+        <h2>Mathematical Prerequisites</h2>
 
-<ol>
-<li>The function must be <strong>continuous</strong> and <strong>bounded</strong> between the limits specified.</li>
-<li>The function must have defined values for the upper and lower limits.</li>
-</ol>
+        <ol>
+            <li>The function must be <strong>continuous</strong> and <strong>bounded</strong> between the limits specified.</li>
+            <li>The function must have defined values for the upper and lower limits.</li>
+        </ol>
 
-<h2>How does it work?</h2>
+        <h2>How does it work?</h2>
 
-<ol>
-<li>This code uses the literal definition of a definite integral.</li>
-<li>Since the function is defined as <em>continuous</em> between the two intervals, it can be visualized as the area under the curve, over the x-axis.</li>
-<li>Since the value of the definite integral is the area under the curve, we can find the definite integral if we find the area enclosed by the curve.</li>
-<li>This area under the curve can be visualized as the sum of the areas of infinite rectangles. These rectangles, or "strips" are infinitesimally small. This is mathematically known as a <a href="https://en.wikipedia.org/wiki/Riemann_sum">Riemann Sum</a>.</li>
-</ol>
+        <ol>
+            <li>This code uses the literal definition of a definite integral.</li>
+            <li>Since the function is defined as <em>continuous</em> between the two intervals, it can be visualized as the area under the curve, over the x-axis.</li>
+            <li>Since the value of the definite integral is the area under the curve, we can find the definite integral if we find the area enclosed by the curve.</li>
+            <li>This area under the curve can be visualized as the sum of the areas of infinite rectangles. These rectangles, or "strips" are infinitesimally small. This is mathematically known as a <a href="https://en.wikipedia.org/wiki/Riemann_sum">Riemann Sum</a>.</li>
+        </ol>
 
-<h2>How does the math behind this work?</h2>
-<ol>
-    <li>The whole math behind this works assuming input function <code>f(x)</code> is continuous between the upper bound <code>a</code> and lower bound <code>b</code>.  </li>
-    <li>The first step in understanding the math behind this is to first understand that an integral represents the area bounded by the curve. Areas bounded by the curve above the y=0 are treated as positive areas and areas bounded by curves below y=0 are treated as negative areas.</li>
-    <li>Clearly, it is obvious that determining the area of the shape is tricky- since it isn't a standard shape such as a circle or a rectangle.</li>
-    <li>In math, everytime we don't have a proper formula to calculate an area of a thing, we try to break it down into things we do have formulae for- and that is precisely what we are about to do here.</li>
-    <li>We are going to split this function into a <b>very large number </b>of rectangles, something we do know the formula for. We will call these rectangles "strips".</li>
-    <li>Let's start by figuring out the rough breadth of the whole shape. This is quite simple. It's simply the upper bound - the lower bound, or <code>a-b</code>.</li>
-    <li>If we were dividing it into say, 2 pieces, the breadth of each "rectangle" would be <code>(a-b)/2</code>. However, since we are dividing it into a "large number" of pieces, we can simply say the width of each "small rectangle" is <code>(a-b)/n</code>, where n represents this "very large" number.</li>
-    <li>That was the simple part. Now, comes the hard(er) part. Now, we need to figure out the height of each of the rectangles, which you may notice is different for each rectangle, unlike the width, which was common to all.</li>
-    <li>No worries! We can still generalize the area of one of these rectangles by looking at a pattern.</li></li>
-    <li>We'll start off with the first rectangle, which has a height <code>f(a)</code>. Now we go to the second rectangle, which has a height of <code>f(a+width)</code>. Then we go to the third, which has a height of f(a+2*width) and so on.</li>
-    <li>Clearly, we can represent the general term of the sum as </li>
-</ol>
+        <h2>How does the math behind this work?</h2>
+        <ol>
+            <li>The whole math behind this works assuming input function <code>f(x)</code> is continuous between the upper bound <code>a</code> and lower bound <code>b</code>.  </li>
+            <li>The first step in understanding the math behind this is to first understand that an integral represents the area bounded by the curve. Areas bounded by the curve above the y=0 are treated as positive areas and areas bounded by curves below y=0 are treated as negative areas.</li>
+            <li>Clearly, it is obvious that determining the area of the shape is tricky- since it isn't a standard shape such as a circle or a rectangle.</li>
+            <li>In math, everytime we don't have a proper formula to calculate an area of a thing, we try to break it down into things we do have formulae for- and that is precisely what we are about to do here.</li>
+            <li>We are going to split this function into a <b>very large number </b>of rectangles, something we do know the formula for. We will call these rectangles "strips".</li>
+            <li>Let's start by figuring out the rough breadth of the whole shape. This is quite simple. It's simply the upper bound - the lower bound, or <code>a-b</code>.</li>
+            <li>If we were dividing it into say, 2 pieces, the breadth of each "rectangle" would be <code>(a-b)/2</code>. However, since we are dividing it into a "large number" of pieces, we can simply say the width of each "small rectangle" is <code>(a-b)/n</code>, where n represents this "very large" number.</li>
+            <li>That was the simple part. Now, comes the hard(er) part. Now, we need to figure out the height of each of the rectangles, which you may notice is different for each rectangle, unlike the width, which was common to all.</li>
+            <li>No worries! We can still generalize the area of one of these rectangles by looking at a pattern.</li>
+            <li>We'll start off with the first rectangle, which has a height \( f(a) \). Now we go to the second rectangle, which has a height of \( f(a + \text{width}) \). Then we go to the third, which has a height of \( f(a + 2 \cdot \text{width}) \) and so on.</li>
+            <li>Clearly, we can represent the general height of the sum as follows:</li>
+        
+        <p>Height<sub>r</sub> = \( f(a + (r-1) \cdot \text{width}) \)</p>
+        <li>Since we know that the area of a rectangle is height times it's width, we can re-write as </li>
+        <p>Area<sub>r</sub> = width &times; height<sub>r</sub> = width &times; \( f(a + (r-1) \cdot \text{width}) \)</p>
+        <li>Since area(s) are additive and the signs are automatically adjusted, we can represent the integral as a sum of the areas of the smaller strips.</li>
+        <p>Area = \( \sum_{r=0}^{n} \text{area}_r \) = \( \sum_{r=0}^{n} \text{width} \cdot f(a + (r-1) \cdot \text{width}) \)</p>
+        <li>Results are more accurate when the number of strips are bigger and the width of the strips is incredibly small. So, we take this to the extreme to take n as the largest possible number, infinity. We are splitting the curve into an infinite amount of infitessimally thin strips to get an accurate result. We simulate this in c++ by taking a very, very large value of n.</li>
+        <p>Area = \( \lim_{{n \to \infty}} \sum_{r=0}^{n} \text{width} \cdot f(a + (r-1) \cdot \text{width}) \)</p>
+        <li>Finally, we can say that the width of each of these strips is the total width <code>a-b</code> divided by the number of strips <code>n</code> to give the width as <code>(a-b)/n</code>. Substituting this in the original expression gives us the output-</li>
+        <p>Area = \( \lim_{{n \to \infty}} \sum_{r=0}^{n} \frac{(a-b)}{n} \cdot f\left(a + (r-1) \cdot \frac{(a-b)}{n}\right) \)</p>
+        <li>Since we've established that the area under a curve is equal to the integral of the curve, we can say that</li>
+        <p>\(\int_{a}^{b} f(x) \, dx = \lim_{{n \to \infty}} \sum_{r=0}^{n} \frac{(a-b)}{n} \cdot f\left(a + (r-1) \cdot \frac{(a-b)}{n}\right) \)</p>
+        </ol>
+        <h2>How to run it?</h2>
 
-<h2>How to run it?</h2>
+        <ol>
+            <li>The file is in C++. It requires you to have the GNU C++ compiler (doesn't need to be GNU, but it's tested on GNU) so that it can be turned into an executable for your computer to run.</li>
+            <li>Assuming you already have GNU, open up your terminal of choice and put in the command <code>g++ integral.cpp</code> in the directory where you've saved the file. (You can use the <code>cd</code> command to navigate through your directories.)</li>
+            <li>Assuming the last step went smoothly and without errors (which it should), you need to type in <code>./a.out (function) (upper_bound) (lower_bound) --increment (increment_steps_value) --simpson --trapezoid</code>. And it should calculate. Note that the increment flag is optional and it is set to 1,000,000 by default. Bigger numbers make the result more accurate, but evaluation time will also increase. The simpson flag is also optional (specify it to evaluate by simpson's rule, but this is disabled by default). The trapezoid flag is also optional (specify it to evaluate by the trapezoidal rule- but this is also disabled by default). Please note that you can only use one mode at a time.</li>
+        </ol>
 
-<ol>
-<li>The file is in C++. It requires you to have the GNU C++ compiler (doesn't need to be GNU, but it's tested on GNU) so that it can be turned into an executable for your computer to run.</li>
-<li>Assuming you already have GNU, open up your terminal of choice and put in the command <code>g++ integral.cpp</code> in the directory where you've saved the file. (You can use the <code>cd</code> command to navigate through your directories.)</li>
-<li>Assuming the last step went smoothly and without errors (which it should), you need to type in <code>./a.out (function) (upper_bound) (lower_bound) --increment (increment_steps_value) --simpson --trapezoid</code>. And it should calculate. Note that the increment flag is optional and it is set to 1,000,000 by default. Bigger numbers make the result more accurate, but evaluation time will also increase. The simpson flag is also optional (specify it to evaluate by simpson's rule, but this is disabled by default). The trapezoid flag is also optional (specify it to evaluate by the trapezoidal rule- but this is also disabled by default). Please note that you can only use one mode at a time.</li>
-</ol>
+        <h2>Supported Functions?</h2>
 
-<h2>Supported Functions?</h2>
+        <h3>Trigonometric Functions</h3>
 
-<h3>Trigonometric Functions</h3>
-
-<ul>
-<li>sin(x)</li>
-<li>cos(x)</li>
-<li>tan(x)</li>
-<li>cosec(x)</li>
-<li>sec(x)</li>
-<li>cot(x)</li>
-<li>asin(x)</li>
-<li>acos(x)</li>
-<li>atan(x)</li>
-<li>sinh(x)</li>
-<li>cosh(x)</li>
-<li>tanh(x)</li>
-<li>asinh(x)</li>
-<li>acosh(x)</li>
-<li>atanh(x)
-</ul>
-<H3>Exponential and Logarithmatic Functions</H3>
-<ul>
-<li>log(x)</li>
-<li>ln(x)</li>
-<li>log(base)(x)</li>
-<li>gamma(x)</li>
-<li>lgamma(x)</li>
-<li>exp(x)</li>
-<li>sqrt(x)</li>
-<li>exp2(x)</li>
-<li>exp10(x)</li>
-<li>cbrt(x)</li>
-</ul>
-<h3>Miscellaneous Functions</h3>
-<ul>
-<li>abs(x)</li>
-<li>sgn(x)</li>
-</ul>
- </main>
- <script>
-    fetch('../../content/navbar.html')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('navbar-container').innerHTML = data;
-      })
-      .catch(error => console.error('Error loading navbar:', error));
-  </script>
+        <ul>
+            <li>sin(x)</li>
+            <li>cos(x)</li>
+            <li>tan(x)</li>
+            <li>cosec(x)</li>
+            <li>sec(x)</li>
+            <li>cot(x)</li>
+            <li>asin(x)</li>
+            <li>acos(x)</li>
+            <li>atan(x)</li>
+            <li>sinh(x)</li>
+            <li>cosh(x)</li>
+            <li>tanh(x)</li>
+            <li>asinh(x)</li>
+            <li>acosh(x)</li>
+            <li>atanh(x)</li>
+        </ul>
+        <h3>Exponential and Logarithmic Functions</h3>
+        <ul>
+            <li>log(x)</li>
+            <li>ln(x)</li>
+            <li>log(base)(x)</li>
+            <li>gamma(x)</li>
+            <li>lgamma(x)</li>
+            <li>exp(x)</li>
+            <li>sqrt(x)</li>
+            <li>exp2(x)</li>
+            <li>exp10(x)</li>
+            <li>cbrt(x)</li>
+        </ul>
+        <h3>Miscellaneous Functions</h3>
+        <ul>
+            <li>abs(x)</li>
+            <li>sgn(x)</li>
+        </ul>
+    </main>
+    <script>
+        fetch('../../content/navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar-container').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading navbar:', error));
+    </script>
     <hr>
     <footer>
-        <H3>Find a bug ?</H3>
-        <span><p>Mail me <a href="mailto:roldtriach@gmail.com">here</a>.</p></span>
+        <h3>Find a bug?</h3>
+        <p>Mail me <a href="mailto:roldtriach@gmail.com">here</a>.</p>
     </footer>
 </body>
 </html>
