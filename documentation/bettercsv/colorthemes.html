@@ -1,0 +1,630 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
+    <title>Triach Rold's Blog</title>
+    
+<style>
+:root {
+    --width: 720px;
+    --font-main: Futura, sans-serif;
+    --font-secondary: Verdana, sans-serif;
+    --font-scale: 1em;
+    --background-color: #fff;
+    --heading-color: #222;
+    --text-color: #444;
+    --link-color: #3273dc;
+    --visited-color:  #8b6fcb;
+    --code-background-color: #f2f2f2;
+    --code-color: #222;
+    --blockquote-color: #222;
+    --table-border-color: #ccc;
+    --table-header-bg: #f7f7f7;
+    --table-header-color: #333;
+    --table-row-bg: #fff;
+    --table-row-alt-bg: #f9f9f9;
+    --table-row-hover-bg: #f1f1f1;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: #001A23;
+        --heading-color: #eee;
+        --text-color: #ddd;
+        --link-color: #B3EFB2;
+        --visited-color:  #91E5F6;
+        --code-background-color: #050101;
+        --code-color: #ddd;
+        --blockquote-color: #ccc;
+        --table-border-color: #555;
+        --table-header-bg: #333;
+        --table-header-color: #ddd;
+        --table-row-bg: #222;
+        --table-row-alt-bg: #1a1a1a;
+        --table-row-hover-bg: #444;
+    }
+}
+
+body {
+    font-family: var(--font-secondary);
+    font-size: var(--font-scale);
+    margin: auto;
+    padding: 20px;
+    max-width: var(--width);
+    text-align: left;
+    background-color: var(--background-color);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: var(--text-color);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-main);
+    color: var(--heading-color);
+}
+
+a {
+    color: var(--link-color);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline; 
+}
+
+nav a {
+    margin-right: 8px;
+}
+
+strong, b {
+    color: var(--heading-color);
+}
+
+button {
+    margin: 0;
+    cursor: pointer;
+}
+
+time {
+    font-family: monospace;
+    font-style: normal;
+    font-size: 15px;
+}
+
+main {
+    line-height: 1.6;
+}
+
+table {
+    align-self: center;
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: var(--font-scale);
+    text-align: center;
+    background-color: var(--table-row-bg);
+}
+
+table, th, td {
+    border: 1px solid var(--table-border-color);
+}
+
+th, td {
+    padding: 8px 10px;
+}
+
+th {
+    background-color: var(--table-header-bg);
+    color: var(--table-header-color);
+}
+
+tr:nth-child(even) {
+    background-color: var(--table-row-alt-bg);
+}
+
+tr:hover {
+    background-color: var(--table-row-hover-bg);
+}
+
+hr {
+    border: 0;
+    border-top: 1px dashed;
+}
+
+img {
+    max-width: 100%;
+}
+
+code {
+    font-family: monospace;
+    padding: 2px;
+    background-color: var(--code-background-color);
+    color: var(--code-color);
+    border-radius: 3px;
+}
+
+blockquote {
+    border-left: 1px solid #999;
+    color: var(--code-color);
+    padding-left: 20px;
+    font-style: italic;
+}
+
+footer {
+    padding: 25px 0;
+    text-align: center;
+}
+
+.title:hover {
+    text-decoration: none;
+}
+
+.title h1 {
+    font-size: 1.5em;
+}
+
+.inline {
+    width: auto !important;
+}
+
+.highlight, .code {
+    padding: 1px 15px;
+    background-color: var(--code-background-color);
+    color: var(--code-color);
+    border-radius: 3px;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    overflow-x: auto;
+}
+
+/* blog post list */
+ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+}
+
+ul.blog-posts li {
+    display: flex;
+}
+
+ul.blog-posts li span {
+    flex: 0 0 130px;
+}
+
+ul.blog-posts li a:visited {
+    color: var(--visited-color);
+}
+
+.upvote-button {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background-color: inherit;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.upvote-button.upvoted {
+    color: salmon;
+}
+
+.upvote-count {
+    margin-top: -3px;
+}
+</style>
+
+</head>
+<body class="blog">
+    <header>
+        <a class="title" href="/">
+            <h1>Triach Rold.</h1>
+        </a>
+        <nav>
+            <p>
+                <a href="homepage.html">Home</a>
+                <a href="projects.html">Projects</a>
+                <a href="bloghome.html">Blog</a>
+            </p>
+        </nav>
+    </header>
+    <main>
+        <h1>betterCSV Colorthemes.</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Theme</th>
+                    <th>Top Row Color</th>
+                    <th>Top Column Color</th>
+                    <th>Alt Color 1</th>
+                    <th>Alt Color 2</th>
+                    <th>Alt Color 3</th>
+                    <th>Alt Color 4</th>
+                    <th>Background Color</th>
+                    <th>Border Color</th>
+                    <th>Border Thickness</th>
+                    <th>Title Color</th>
+                    <th>Cell Text Color</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>dracula</td>
+                    <td>#282A36</td>
+                    <td>#282A36</td>
+                    <td>#44475A</td>
+                    <td>#6272A4</td>
+                    <td>#FF79C6</td>
+                    <td>#BD93F9</td>
+                    <td>#282A36</td>
+                    <td>#FF79C6</td>
+                    <td>1px</td>
+                    <td>#F8F8F2</td>
+                    <td>#F8F8F2</td>
+                </tr>
+                <tr>
+                    <td>light</td>
+                    <td>#E0E0E0</td>
+                    <td>#FFFFFF</td>
+                    <td>#F0F0F0</td>
+                    <td>#FFFFFF</td>
+                    <td>#CCCCCC</td>
+                    <td>#BFBFBF</td>
+                    <td>#FFFFFF</td>
+                    <td>#CCCCCC</td>
+                    <td>1px</td>
+                    <td>#000000</td>
+                    <td>#000000</td>
+                </tr>
+                <tr>
+                    <td>solarized</td>
+                    <td>#002B36</td>
+                    <td>#073642</td>
+                    <td>#586e75</td>
+                    <td>#657b83</td>
+                    <td>#839496</td>
+                    <td>#93A1A1</td>
+                    <td>#FDF6E3</td>
+                    <td>#839496</td>
+                    <td>1px</td>
+                    <td>#657B83</td>
+                    <td>#073642</td>
+                </tr>
+                <tr>
+                    <td>gruvbox</td>
+                    <td>#282828</td>
+                    <td>#282828</td>
+                    <td>#3C3836</td>
+                    <td>#504945</td>
+                    <td>#665C54</td>
+                    <td>#7C6F64</td>
+                    <td>#282828</td>
+                    <td>#665C54</td>
+                    <td>1px</td>
+                    <td>#EBDBB2</td>
+                    <td>#EBDBB2</td>
+                </tr>
+                <tr>
+                    <td>monokai</td>
+                    <td>#272822</td>
+                    <td>#272822</td>
+                    <td>#49483E</td>
+                    <td>#3E3D32</td>
+                    <td>#75715E</td>
+                    <td>#A59F85</td>
+                    <td>#272822</td>
+                    <td>#75715E</td>
+                    <td>1px</td>
+                    <td>#F8F8F0</td>
+                    <td>#F8F8F0</td>
+                </tr>
+                <tr>
+                    <td>nord</td>
+                    <td>#2E3440</td>
+                    <td>#2E3440</td>
+                    <td>#3B4252</td>
+                    <td>#434C5E</td>
+                    <td>#4C566A</td>
+                    <td>#D8DEE9</td>
+                    <td>#2E3440</td>
+                    <td>#4C566A</td>
+                    <td>1px</td>
+                    <td>#D8DEE9</td>
+                    <td>#D8DEE9</td>
+                </tr>
+                <tr>
+                    <td>tokyo-night</td>
+                    <td>#1A1B26</td>
+                    <td>#1A1B26</td>
+                    <td>#24283B</td>
+                    <td>#1F2335</td>
+                    <td>#414868</td>
+                    <td>#565F89</td>
+                    <td>#1A1B26</td>
+                    <td>#414868</td>
+                    <td>1px</td>
+                    <td>#C0CAF5</td>
+                    <td>#C0CAF5</td>
+                </tr>
+                <tr>
+                    <td>oceanic-next</td>
+                    <td>#1B2B34</td>
+                    <td>#343D46</td>
+                    <td>#4F5B66</td>
+                    <td>#65737E</td>
+                    <td>#A7ADBA</td>
+                    <td>#C0C5CE</td>
+                    <td>#1B2B34</td>
+                    <td>#A7ADBA</td>
+                    <td>1px</td>
+                    <td>#C0C5CE</td>
+                    <td>#C0C5CE</td>
+                </tr>
+                <tr>
+                    <td>palenight</td>
+                    <td>#292D3E</td>
+                    <td>#444267</td>
+                    <td>#32374D</td>
+                    <td>#464B5D</td>
+                    <td>#959DCB</td>
+                    <td>#676E95</td>
+                    <td>#292D3E</td>
+                    <td>#959DCB</td>
+                    <td>1px</td>
+                    <td>#959DCB</td>
+                    <td>#959DCB</td>
+                </tr>
+                <tr>
+                    <td>ayu-mirage</td>
+                    <td>#17191E</td>
+                    <td>#242B38</td>
+                    <td>#1F2430</td>
+                    <td>#343D46</td>
+                    <td>#4A505A</td>
+                    <td>#6C7680</td>
+                    <td>#17191E</td>
+                    <td>#4A505A</td>
+                    <td>1px</td>
+                    <td>#D9D7CE</td>
+                    <td>#D9D7CE</td>
+                </tr>
+                <tr>
+                    <td>material</td>
+                    <td>#263238</td>
+                    <td>#37474F</td>
+                    <td>#455A64</td>
+                    <td>#546E7A</td>
+                    <td>#78909C</td>
+                    <td>#90A4AE</td>
+                    <td>#263238</td>
+                    <td>#78909C</td>
+                    <td>1px</td>
+                    <td>#ECEFF1</td>
+                    <td>#ECEFF1</td>
+                </tr>
+                <tr>
+                    <td>tomorrow-night</td>
+                    <td>#1D1F21</td>
+                    <td>#282A2E</td>
+                    <td>#373B41</td>
+                    <td>#4D4D4C</td>
+                    <td>#5A5A5A</td>
+                    <td>#707880</td>
+                    <td>#1D1F21</td>
+                    <td>#5A5A5A</td>
+                    <td>1px</td>
+                    <td>#C5C8C6</td>
+                    <td>#C5C8C6</td>
+                </tr>
+                <tr>
+                    <td>dark-matter</td>
+                    <td>#101820</td>
+                    <td>#101820</td>
+                    <td>#28334A</td>
+                    <td>#424C61</td>
+                    <td>#5C6881</td>
+                    <td>#7A86A2</td>
+                    <td>#101820</td>
+                    <td>#5C6881</td>
+                    <td>1px</td>
+                    <td>#F2AA4C</td>
+                    <td>#F2AA4C</td>
+                </tr>
+                <tr>
+                    <td>catppuccin</td>
+                    <td>#1E1E28</td>
+                    <td>#1E1E28</td>
+                    <td>#302D41</td>
+                    <td>#575268</td>
+                    <td>#6E6C7C</td>
+                    <td>#DDB6F2</td>
+                    <td>#1E1E28</td>
+                    <td>#6E6C7C</td>
+                    <td>1px</td>
+                    <td>#F5E0DC</td>
+                    <td>#F5E0DC</td>
+                </tr>
+                <tr>
+                    <td>midnight</td>
+                    <td>#121212</td>
+                    <td>#1A1A1A</td>
+                    <td>#232323</td>
+                    <td>#2E2E2E</td>
+                    <td>#383838</td>
+                    <td>#434343</td>
+                    <td>#121212</td>
+                    <td>#383838</td>
+                    <td>1px</td>
+                    <td>#B3B3B3</td>
+                    <td>#B3B3B3</td>
+                </tr>
+                <tr>
+                    <td>forest</td>
+                    <td>#0B3D0B</td>
+                    <td>#124512</td>
+                    <td>#1B5E1B</td>
+                    <td>#237623</td>
+                    <td>#2D8A2D</td>
+                    <td>#37A637</td>
+                    <td>#0B3D0B</td>
+                    <td>#2D8A2D</td>
+                    <td>1px</td>
+                    <td>#A4D3A4</td>
+                    <td>#A4D3A4</td>
+                </tr>
+                <tr>
+                    <td>sunset</td>
+                    <td>#FF4500</td>
+                    <td>#FF6347</td>
+                    <td>#FF7F50</td>
+                    <td>#FFA07A</td>
+                    <td>#FFB6C1</td>
+                    <td>#FFC0CB</td>
+                    <td>#FF4500</td>
+                    <td>#FFB6C1</td>
+                    <td>1px</td>
+                    <td>#FFFFFF</td>
+                    <td>#FFFFFF</td>
+                </tr>
+                <tr>
+                    <td>ocean</td>
+                    <td>#006994</td>
+                    <td>#007BA7</td>
+                    <td>#009DC4</td>
+                    <td>#00BFFF</td>
+                    <td>#33CFFF</td>
+                    <td>#66D9FF</td>
+                    <td>#006994</td>
+                    <td>#33CFFF</td>
+                    <td>1px</td>
+                    <td>#E0FFFF</td>
+                    <td>#E0FFFF</td>
+                </tr>
+                <tr>
+                    <td>desert</td>
+                    <td>#EDC9AF</td>
+                    <td>#E1C699</td>
+                    <td>#D2B48C</td>
+                    <td>#C19A6B</td>
+                    <td>#CD853F</td>
+                    <td>#DEB887</td>
+                    <td>#EDC9AF</td>
+                    <td>#CD853F</td>
+                    <td>1px</td>
+                    <td>#8B4513</td>
+                    <td>#8B4513</td>
+                </tr>
+                <tr>
+                    <td>cherry-blossom</td>
+                    <td>#FFB7C5</td>
+                    <td>#FFC1CC</td>
+                    <td>#FFC6D2</td>
+                    <td>#FFD1DC</td>
+                    <td>#FFDDE6</td>
+                    <td>#FFE6F2</td>
+                    <td>#FFB7C5</td>
+                    <td>#FFD1DC</td>
+                    <td>1px</td>
+                    <td>#FF69B4</td>
+                    <td>#FF69B4</td>
+                </tr>
+                <tr>
+                    <td>lavender</td>
+                    <td>#E6E6FA</td>
+                    <td>#D8BFD8</td>
+                    <td>#DDA0DD</td>
+                    <td>#EE82EE</td>
+                    <td>#DA70D6</td>
+                    <td>#BA55D3</td>
+                    <td>#E6E6FA</td>
+                    <td>#DA70D6</td>
+                    <td>1px</td>
+                    <td>#4B0082</td>
+                    <td>#4B0082</td>
+                </tr>
+                <tr>
+                    <td>autumn</td>
+                    <td>#8B4513</td>
+                    <td>#A0522D</td>
+                    <td>#CD853F</td>
+                    <td>#D2691E</td>
+                    <td>#DEB887</td>
+                    <td>#F4A460</td>
+                    <td>#8B4513</td>
+                    <td>#DEB887</td>
+                    <td>1px</td>
+                    <td>#FFFFFF</td>
+                    <td>#FFFFFF</td>
+                </tr>
+                <tr>
+                    <td>midnight-blue</td>
+                    <td>#191970</td>
+                    <td>#000080</td>
+                    <td>#00008B</td>
+                    <td>#0000CD</td>
+                    <td>#4169E1</td>
+                    <td>#4682B4</td>
+                    <td>#191970</td>
+                    <td>#4169E1</td>
+                    <td>1px</td>
+                    <td>#B0C4DE</td>
+                    <td>#B0C4DE</td>
+                </tr>
+                <tr>
+                    <td>mint</td>
+                    <td>#98FF98</td>
+                    <td>#90EE90</td>
+                    <td>#8FBC8F</td>
+                    <td>#66CDAA</td>
+                    <td>#3CB371</td>
+                    <td>#2E8B57</td>
+                    <td>#98FF98</td>
+                    <td>#3CB371</td>
+                    <td>1px</td>
+                    <td>#006400</td>
+                    <td>#006400</td>
+                </tr>
+                <tr>
+                    <td>peach</td>
+                    <td>#FFE5B4</td>
+                    <td>#FFDAB9</td>
+                    <td>#FFDEAD</td>
+                    <td>#FFE4B5</td>
+                    <td>#FFCBA4</td>
+                    <td>#FFB07C</td>
+                    <td>#FFE5B4</td>
+                    <td>#FFCBA4</td>
+                    <td>1px</td>
+                    <td>#CD853F</td>
+                    <td>#CD853F</td>
+                </tr>
+                <tr>
+                    <td>emerald</td>
+                    <td>#50C878</td>
+                    <td>#3CB371</td>
+                    <td>#2E8B57</td>
+                    <td>#228B22</td>
+                    <td>#006400</td>
+                    <td>#008000</td>
+                    <td>#50C878</td>
+                    <td>#2E8B57</td>
+                    <td>1px</td>
+                    <td>#ADFF2F</td>
+                    <td>#ADFF2F</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+    <hr>
+    <footer>
+        <H3>Find a bug ?</H3>
+        <span><p>Mail me <a href="mailto:roldtriach@gmail.com">here</a>.</p></span>
+    </footer>
+</body>
+</html>
