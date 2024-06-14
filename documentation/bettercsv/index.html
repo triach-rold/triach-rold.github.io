@@ -293,18 +293,20 @@ converter.py csv_files/example.csv output.html pref_files/pref.css colorthemes/c
 
 <h2>Currently Supported Control Structure Options -</h2>
 
-<p>General syntax is given as follows (doesn't apply to unspecified category)-
+<p>General syntax is given as follows (doesn't apply to unspecified category)-<br>
 <code>
 (control_structure_name):{
     // insert code here
 }
 </code>
-* <strong>default:</strong> Default settings. A basic fall through in case user customization is faulty.
-* <strong>user:</strong> User specified settings. Takes preference (higher in hierarchy relative to default) over default.
-* <strong>unspecified:</strong> Declared differently than the other settings. Highest in hierarchy so that buggy code wouldn't derail the whole preference engine. Syntax- 
-<code>
-// code goes here- no need to declare any specific control structure.
-</code></p>
+<ul>
+    <li>* <strong>default:</strong> Default settings. A basic fall through in case user customization is faulty.</li>
+    <li>* <strong>user:</strong> User specified settings. Takes preference (higher in hierarchy relative to default) over default.</li>
+    <li>* <strong>unspecified:</strong> Declared differently than the other settings. Highest in hierarchy so that buggy code wouldn't derail the whole preference engine. Syntax-<br>
+        <code>
+            // code goes here- no need to declare any specific control structure.
+            </code> </li>
+</ul></p>
 
 <h2>Supported Colorthemes:</h2>
 
