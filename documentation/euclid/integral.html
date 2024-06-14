@@ -215,12 +215,15 @@
         <h2>How does the math behind this work?</h2>
         <ol>
             <li>The whole math behind this works assuming input function <code>f(x)</code> is continuous between the upper bound <code>a</code> and lower bound <code>b</code>.  </li>
+            <br><img src="../../resources/euclid/integral/function.png"></img>
             <li>The first step in understanding the math behind this is to first understand that an integral represents the area bounded by the curve. Areas bounded by the curve above the y=0 are treated as positive areas and areas bounded by curves below y=0 are treated as negative areas.</li>
+            <br><img src="../../resources/euclid/integral/auc.png"></img>
             <li>Clearly, it is obvious that determining the area of the shape is tricky- since it isn't a standard shape such as a circle or a rectangle.</li>
             <li>In math, everytime we don't have a proper formula to calculate an area of a thing, we try to break it down into things we do have formulae for- and that is precisely what we are about to do here.</li>
             <li>We are going to split this function into a <b>very large number </b>of rectangles, something we do know the formula for. We will call these rectangles "strips".</li>
             <li>Let's start by figuring out the rough breadth of the whole shape. This is quite simple. It's simply the upper bound - the lower bound, or <code>a-b</code>.</li>
             <li>If we were dividing it into say, 2 pieces, the breadth of each "rectangle" would be <code>(a-b)/2</code>. However, since we are dividing it into a "large number" of pieces, we can simply say the width of each "small rectangle" is <code>(a-b)/n</code>, where n represents this "very large" number.</li>
+            <br><img src="../../resources/euclid/integral/2step.png"></img>
             <li>That was the simple part. Now, comes the hard(er) part. Now, we need to figure out the height of each of the rectangles, which you may notice is different for each rectangle, unlike the width, which was common to all.</li>
             <li>No worries! We can still generalize the area of one of these rectangles by looking at a pattern.</li>
             <li>We'll start off with the first rectangle, which has a height \( f(a) \). Now we go to the second rectangle, which has a height of \( f(a + \text{width}) \). Then we go to the third, which has a height of \( f(a + 2 \cdot \text{width}) \) and so on.</li>
@@ -232,6 +235,13 @@
         <li>Since area(s) are additive and the signs are automatically adjusted, we can represent the integral as a sum of the areas of the smaller strips.</li>
         <p>Area = \( \sum_{r=0}^{n} \text{area}_r \) = \( \sum_{r=0}^{n} \text{width} \cdot f(a + (r-1) \cdot \text{width}) \)</p>
         <li>Results are more accurate when the number of strips are bigger and the width of the strips is incredibly small. So, we take this to the extreme to take n as the largest possible number, infinity. We are splitting the curve into an infinite amount of infitessimally thin strips to get an accurate result. We simulate this in c++ by taking a very, very large value of n.</li>
+        <li>We can observe this visually by seeing the difference between a few test values of n. For the first example, we will take n=3.</li>
+        <br><img src="../../resources/euclid/integral/3step.png"></img>
+        <li>Clearly, n=3 had a more accurate area result compared to the area obtained by n=2. Let's explore this further (n=5) to see it more clearly.</li>
+        <br><img src="../../resources/euclid/integral/5step.png"></img>
+        <li>So, observing this, we can say that there is an <i>inverse</i> relation between the number of steps "n" and the error. So, if we make n tend to infinity (make n very, very large) then we should be left with an error that approaches zero.</li>
+        <br><img src="../../resources/euclid/integral/infstep.png"></img>
+        <li>We can write this mathematically by taking the limit of the sum, where n approaches infinity.</li>
         <p>Area = \( \lim_{{n \to \infty}} \sum_{r=0}^{n} \text{width} \cdot f(a + (r-1) \cdot \text{width}) \)</p>
         <li>Finally, we can say that the width of each of these strips is the total width <code>a-b</code> divided by the number of strips <code>n</code> to give the width as <code>(a-b)/n</code>. Substituting this in the original expression gives us the output-</li>
         <p>Area = \( \lim_{{n \to \infty}} \sum_{r=0}^{n} \frac{(a-b)}{n} \cdot f\left(a + (r-1) \cdot \frac{(a-b)}{n}\right) \)</p>
